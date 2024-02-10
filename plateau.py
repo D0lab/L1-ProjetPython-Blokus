@@ -4,7 +4,8 @@
 Plateau de jeu Blokus
 """
 
-from tkinter import Tk, Canvas
+from tkinter import *
+import time
 
 
 def clic(event):
@@ -37,7 +38,6 @@ def glisser(event):
 def verif_alentours(x,y):
 	global nb_joueurs, nb_tours
 	
-	print(x == 0 and y == len(plateau)-1)
 	
 	#COIN SUPERIEUR GAUCHE
 	if (x == 0 and y == 0):
@@ -57,23 +57,25 @@ def verif_alentours(x,y):
 	
 	
 	#COLONNE GAUCHE
-	elif (y != 0 and y != len(plateau)-1) and (x == 0) and (plateau[y][x+1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (y != 0 and y != len(plateau)-1) and (x == 0) and (plateau[y][x+1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (plateau[y+1][x+1] != 0 or plateau[y-1][x+1] != 0) and (nb_joueurs-nb_tours != 0):
 		return True		
 	
 	#COLONNE DROITE
-	elif (y != 0 and y != len(plateau)-1) and (x == len(plateau)-1) and (plateau[y][x-1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (y != 0 and y != len(plateau)-1) and (x == len(plateau)-1) and (plateau[y][x-1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (plateau[y+1][x-1] != 0 or plateau[y-1][x-1] != 0) and (nb_joueurs-nb_tours != 0):
 		return True
 	
-	#LIGNE HAUT
-	elif (x != 0 and x != len(plateau)-1) and (y == 0) and (plateau[y][x+1] == 0 and plateau[y][x-1] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
+	#LIGNE HAUT 
+	
+	elif (x != 0 and x != len(plateau)-1) and (y == 0) and (plateau[y][x+1] == 0 and plateau[y][x-1] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (plateau[y+1][x+1] != 0 or plateau[y+1][x-1] != 0) and (nb_joueurs-nb_tours != 0):		
 		return True
+		
 	
 	#LIGNE BAS
-	elif (x != 0 and x != len(plateau)-1) and (y == len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (x != 0 and x != len(plateau)-1) and (y == len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0 and plateau[y][x] == 0) and (plateau[y-1][x+1] != 0 or plateau[y-1][x-1] != 0) and (nb_joueurs-nb_tours != 0):
 		return True
 	
 	#TOUT LE RESTE
-	elif (x != 0 and x != len(plateau)-1 and y != 0 and y != len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (x != 0 and x != len(plateau)-1 and y != 0 and y != len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0 and plateau[y][x] == 0) and (plateau[y+1][x-1] != 0 or plateau[y+1][x+1] != 0 or plateau[y-1][x-1] != 0 or plateau[y-1][x+1] != 0) and (nb_joueurs-nb_tours != 0):
 		return True
 		
 	else:
@@ -127,40 +129,56 @@ nb_tours = 1
 cnv.pack()
 
 
-plateau = []
-pieces_bleu = []
 
-pieces_rouge = []
-pieces_rouge_loader = {
-	"0": (cnv.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')),
-	"1": (cnv.create_rectangle((taille_plateau+1.05)*unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity, (2*30)+(1*unity)+unity, fill='red', outline='')),
-	"2": (cnv.create_rectangle((taille_plateau+1.05)*unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity, (3*30)+(2*unity)+unity, fill='red', outline='')),
-	"3": (cnv.create_rectangle((taille_plateau+1.05)*unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity, (4*30)+(3*unity)+unity, fill='red', outline='')),
-	"4": (cnv.create_rectangle((taille_plateau+1.05)*unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline=''))
-	}
 
-pieces_rouge_coords_base = []
-for rect_name, rect in pieces_rouge_loader.items():
-	pieces_rouge_coords_base.append(cnv.coords(rect))
-	
-	
-for i in range(taille_plateau):
-	plateau_temp = []
-	for j in range(taille_plateau):
-		plateau_temp.append(0)
-	
-	plateau.append(plateau_temp)
+def build_pieces():
+	global pieces_rouge_loader, nb_pieces_rouge, pieces_rouge_coords_base
+	pieces_rouge_loader = {
+		"0": (cnv.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')),
+		"1": (cnv.create_rectangle((taille_plateau+1.05)*unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity, (2*30)+(1*unity)+unity, fill='red', outline='')),
+		"2": (cnv.create_rectangle((taille_plateau+1.05)*unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity, (3*30)+(2*unity)+unity, fill='red', outline='')),
+		"3": (cnv.create_rectangle((taille_plateau+1.05)*unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity, (4*30)+(3*unity)+unity, fill='red', outline='')),
+		"4": (cnv.create_rectangle((taille_plateau+1.05)*unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline=''))
+		}
+	nb_pieces_rouge = len(pieces_rouge_loader)
 
+	pieces_rouge_coords_base = []
+	for rect_name, rect in pieces_rouge_loader.items():
+		pieces_rouge_coords_base.append(cnv.coords(rect))
+	
+
+def build_plateau():
+	global plateau
+	
+	plateau = []
+	for i in range(taille_plateau):
+		plateau_temp = []
+		for j in range(taille_plateau):
+			plateau_temp.append(0)
 		
+		plateau.append(plateau_temp)
+		
+	#cnv.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')
+
+	for i in range(taille_plateau+1):
+		cnv.create_line(5,5+unity*i,(taille_plateau+0.05)*unity,5+unity*i)
+		cnv.create_line(5+unity*i,5,5+unity*i,(taille_plateau+0.05)*unity)
+
+build_plateau()
+build_pieces()
 
 
-#cnv.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')
-
-for i in range(taille_plateau+1):
-	cnv.create_line(5,5+unity*i,(taille_plateau+0.05)*unity,5+unity*i)
-	cnv.create_line(5+unity*i,5,5+unity*i,(taille_plateau+0.05)*unity)
 
 
+def game_reload():
+	cnv.delete('all')
+	build_pieces()
+	build_plateau()
+	
+
+	
+btn = Button(root,text="restart",command = game_reload)
+btn.pack()
 cnv.bind("<Button-1>",clic)
 
 root.mainloop()
