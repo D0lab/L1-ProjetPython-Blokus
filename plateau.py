@@ -18,14 +18,16 @@ def clic(event):
 			nom_rectangle = rect_name
 	
 	
-	c = (c+1)%2 #TEST SI CLIC OU DECLIC
-	if (c == 1):
-		cnv.bind("<Motion>",glisser)
-		old[0]=event.x
-		old[1]=event.y
-	else:
-		cnv.unbind("<Motion>")
-		deposer(event.x,event.y)
+			c = (c+1)%2 #TEST SI CLIC OU DECLIC
+			if (c == 1):
+				cnv.bind("<Motion>",glisser)
+				old[0]=event.x
+				old[1]=event.y
+			else:
+				cnv.unbind("<Motion>")
+				deposer(event.x,event.y)
+				if flag_pose == 1:
+					break
 	
 def glisser(event):
 	global rectangle
@@ -86,7 +88,7 @@ def afficher_plateau_console():
 		print(k)	
 		
 def deposer(x,y):
-	global taille_plateau,nb_tours,rectangle,nom_rectangle
+	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose
 		
 	x1, y1, x2, y2 = cnv.coords(rectangle)
 	
@@ -100,9 +102,11 @@ def deposer(x,y):
 					plateau[j][i] = 1
 					nb_tours += 1
 					afficher_plateau_console()
-					
-					
 					move = True
+					
+					pieces_rouge_loader.pop(nom_rectangle)
+					flag_pose = 1
+					
 	if (move == False):
 	
 		coord_base = pieces_rouge_coords_base[int(nom_rectangle)]
@@ -120,6 +124,8 @@ c = 0
 rect = None
 num_rect = -1
 coords_rect = None
+flag_pose = 0
+
 root = Tk()
 cnv = Canvas(root, width=1280, height=960)
 unity = 70
