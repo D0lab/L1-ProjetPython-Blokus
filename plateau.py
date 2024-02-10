@@ -133,23 +133,16 @@ pieces_bleu = []
 pieces_rouge = []
 pieces_rouge_loader = {
 	"0": (cnv.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')),
-	"1": (cnv.create_rectangle((taille_plateau+1.05)*unity, 2*unity+30, (taille_plateau+1.05)*unity+unity, 2*unity+30+unity, fill='red', outline=''))
+	"1": (cnv.create_rectangle((taille_plateau+1.05)*unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity, (2*30)+(1*unity)+unity, fill='red', outline='')),
+	"2": (cnv.create_rectangle((taille_plateau+1.05)*unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity, (3*30)+(2*unity)+unity, fill='red', outline='')),
+	"3": (cnv.create_rectangle((taille_plateau+1.05)*unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity, (4*30)+(3*unity)+unity, fill='red', outline='')),
+	"4": (cnv.create_rectangle((taille_plateau+1.05)*unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline=''))
 	}
 
 pieces_rouge_coords_base = []
 for rect_name, rect in pieces_rouge_loader.items():
 	pieces_rouge_coords_base.append(cnv.coords(rect))
 	
-"""
-pieces_rouge_loader = {
-	"0": ((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity),  # Format : (x1, y1, x2, y2)
-	"1": ((taille_plateau+1.05)*unity, 2*unity+30, (taille_plateau+1.05)*unity+unity, 2*unity+30+unity),  # Format : (x1, y1, x2, y2)
-	"2": ((taille_plateau+1.05)*unity, 3*unity+60, (taille_plateau+1.05)*unity+unity, 3*unity+60+unity),  # Format : (x1, y1, x2, y2)
-	}
-
-for rect_name, rect_coords in pieces_rouge_loader.items():
-	pieces_rouge.append(cnv.create_rectangle(*rect_coords, fill='red', outline='', tags=rect_name))
-"""
 	
 for i in range(taille_plateau):
 	plateau_temp = []
