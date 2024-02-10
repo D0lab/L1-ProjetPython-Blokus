@@ -48,7 +48,7 @@ def verif_alentours(x,y):
 		return True
 	
 	#COIN SUPERIEUR DROIT
-	elif (x == len(plateau)-1 and y == 0):
+	elif (x == len(plateau)-1 and y == 0) and (plateau[y][x] == 0):
 		return True
 	
 	#COIN INFERIEUR DROIT
@@ -57,23 +57,23 @@ def verif_alentours(x,y):
 	
 	
 	#COLONNE GAUCHE
-	elif (x == 0) and (plateau[y][x+1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (y != 0 and y != len(plateau)-1) and (x == 0) and (plateau[y][x+1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
 		return True		
 	
 	#COLONNE DROITE
-	elif (x == len(plateau)-1) and (plateau[y][x-1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (y != 0 and y != len(plateau)-1) and (x == len(plateau)-1) and (plateau[y][x-1] == 0 and plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
 		return True
 	
 	#LIGNE HAUT
-	elif (y == 0) and (plateau[y][x+1] == 0 and plateau[y][x-1] == 0 and plateau[y+1][x] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (x != 0 and x != len(plateau)-1) and (y == 0) and (plateau[y][x+1] == 0 and plateau[y][x-1] == 0 and plateau[y+1][x] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
 		return True
 	
 	#LIGNE BAS
-	elif (y == len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (x != 0 and x != len(plateau)-1) and (y == len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
 		return True
 	
 	#TOUT LE RESTE
-	elif (x != 0 and x != len(plateau)-1 and y != 0 and y != len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0) and (nb_joueurs-nb_tours != 0):
+	elif (x != 0 and x != len(plateau)-1 and y != 0 and y != len(plateau)-1) and (plateau[y-1][x] == 0 and plateau[y+1][x] == 0 and plateau[y][x-1] == 0 and plateau[y][x+1] == 0 and plateau[y][x] == 0) and (nb_joueurs-nb_tours != 0):
 		return True
 		
 	else:
