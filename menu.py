@@ -1,10 +1,17 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter.font import Font
+import pyglet
+import pyglet.media as media
 #from tkextrafont import Font
+
+import time
+
 
 width = 1280
 height = 720
+#font_omori = "./fonts/OMORI_GAME.ttf"
+#font_omori = "Comic Sans MS"
 
 def gcd1(x, y):
     if y == 0:
@@ -24,16 +31,21 @@ label = Label(menu, text='BLO BLO BLO BLOKUS', font=('Arial 50'))
 label.place(x=(20*width/100),y=10)
 
 
+player = pyglet.media.load("sons/blokus.wav")
+player.play()
 
 
 # Load and display an image 
 #(replace 'your_logo.png' with the path to your image file)
 image = Image.open('./images/logo.png')
+
+image = image.resize((400,400))
+
 image = ImageTk.PhotoImage(image)
 
 # Create a label to display the image
 image_label =Label(menu, image=image)
-image_label.pack()
+image_label.place(x=(width/2-200),y=(height/2-200))
 
 
 button1 = Button ( menu, text = "Play",font=("Comic Sans MS",30))
@@ -49,8 +61,3 @@ button3.place(x=10+(60*width/100),y=10+(80*height/100))
 #Label(menu, text="Hello", font=font).pack()
 
 menu.mainloop()
-
-
-
-
-
