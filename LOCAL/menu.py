@@ -29,11 +29,14 @@ label.place(x=(20*width/100),y=10)
 # Load and display an image 
 #(replace 'your_logo.png' with the path to your image file)
 image = Image.open('./images/logo.png')
+
+image = image.resize((400,400))
+
 image = ImageTk.PhotoImage(image)
 
 # Create a label to display the image
 image_label =Label(menu, image=image)
-image_label.pack()
+image_label.place(x=(width/2-200),y=(35*height/2)/100)
 
 
 button1 = Button ( menu, text = "Play",font=("Comic Sans MS",30))
