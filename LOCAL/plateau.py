@@ -92,7 +92,7 @@ def afficher_plateau_console():
 		print(k)	
 		
 def deposer(x,y):
-	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split
+	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son
 		
 	x1, y1, x2, y2 = cnv.coords(rectangle)
 	
@@ -105,19 +105,15 @@ def deposer(x,y):
 					cnv.move(tag_rectangle,5+i*unity-x1,5+j*unity-y1)
 					plateau[j][i] = 1
 					nb_tours += 1
-
-					player.queue(son_placement_piece)
-					player.queue(son_placement_piece)
-					player.queue(son_placement_piece)
-
 					afficher_plateau_console()
 					move = True
 
 					flag_estSuppr = False
 					compteur_estSuppr = 0
 
-					
-					player.play()
+					if mute_son == 0 :
+						player = pyglet.media.load(son_placement_piece)
+						player.play()
 					
 					
 					for i in range(5):
@@ -153,6 +149,7 @@ unity = 70
 taille_plateau = 12
 nb_joueurs = 1
 nb_tours = 1
+mute_son = 0
 
 root = Tk()
 cnv = Canvas(root, width=1280, height=960)
@@ -161,11 +158,10 @@ cnv.pack()
 
 
 
-player=media.Player()
-
+			
 
 #SONS :
-son_placement_piece = media.load('sons\lego_build.wav')
+son_placement_piece = "sons/lego_build.wav"
 
 
 
@@ -216,10 +212,21 @@ def game_reload():
 	build_pieces_rouge()
 	build_plateau()
 	
+def mute():
+	global mute_son
 
+	mute_son = (mute_son+1)%2
+	if mute_son == 1:
+		btn_mute["text"] = "mute ON"
+	else:
+		btn_mute["text"] = "mute OFF"
+	
 	
 btn_reload = Button(root,text="restart",command = game_reload)
 btn_reload.pack()
+
+btn_mute = Button(root,text="mute OFF",command = mute)
+btn_mute.pack()
 cnv.bind("<Button-1>",clic)
 
 root.mainloop()

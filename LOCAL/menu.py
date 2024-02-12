@@ -1,8 +1,10 @@
 from tkinter import *
-import tkinter.font as font
+from PIL import Image, ImageTk
+from tkinter.font import Font
+#from tkextrafont import Font
 
 width = 1280
-height = 960
+height = 720
 
 def gcd1(x, y):
     if y == 0:
@@ -15,20 +17,35 @@ aspect_ratio_width = width/pgcd
 aspect_ratio_height = height/pgcd
 
 
-
 menu = Tk()
 menu.title('MENU BLOKUS')
 menu.geometry(str(width)+"x"+str(height))
 label = Label(menu, text='BLO BLO BLO BLOKUS', font=('Arial 50'))
-label.pack(side=TOP, expand=True)
+label.place(x=(20*width/100),y=10)
 
 
-button1 = Button ( menu, text = "salut")
-button1.pack(side=BOTTOM)
-button1['font'] = font.Font(size=50)
 
-button2 = Button ( menu, text = "toiiii")
-button2.pack(side=BOTTOM)
 
+# Load and display an image 
+#(replace 'your_logo.png' with the path to your image file)
+image = Image.open('./images/logo.png')
+image = ImageTk.PhotoImage(image)
+
+# Create a label to display the image
+image_label =Label(menu, image=image)
+image_label.pack()
+
+
+button1 = Button ( menu, text = "Play",font=("Comic Sans MS",30))
+button1.place(x=10+(25*width/100),y=10+(80*height/100))
+
+button2 = Button ( menu, text = "Settings",font=("Comic Sans MS",30))
+button2.place(x=10+(40*width/100),y=10+(80*height/100))
+
+button3 = Button ( menu, text = "Credits",font=("Comic Sans MS",30))
+button3.place(x=10+(60*width/100),y=10+(80*height/100))
+
+#font = Font(file="./fonts/OMORI_GAME.ttf", family="OMORI_GAME")
+#Label(menu, text="Hello", font=font).pack()
 
 menu.mainloop()
