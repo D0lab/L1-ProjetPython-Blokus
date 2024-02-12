@@ -1,7 +1,8 @@
 from tkinter import *
+import tkinter.font as font
 
 width = 1280
-height = 720
+height = 960
 
 def gcd1(x, y):
     if y == 0:
@@ -21,14 +22,13 @@ menu.geometry(str(width)+"x"+str(height))
 label = Label(menu, text='BLO BLO BLO BLOKUS', font=('Arial 50'))
 label.pack(side=TOP, expand=True)
 
-f = font.Font(size=35)
 
-button1 = Button ( menu, text = "salut", font=(size=35))
-button1.pack(side=LEFT)
-button1['font'] = f
+button1 = Button ( menu, text = "salut")
+button1.pack(side=BOTTOM)
+button1['font'] = font.Font(size=50)
 
 button2 = Button ( menu, text = "toiiii")
-button2.pack(side=LEFT)
+button2.pack(side=BOTTOM)
 
 
 menu.mainloop()
