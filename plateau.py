@@ -190,7 +190,8 @@ flag_pose = 0
 
 unity = 60
 taille_plateau = 12
-decalage=1280/2-unity*taille_plateau//2
+#decalage=1280/2-unity*taille_plateau//2
+decalage = 0
 
 nb_joueurs = 1
 nb_tours = 1
@@ -207,6 +208,7 @@ cnv.pack()
 
 #SONS :
 son_placement_piece = "sons/lego_build.wav"
+son_reset = "sons/lego_reset.wav"
 
 
 
@@ -261,10 +263,26 @@ build_pieces_rouge()
 build_plateau()
 
 
-
+def waithere():
+    var = IntVar()
+    root.after(25, var.set, 1)
+    root.wait_variable(var)
 
 
 def game_reload():
+	#
+	for j in range(taille_plateau):
+		for i in range(taille_plateau):
+			if j%2 == 0:
+				(cnv.create_rectangle(i*unity+decalage+5,j*unity+decalage+5,i*unity+unity+decalage+5,j*unity+unity+decalage+5, fill='gray', outline='black'))
+			else:
+				(cnv.create_rectangle((taille_plateau-1-i)*unity+decalage+5,j*unity+decalage+5,(taille_plateau-1-i)*unity+unity+decalage+5,j*unity+unity+decalage+5, fill='gray', outline='black'))
+			
+			
+			if mute_son == 0 and (i+j)%(taille_plateau) == 0 :
+				player = pyglet.media.load(son_reset)
+				player.play()
+			waithere()
 	cnv.delete('all')
 	build_pieces_rouge()
 	build_plateau()
