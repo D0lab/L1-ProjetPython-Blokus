@@ -198,6 +198,8 @@ nb_tours = 1
 mute_son = 0
 
 root = Tk()
+root.title("BLO BLO BLO BLOKUS")
+root.iconbitmap("images/logo.ico")
 cnv = Canvas(root, width=1280, height=960)
 
 cnv.pack()

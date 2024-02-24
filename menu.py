@@ -26,6 +26,7 @@ aspect_ratio_height = height/pgcd
 
 menu = Tk()
 menu.title('MENU BLOKUS')
+menu.iconbitmap("images/logo.ico")
 menu.geometry(str(width)+"x"+str(height))
 label = Label(menu, text='BLO BLO BLO BLOKUS', font=('Arial 50'))
 label.place(x=(20*width/100),y=10)
