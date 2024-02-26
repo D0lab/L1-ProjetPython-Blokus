@@ -17,7 +17,7 @@ def clic(event):
 	
 	
 	for rect_name, rect in pieces_rouge_loader.items():
-		coords = cnv2.coords(rect)
+		coords = cnv.coords(rect)
 		if event.x >= coords[0] and event.x <= coords[2] and event.y >= coords[1] and event.y <= coords[3]:
 			rectangle = rect
 			nom_rectangle_split = rect_name.split("-")
@@ -26,18 +26,18 @@ def clic(event):
 
 			c = (c+1)%2 #TEST SI CLIC OU DECLIC
 			if (c == 1):
-				cnv2.bind("<Motion>",glisser)
+				cnv.bind("<Motion>",glisser)
 				old[0]=event.x
 				old[1]=event.y
 			else:
-				cnv2.unbind("<Motion>")
+				cnv.unbind("<Motion>")
 				deposer(event.x,event.y)
 				if flag_pose == 1:
 					break
 	
 def glisser(event):
 	global rectangle
-	x1, y1, x2, y2 = cnv2.coords(rectangle)
+	x1, y1, x2, y2 = cnv.coords(rectangle)
 	if (old[0] >= x1 and old[0] <= x2 and old[1] >= y1 and old[1] <= y2):
 		cnv2.move(tag_rectangle, event.x-old[0], event.y-old[1])
 		old[0]=event.x
@@ -228,12 +228,12 @@ def build_pieces_rouge():
 	
 	pieces_rouge_loader = {
 		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-		"0-0": (cnv.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='', tags="rect0")),
-		"1-0": (cnv.create_rectangle((taille_plateau+1.05)*unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1")),
-		"2-0": (cnv.create_rectangle((taille_plateau+1.05)*unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2")),
-		"3-0": (cnv.create_rectangle((taille_plateau+1.05)*unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3")),
-		"4-0": (cnv.create_rectangle((taille_plateau+1.05)*unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4")),
-			"4-1": (cnv.create_rectangle((taille_plateau+2.05)*unity, (5*30)+(4*unity), (taille_plateau+2.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4"))
+		"0-0": (cnv.create_rectangle((taille_plateau+1.05)*unity+((cacax/2)+(725/2))-cacax/2-unity, 30, (taille_plateau+1.05)*unity+unity+((cacax/2)+(725/2))-cacax/2-unity, 30+unity, fill='red', outline='', tags="rect0")),
+		"1-0": (cnv.create_rectangle((taille_plateau+1.05)*unity+((cacax/2)+(725/2))-cacax/2-unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity+((cacax/2)+(725/2))-cacax/2-unity, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1")),
+		"2-0": (cnv.create_rectangle((taille_plateau+1.05)*unity+((cacax/2)+(725/2))-cacax/2-unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity+((cacax/2)+(725/2))-cacax/2-unity, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2")),
+		"3-0": (cnv.create_rectangle((taille_plateau+1.05)*unity+((cacax/2)+(725/2))-cacax/2-unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity+((cacax/2)+(725/2))-cacax/2-unity, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3")),
+		"4-0": (cnv.create_rectangle((taille_plateau+1.05)*unity+((cacax/2)+(725/2))-cacax/2-unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity+((cacax/2)+(725/2))-cacax/2-unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4")),
+			"4-1": (cnv.create_rectangle((taille_plateau+2.05)*unity+((cacax/2)+(725/2))-cacax/2-unity, (5*30)+(4*unity), (taille_plateau+2.05)*unity+unity+((cacax/2)+(725/2))-cacax/2-unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4"))
 		}
 	nb_pieces_rouge = len(pieces_rouge_loader)
 
@@ -302,6 +302,7 @@ root = Tk()
 
 cacax=1280
 cacay=960
+
 root.title("BLO BLO BLO BLOKUS")
 if dev_mode == 0:
 	root.iconbitmap("./images/logo.ico")
@@ -323,6 +324,6 @@ btn_reload.pack()
 
 btn_mute = Button(root,text="mute OFF",command = mute)
 btn_mute.pack()
-cnv2.bind("<Button-1>",clic)
+cnv.bind("<Button-1>",clic)
 
 root.mainloop()
