@@ -126,7 +126,7 @@ def deposer(x,y):
 	move = False
 	for i in range(taille_plateau):
 		for j in range(taille_plateau):
-			if (5+i*unity <= x<= 5+(i+1)*unity and 5+j*unity <= y <= 5+(j+1)*unity):
+			if (5+i*unity+decalage_x <= x<= 5+(i+1)*unity+decalage_x and 5+j*unity <= y <= 5+(j+1)*unity):
 				print("----EMPLACEMENT CASE----",i,j)
 
 
@@ -138,7 +138,7 @@ def deposer(x,y):
 
 				total_code = 0
 				for tag in tagged_rectangles:
-					total_code += verif_alentours(int(tag[0]//unity),int(tag[1]//unity))
+					total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity))
 				if total_code <= 0:
 					flag_verif_boucle = False
 						
@@ -146,9 +146,9 @@ def deposer(x,y):
 				if flag_verif_boucle:
 					# i = int(tag[0]//unity)
 					# j = int(tag[1]//unity)
-					cnv2.move(tag_rectangle,5+i*unity-x1,5+j*unity-y1)
+					cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1)
 					for tag in tagged_rectangles:
-						plateau[int(tag[1]//unity)][int(tag[0]//unity)] = 1
+						plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = 1
 					nb_tours += 1
 					afficher_plateau_console()
 					move = True
@@ -174,7 +174,8 @@ def deposer(x,y):
 	
 		coord_base = pieces_rouge_coords_base[int(nom_rectangle)]
 		print(coord_base)
-		cnv2.move(tag_rectangle,coord_base[0]+unity*int(nom_rectangle_split[1]),coord_base[1])
+		cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
+		print(coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
 
 
@@ -192,13 +193,16 @@ flag_pose = 0
 
 unity = 60
 taille_plateau = 12
-#decalage=1280/2-unity*taille_plateau//2
-decalage = 0
 
 width_cnv=1280
 height_cnv=960
-width_cnv2 = taille_plateau*unity+taille_plateau/2+unity*2
-height_cnv2 = taille_plateau*unity+taille_plateau/2+unity*2
+#width_cnv2 = taille_plateau*unity+taille_plateau/2+unity*6
+width_cnv2 = width_cnv
+height_cnv2 = taille_plateau*unity+taille_plateau/2
+
+
+decalage_x = width_cnv2/2-(taille_plateau*unity)/2
+decalage_y = 0
 
 nb_joueurs = 1
 nb_tours = 1
@@ -221,29 +225,33 @@ son_reset = "sons/lego_reset.wav"
 
 
 def build_pieces_rouge():
-	global pieces_rouge_loader, nb_pieces_rouge, pieces_rouge_coords_base,decalage
-	# pieces_rouge_loader = {
-	# 	#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-	# 	"0-0-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='', tags="rect0")),
-	# 	"1-0-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1")),
-	# 	"2-0-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2")),
-	# 	"3-0-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3")),
-	# 	"4-0-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4")),
-	# 		"4-1-0": (cnv2.create_rectangle((taille_plateau+2.05)*unity, (5*30)+(4*unity), (taille_plateau+2.05)*unity+unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4"))
-	# 	}
+	global pieces_rouge_loader, nb_pieces_rouge, pieces_rouge_coords_base,decalage_x
 	
 	pieces_rouge_loader = {
 		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-		"0-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, 30, (taille_plateau+1.05)*unity+unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, 30+unity, fill='red', outline='', tags="rect0")),
-		"1-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (2*30)+(1*unity), (taille_plateau+1.05)*unity+unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1")),
-		"2-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (3*30)+(2*unity), (taille_plateau+1.05)*unity+unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2")),
-		"3-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (4*30)+(3*unity), (taille_plateau+1.05)*unity+unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3")),
-		"4-0": (cnv2.create_rectangle((taille_plateau+1.05)*unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (5*30)+(4*unity), (taille_plateau+1.05)*unity+unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4")),
-			"4-1": (cnv2.create_rectangle((taille_plateau+2.05)*unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (5*30)+(4*unity), (taille_plateau+2.05)*unity+unity+((width_cnv/2)+(width_cnv2/2))-width_cnv/2-unity, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4"))
+		"0-0": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill='red', outline='', tags="rect0")),
+		"1-0": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1")),
+		"2-0": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2")),
+		"3-0": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3")),
+		"4-0": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4")),
+			"4-1": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4"))
 		}
 	nb_pieces_rouge = len(pieces_rouge_loader)
 
 	pieces_rouge_coords_base = []
+	for rect_name, rect in pieces_rouge_loader.items():
+		pieces_rouge_coords_base.append(cnv2.coords(rect))
+	
+def build_pieces_bleu():
+	global pieces_bleu_loader, nb_pieces_bleu, pieces_bleu_coords_base,decalage_x
+	
+	pieces_bleu_loader = {
+		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
+		"5-0": (cnv2.create_rectangle(0+unity, 30, unity, 30+unity, fill='blue', outline='', tags="rect500"))
+		}
+	nb_pieces_bleu = len(pieces_rouge_loader)
+
+	pieces_bleu_coords_base = []
 	for rect_name, rect in pieces_rouge_loader.items():
 		pieces_rouge_coords_base.append(cnv2.coords(rect))
 	
@@ -263,8 +271,8 @@ def build_plateau():
 
 	
 	for i in range(taille_plateau+1):
-		cnv2.create_line(5+decalage,5+unity*i,(taille_plateau+0.1)*unity+decalage,5+unity*i)
-		cnv2.create_line(5+unity*i+decalage,5,5+unity*i+decalage,(taille_plateau+0.1)*unity)
+		cnv2.create_line(5+decalage_x,5+unity*i,(taille_plateau+0.1)*unity+decalage_x,5+unity*i)
+		cnv2.create_line(5+unity*i+decalage_x,5,5+unity*i+decalage_x,(taille_plateau+0.1)*unity)
 
 
 
@@ -279,9 +287,9 @@ def game_reload():
 	for j in range(taille_plateau):
 		for i in range(taille_plateau):
 			if j%2 == 0:
-				(cnv2.create_rectangle(i*unity+decalage+5,j*unity+decalage+5,i*unity+unity+decalage+5,j*unity+unity+decalage+5, fill='gray', outline='black'))
+				(cnv2.create_rectangle(i*unity+decalage_x+5,j*unity+decalage_y+5,i*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
 			else:
-				(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage+5,j*unity+decalage+5,(taille_plateau-1-i)*unity+unity+decalage+5,j*unity+unity+decalage+5, fill='gray', outline='black'))
+				(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage_x+5,j*unity+decalage_y+5,(taille_plateau-1-i)*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
 			
 			
 			if mute_son == 0 and (i+j)%(taille_plateau) == 0 :
@@ -290,6 +298,7 @@ def game_reload():
 			waithere()
 	cnv2.delete('all')
 	build_pieces_rouge()
+	build_pieces_bleu()
 	build_plateau()
 	btn_reload.pack()
 	
@@ -318,6 +327,7 @@ cnv2.place(x=(width_cnv/2)-width_cnv2/2, y=(height_cnv/2)-height_cnv2/2)
 root.lift(cnv2)
 
 build_pieces_rouge()
+build_pieces_bleu()
 build_plateau() 
 
 btn_reload = Button(root,text="restart",command = game_reload)
