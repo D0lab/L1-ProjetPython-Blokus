@@ -12,7 +12,7 @@ import time
 dev_mode = 1
 
 def clic(event):
-	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet
+	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee
 
 	joueur = nb_tours%nb_joueurs+1
 	#joueur = 1
@@ -27,6 +27,8 @@ def clic(event):
 				nom_rectangle = nom_rectangle_split[0]
 				nom_rectangle_complet = rect_name
 				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
+
+				derniere_piece_rouge_jouee = nom_rectangle
 
 				c = (c+1)%2 #TEST SI CLIC OU DECLIC
 				if (c == 1):
@@ -50,6 +52,8 @@ def clic(event):
 				nom_rectangle = nom_rectangle_split[0]
 				nom_rectangle_complet = rect_name
 				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
+
+				derniere_piece_bleu_jouee = nom_rectangle
 
 				c = (c+1)%2 #TEST SI CLIC OU DECLIC
 				if (c == 1):
@@ -233,6 +237,32 @@ def deposer(x,y):
 			coord_base = pieces_bleu_coords_base[index_rect]
 
 		cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
+
+def score():
+	score_rouge = 0
+	score_bleu = 0
+	# score_vert = 0
+	# score_jaune = 0
+
+	loader = [pieces_rouge_loader,pieces_bleu_loader]
+	derniere_piece = [derniere_piece_rouge_jouee,derniere_piece_bleu_jouee]
+
+	for i in range(len(loader)):
+		if len(loader[i]) == 0:
+			if derniere_piece[i] == "0":
+				score_rouge += 20
+			else:
+				score_rouge += 15
+		else:
+									
+			for rect_name, rect in loader[i].items():
+				score -= 1
+										
+			for rect_name, rect in loader[i].items():
+				score -= 1
+
+	return score_rouge,score_bleu
+
 
 
 
