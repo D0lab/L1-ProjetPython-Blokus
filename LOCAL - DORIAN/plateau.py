@@ -438,6 +438,8 @@ def waithere():
 
 
 def game_reload():
+	global nb_tours
+
 	btn_reload.place_forget()
 	btn_mute.place_forget()
 	cnv2.unbind("<Button-1>")
