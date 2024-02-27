@@ -12,10 +12,10 @@ import time
 dev_mode = 1
 
 def clic(event):
-	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet
+	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur
 
-	#joueur = nb_tours%nb_joueurs+1
-	joueur = 1
+	joueur = nb_tours%nb_joueurs+1
+	print(joueur)
 
 	if joueur == 1 :
 	
@@ -25,15 +25,16 @@ def clic(event):
 				rectangle = rect
 				nom_rectangle_split = rect_name.split("-")
 				nom_rectangle = nom_rectangle_split[0]
-				nom_rectangle_complet = rect_name
-				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
+				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[2]
 
 				c = (c+1)%2 #TEST SI CLIC OU DECLIC
 				if (c == 1):
 					cnv2.bind("<Motion>",glisser)
+					cnv2.bind("<Motion>",glisser)
 					old[0]=event.x
 					old[1]=event.y
 				else:
+					cnv2.unbind("<Motion>")
 					cnv2.unbind("<Motion>")
 					deposer(event.x,event.y)
 					if flag_pose == 1:
@@ -48,8 +49,7 @@ def clic(event):
 				rectangle = rect
 				nom_rectangle_split = rect_name.split("-")
 				nom_rectangle = nom_rectangle_split[0]
-				nom_rectangle_complet = rect_name
-				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
+				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[2]
 
 				c = (c+1)%2 #TEST SI CLIC OU DECLIC
 				if (c == 1):
@@ -80,14 +80,8 @@ def verif_alentours(x,y):
 
 	liste_indicatif.append(joueur)
 	print("---",x,y)
-	
-
-	
 
 	try:
-
-		
-		
 	
 	
 		#COIN SUPERIEUR GAUCHE
@@ -108,21 +102,22 @@ def verif_alentours(x,y):
 		
 		
 		#COLONNE GAUCHE
-		elif (y != 0 and y != len(plateau)-1) and (x == 0) and ((plateau[y][x+1] != joueur) and (plateau[y-1][x] != joueur) and (plateau[y+1][x] != joueur)) and (plateau[y][x] == 0):
+		elif (y != 0 and y != len(plateau)-1) and (x == 0) and ((plateau[y][x+1] == 0 or plateau[y][x+1] != joueur) and (plateau[y-1][x] == 0 or plateau[y-1][x] != joueur) and (plateau[y+1][x] == 0 or plateau[y+1][x] != joueur)) and (plateau[y][x] == 0):
 			if (plateau[y+1][x+1] == joueur or plateau[y-1][x+1] == joueur):
 				return 1
 			else:
 				return 0
 		
 		#COLONNE DROITE
-		elif (y != 0 and y != len(plateau)-1) and (x == len(plateau)-1) and ((plateau[y][x-1] != joueur) and (plateau[y-1][x] != joueur) and (plateau[y+1][x] != joueur)) and (plateau[y][x] == 0):
+		elif (y != 0 and y != len(plateau)-1) and (x == len(plateau)-1) and ((plateau[y][x-1] == 0 or plateau[y][x-1] != joueur) and (plateau[y-1][x] == 0 or plateau[y-1][x] != joueur) and (plateau[y+1][x] == 0 or plateau[y+1][x] != joueur)) and (plateau[y][x] == 0):
 			if (plateau[y+1][x-1] == joueur or plateau[y-1][x-1] == joueur):
 				return 1
 			else:
 				return 0
 		
 		#LIGNE HAUT 
-		elif (x != 0 and x != len(plateau)-1) and (y == 0) and (plateau[y][x+1] != joueur) and (plateau[y+1][x] != joueur) and (plateau[y][x] == 0):	
+		
+		elif (x != 0 and x != len(plateau)-1) and (y == 0) and ((plateau[y][x+1] == 0 or plateau[y][x+1] != joueur) and (plateau[y][x-1] == 0 or plateau[y][x-1] != joueur) and (plateau[y+1][x] == 0 or joueur[y+1][x] != joueur)) and (plateau[y][x] == 0):	
 			if (plateau[y+1][x+1] == joueur or plateau[y+1][x-1] == joueur):
 				return 1
 			else:
@@ -130,14 +125,14 @@ def verif_alentours(x,y):
 		
 		
 		#LIGNE BAS
-		elif (x != 0 and x != len(plateau)-1) and (y == len(plateau)-1) and ((plateau[y-1][x] != joueur) and (plateau[y][x-1] != joueur) and (plateau[y][x+1] != joueur)) and (plateau[y][x] == 0):
+		elif (x != 0 and x != len(plateau)-1) and (y == len(plateau)-1) and ((plateau[y-1][x] == 0 or plateau[y-1][x] != joueur) and (plateau[y][x-1] == 0 or plateau[y][x-1] != joueur) and (plateau[y][x+1] == 0 or plateau[y][x+1] != joueur)) and (plateau[y][x] == 0):
 			if (plateau[y-1][x+1] == joueur or plateau[y-1][x-1] == joueur):
 				return 1
 			else:
 				return 0
 
 		#TOUT LE RESTE
-		elif (x != 0 and x != len(plateau)-1 and y != 0 and y != len(plateau)-1) and ((plateau[y-1][x] != joueur) and (plateau[y+1][x] != joueur) and (plateau[y][x-1] != joueur) and (plateau[y][x+1] != joueur)) and (plateau[y][x] == 0):
+		elif (x != 0 and x != len(plateau)-1 and y != 0 and y != len(plateau)-1) and ((plateau[y-1][x] == 0 or plateau[y-1][x] != joueur) and (plateau[y+1][x] == 0 or plateau[y+1][x] != joueur) and (plateau[y][x-1] == 0 or plateau[y][x-1] != joueur) and (plateau[y][x+1] == 0 or plateau[y][x+1] != joueur)) and (plateau[y][x] == 0):
 			if (plateau[y+1][x-1] == joueur or plateau[y+1][x+1] == joueur or plateau[y-1][x-1] == joueur or plateau[y-1][x+1] == joueur):
 				return 1
 			else:
@@ -145,8 +140,6 @@ def verif_alentours(x,y):
 			
 		else:	
 			return -1
-		
-		
 	except:
 		return -1
 
@@ -155,7 +148,7 @@ def afficher_plateau_console():
 		print(k)	
 		
 def deposer(x,y):
-	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur,nom_rectangle_complet,pieces_rouge_noms
+	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur
 		
 	x1, y1, x2, y2 = cnv2.coords(rectangle)
 	
@@ -184,8 +177,9 @@ def deposer(x,y):
 					# j = int(tag[1]//unity)
 					cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1)
 					for tag in tagged_rectangles:
-						plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
+						plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = 1
 					nb_tours += 1
+					afficher_plateau_console()
 					move = True
 
 					flag_estSuppr = False
@@ -199,31 +193,24 @@ def deposer(x,y):
 					for i in range(5):
 						try:
 							if joueur == 1:					
-								#pieces_rouge_loader.pop(nom_rectangle+"-"+str(i)+"-"+"R")
-								
-								for rect_name, rect in pieces_rouge_loader.items():
-									rouge_nom_rectangle_split = rect_name.split("-")
-									if rouge_nom_rectangle_split[0] == nom_rectangle:
-										pieces_rouge_loader.pop(rect_name)
-
+								pieces_rouge_loader.pop(nom_rectangle+"-"+str(i))
 							elif joueur == 2:
-								pieces_bleu_loader.pop(nom_rectangle+"-"+str(i)+"-"+"B")
+								pieces_bleu_loader.pop(nom_rectangle+"-"+str(i))
 								
 							compteur_estSuppr+=1
 						except:
 							pass
 							
 					flag_pose = 1
-
-	
-	afficher_plateau_console()		
+					
 	if (move == False):
-		index_rect = pieces_rouge_noms.index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
 
+		print(nom_rectangle)
+		
 		if joueur == 1:
-			coord_base = pieces_rouge_coords_base[index_rect]
+			coord_base = pieces_rouge_coords_base[int(nom_rectangle)]
 		elif joueur == 2:
-			coord_base = pieces_bleu_coords_base[index_rect]
+			coord_base = pieces_bleu_coords_base[int(nom_rectangle)]
 
 		cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
@@ -241,7 +228,7 @@ num_rect = -1
 coords_rect = None
 flag_pose = 0
 
-unity = 50
+unity = 60
 taille_plateau = 12
 
 width_cnv=1280
@@ -275,87 +262,41 @@ son_reset = "sons/lego_reset.wav"
 
 
 def build_pieces_rouge():
-	global pieces_rouge_loader, nb_pieces_rouge, pieces_rouge_coords_base,decalage_x,pieces_rouge_noms
+	global pieces_rouge_loader, nb_pieces_rouge, pieces_rouge_coords_base,decalage_x
 	
 	pieces_rouge_loader = {
 		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-		"0-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill='red', outline='', tags="rect0-R")),
-		"1-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-			"1-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-		"2-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-			"2-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-			"2-2-0-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-		"3-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3-R")),
-			"3-0-1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(4*unity)+unity, fill='red', outline='', tags="rect3-R")),
-			"3-1-1-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (4*30)+(4*unity)+unity, fill='red', outline='', tags="rect3-R")),
-		"4-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-			"4-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-   			"4-2-0-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-			"4-3-0-3-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-		"5-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (8*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (8*30)+(5*unity)+unity, fill='red', outline='', tags="rect5-R")),
-			"5-0-1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (8*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (8*30)+(6*unity)+unity, fill='red', outline='', tags="rect5-R")),
-   			"5-1-1-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (8*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (8*30)+(6*unity)+unity, fill='red', outline='', tags="rect5-R")),
-			"5-2-1-3-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (8*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (8*30)+(6*unity)+unity, fill='red', outline='', tags="rect5-R")),
-		"6-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (9*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(6*unity)+unity, fill='red', outline='', tags="rect6-R")),
-			"6-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(6*unity)+unity, fill='red', outline='', tags="rect6-R")),
-   			"6-2-0-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (9*30)+(6*unity)+unity, fill='red', outline='', tags="rect6-R")),
-			"6-1-1-3-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(7*unity)+unity, fill='red', outline='', tags="rect6-R"))
-
+		"0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill='red', outline='', tags="rect0-R")),
+		"1-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
+			"1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
+		"2-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
+			"2-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
+			"2-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
+		"3-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3-R")),
+		"4-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R"))
 		}
-	
-	# pieces_rouge_loader = {
-	# 	#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-	# 	"0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill='red', outline='', tags="rect0-R")),
-	# 	"1-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-	# 		"1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-	# 	"2-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-	# 		"2-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-	# 		"2-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-	# 	"3-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3-R")),
-	# 	"4-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R"))
-	# 	}
 	nb_pieces_rouge = len(pieces_rouge_loader)
 
 	pieces_rouge_coords_base = []
-	pieces_rouge_noms = []
 	for rect_name, rect in pieces_rouge_loader.items():
 		nom_rectangle_split = rect_name.split("-")
 		if nom_rectangle_split[1] == "0":
 			pieces_rouge_coords_base.append(cnv2.coords(rect))
-			pieces_rouge_noms.append(rect_name)
 	
 def build_pieces_bleu():
 	global pieces_bleu_loader, nb_pieces_bleu, pieces_bleu_coords_base,decalage_x
 	
 	pieces_bleu_loader = {
 		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-		"0-0-0-B": (cnv2.create_rectangle(10, 30, 10+unity, 30+unity, fill='blue', outline='', tags="rect0-B")),
-
-		"1-0-0-B": (cnv2.create_rectangle(10, (2*30)+(1*unity), 10+unity, (2*30)+(1*unity)+unity, fill='blue', outline='', tags="rect1-B")),
-			"1-1-1-B": (cnv2.create_rectangle(10+unity, (2*30)+(1*unity), 10+unity*2, (2*30)+(1*unity)+unity, fill='blue', outline='', tags="rect1-B")),
-
-		"2-0-0-B": (cnv2.create_rectangle(10, (3*30)+(2*unity), 10+unity, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
-			"2-1-1-B": (cnv2.create_rectangle(10+unity, (3*30)+(2*unity), 10+unity*2, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
-			"2-2-1-B": (cnv2.create_rectangle(10+unity*2, (3*30)+(2*unity), 10+unity*3, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
-
-		"3-0-0-B": (cnv2.create_rectangle(10, (4*30)+(3*unity), 10+unity, (4*30)+(3*unity)+unity, fill='blue', outline='', tags="rect3-B")),
-			"3-1-1-B": (cnv2.create_rectangle(10+unity, (4*30)+(3*unity), 10+unity*2, (4*30)+(3*unity)+unity, fill='blue', outline='', tags="rect3-B")),
-			"3-2-0-B": (cnv2.create_rectangle(10, (4*30)+(3*unity), 10+unity, (4*30)+(4*unity)+unity, fill='blue', outline='', tags="rect3-B")),
-
-		"4-0-0-B": (cnv2.create_rectangle(10, (7*30)+(4*unity), 10+unity, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-			"4-1-1-B": (cnv2.create_rectangle(10*2, (7*30)+(4*unity), 10+unity*2, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-   			"4-2-1-B": (cnv2.create_rectangle(10*3, (7*30)+(4*unity), 10+unity*3, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-			"4-3-1-B": (cnv2.create_rectangle(10*4, (7*30)+(4*unity), 10+unity*4, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-			
-		"5-0-0-B": (cnv2.create_rectangle(10, (8*30)+(5*unity), 10+unity, (8*30)+(5*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-			"5-1-0-B": (cnv2.create_rectangle(10, (8*30)+(6*unity), 10+unity, (8*30)+(6*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-   			"5-2-1-B": (cnv2.create_rectangle(10+unity, (8*30)+(6*unity), 10+unity*2, (8*30)+(6*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-			"5-3-1-B": (cnv2.create_rectangle(10+unity*2, (8*30)+(6*unity), 10+unity*3, (8*30)+(6*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-			
-		"6-0-0-B": (cnv2.create_rectangle(10, (9*30)+(6*unity), 10+unity, (9*30)+(6*unity)+unity, fill='blue', outline='', tags="rect6-B")),
-			"6-1-1-B": (cnv2.create_rectangle(10+unity, (9*30)+(6*unity), 10+unity*2, (9*30)+(6*unity)+unity, fill='blue', outline='', tags="rect6-B")),
-   			"6-2-1-B": (cnv2.create_rectangle(10+unity*2, (9*30)+(6*unity), 10+unity*3, (9*30)+(6*unity)+unity, fill='blue', outline='', tags="rect6-B")),
-			"6-3-0-B": (cnv2.create_rectangle(10+unity, (9*30)+(7*unity), 10+unity*2, (9*30)+(7*unity)+unity, fill='blue', outline='', tags="rect6-B")),
+		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
+		"0-0-B": (cnv2.create_rectangle(unity, 30, unity+unity, 30+unity, fill='blue', outline='', tags="rect0-B")),
+		"1-0-B": (cnv2.create_rectangle(unity, (2*30)+(1*unity), unity+unity, (2*30)+(1*unity)+unity, fill='blue', outline='', tags="rect1-B")),
+			"1-1-B": (cnv2.create_rectangle(unity+unity, (2*30)+(1*unity), unity+unity*2, (2*30)+(1*unity)+unity, fill='blue', outline='', tags="rect1-B")),
+		"2-0-B": (cnv2.create_rectangle(unity, (3*30)+(2*unity), unity+unity, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
+			"2-1-B": (cnv2.create_rectangle(unity+unity, (3*30)+(2*unity), unity+unity*2, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
+			"2-2-B": (cnv2.create_rectangle(unity+unity*2, (3*30)+(2*unity), unity+unity*3, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
+		"3-0-B": (cnv2.create_rectangle(unity, (4*30)+(3*unity), unity+unity, (4*30)+(3*unity)+unity, fill='blue', outline='', tags="rect3-B")),
+		"4-0-B": (cnv2.create_rectangle(unity, (5*30)+(4*unity), unity+unity, (5*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B"))
 		}
 	nb_pieces_bleu = len(pieces_rouge_loader)
 
@@ -363,7 +304,7 @@ def build_pieces_bleu():
 	
 	for rect_name, rect in pieces_bleu_loader.items():
 		nom_rectangle_split = rect_name.split("-")
-		if nom_rectangle_split[2] == "0":
+		if nom_rectangle_split[1] == "0":
 			pieces_bleu_coords_base.append(cnv2.coords(rect))
 	
 
@@ -394,10 +335,7 @@ def waithere():
 
 
 def game_reload():
-	btn_reload.place_forget()
-	btn_mute.place_forget()
-	cnv2.unbind("<Button-1>")
-
+	btn_reload.pack_forget()
 	for j in range(taille_plateau):
 		for i in range(taille_plateau):
 			if j%2 == 0:
@@ -406,21 +344,15 @@ def game_reload():
 				(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage_x+5,j*unity+decalage_y+5,(taille_plateau-1-i)*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
 			
 			
-			if mute_son == 0 and (i+j)%(taille_plateau) == 0 and dev_mode == 0 :
+			if mute_son == 0 and (i+j)%(taille_plateau) == 0 :
 				joueur = pyglet.media.load(son_reset)
 				joueur.play()
 			waithere()
-
 	cnv2.delete('all')
 	build_pieces_rouge()
 	build_pieces_bleu()
 	build_plateau()
-
-	nb_tours = 0
-
-	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
-	btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
-	cnv2.bind("<Button-1>",clic)
+	btn_reload.pack()
 	
 def mute():
 	global mute_son
@@ -450,12 +382,12 @@ build_pieces_rouge()
 build_pieces_bleu()
 build_plateau() 
 
-btn_reload = Button(cnv,text="restart",command = game_reload)
-btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
+btn_reload = Button(root,text="restart",command = game_reload)
+btn_reload.pack()
 
-btn_mute = Button(cnv,text="mute OFF",command = mute)
-btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
-
+btn_mute = Button(root,text="mute OFF",command = mute)
+btn_mute.pack()
+cnv.bind("<Button-1>",clic)
 cnv2.bind("<Button-1>",clic)
 
 root.mainloop()
