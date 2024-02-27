@@ -172,8 +172,6 @@ def deposer(x,y):
 					coordinates = cnv2.coords(item)
 					tagged_rectangles.append(coordinates)
 				
-				print(tagged_rectangles)
-				print(nom_rectangle_split)
 				i=(tagged_rectangles[int(nom_rectangle_split[3])][0])//unity-decalage_x//unity
 				j=tagged_rectangles[int(nom_rectangle_split[3])][1]//unity
 
