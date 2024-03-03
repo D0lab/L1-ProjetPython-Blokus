@@ -14,6 +14,7 @@ Si vous avez des problèmes avec les images :
     - menu.py : initialiser la variable dev_mode *(ligne 10)* à 1  
     - *(Lorsque le dev_mode est initialisé à 1 les sons sont aussi coupés)*  
 
+
 Les images utilisées dans le projet se trouvent à l'emplacement suivant : ./images/  
 Les sons utilisés dans le projet se trouvent à l'emplacement suivant : ./sons/  
 Les polices de caractères utilisées dans le projet se trouvent à l'emplacement suivant : ./fonts/ *(à venir)*    
