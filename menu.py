@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+@author: mlaurent,dlabaste
+Menu Blokus
+"""
+
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter.font import Font
@@ -9,6 +15,7 @@ import time
 
 dev_mode = 0
 mute_son = 0
+
 width = 1280
 height = 720
 #font_omori = "./fonts/OMORI_GAME.ttf"

@@ -9,8 +9,8 @@ import pyglet
 import pyglet.media as media
 import time
 
-dev_mode = 1
-mute_son = 1
+dev_mode = 0
+mute_son = 0
 
 def clic(event):
 	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee
