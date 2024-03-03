@@ -19,7 +19,7 @@ def clic(event):
 
 	if joueur == 1 :
 	
-		for rect_name, rect in pieces_rouge_loader.items():
+		for rect_name, rect in pieces_bleu_loader.items():
 			coords = cnv2.coords(rect)
 			if event.x >= coords[0] and event.x <= coords[2] and event.y >= coords[1] and event.y <= coords[3]:
 				rectangle = rect
@@ -28,7 +28,7 @@ def clic(event):
 				nom_rectangle_complet = rect_name
 				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
 
-				derniere_piece_rouge_jouee = nom_rectangle
+				derniere_piece_bleu_jouee = nom_rectangle
 
 				c = (c+1)%2 #TEST SI CLIC OU DECLIC
 				if (c == 1):
@@ -44,7 +44,7 @@ def clic(event):
 	
 	elif joueur == 2:
 	
-		for rect_name, rect in pieces_bleu_loader.items():
+		for rect_name, rect in pieces_rouge_loader.items():
 			coords = cnv2.coords(rect)
 			if event.x >= coords[0] and event.x <= coords[2] and event.y >= coords[1] and event.y <= coords[3]:
 				rectangle = rect
@@ -53,7 +53,7 @@ def clic(event):
 				nom_rectangle_complet = rect_name
 				tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
 
-				derniere_piece_bleu_jouee = nom_rectangle
+				derniere_piece_rouge_jouee = nom_rectangle
 
 				c = (c+1)%2 #TEST SI CLIC OU DECLIC
 				if (c == 1):
@@ -207,17 +207,17 @@ def deposer(x,y):
 						try:
 							if joueur == 1:					
 								
-								for rect_name, rect in pieces_rouge_loader.items():
-									rouge_nom_rectangle_split = rect_name.split("-")
-									if rouge_nom_rectangle_split[0] == nom_rectangle:
-										pieces_rouge_loader.pop(rect_name)
-
-							elif joueur == 2:
-								
 								for rect_name, rect in pieces_bleu_loader.items():
 									bleu_nom_rectangle_split = rect_name.split("-")
 									if bleu_nom_rectangle_split[0] == nom_rectangle:
 										pieces_bleu_loader.pop(rect_name)
+
+							elif joueur == 2:
+								
+								for rect_name, rect in pieces_rouge_loader.items():
+									rouge_nom_rectangle_split = rect_name.split("-")
+									if rouge_nom_rectangle_split[0] == nom_rectangle:
+										pieces_rouge_loader.pop(rect_name)
 								
 							compteur_estSuppr+=1
 						except:
@@ -230,11 +230,11 @@ def deposer(x,y):
 	if (move == False):
 
 		if joueur == 1:
-			index_rect = pieces_rouge_noms.index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
-			coord_base = pieces_rouge_coords_base[index_rect]
-		elif joueur == 2:
 			index_rect = pieces_bleu_noms.index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
 			coord_base = pieces_bleu_coords_base[index_rect]
+		elif joueur == 2:
+			index_rect = pieces_rouge_noms.index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
+			coord_base = pieces_rouge_coords_base[index_rect]
 
 		cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
