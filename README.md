@@ -26,20 +26,23 @@ Les polices de caractères utilisées dans le projet se trouvent à l'emplacemen
 
 Voici la liste détaillée de ce que nous avons fait :  
 
-**Rendu 1 :**  
+**Rendu 1 :** *(3/3)*  
 - Groupes constitués : Dorian & Matys  
 - Affichage de la grille et des pièces sur le tableau *(pièces plus complexes en cours)*  
 - Déplacement de la première pièce/repositionnement à sa place initiale si clic en dehors de la grille    
 
-**Rendu 2 :**  
+**Rendu 2 :** *(2/2)*  
 - Déplacement de toutes les pièces sur la grille/repositionnement automatique à la place initiale si clic en dehors de la grille  
 - Attention au placement sur la grille au plus près du clic    
 
-**Rendu 3 :**  
+**Rendu 3 :** *(1/1)*  
 - On vérifie que les pièces sont correctement positionnées par rapport aux règles de placement    
 
-**Rendu 4 :**  
-- On peut recommencer    
+**Rendu 4 :** *(1/4)*  
+- ~~On gère la fin du jeu~~  
+- ~~Affichage du gagnant et des nombres de points~~  
+- On peut recommencer  
+- ~~On peut jouer contre la machine~~    
 
 **BONUS :**  
 - Première version du menu d'accueil  

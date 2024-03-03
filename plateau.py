@@ -474,9 +474,9 @@ def mute():
 
 	mute_son = (mute_son+1)%2
 	if mute_son == 1:
-		btn_mute["text"] = "mute ON"
+		btn_mute["text"] = "Mute ON"
 	else:
-		btn_mute["text"] = "mute OFF"
+		btn_mute["text"] = "Mute OFF"
 	
 	
 root = Tk()
@@ -497,10 +497,10 @@ build_pieces_rouge()
 build_pieces_bleu()
 build_plateau() 
 
-btn_reload = Button(cnv,text="restart",command = game_reload)
+btn_reload = Button(cnv,text="Restart",command = game_reload)
 btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
 
-btn_mute = Button(cnv,text="mute OFF",command = mute)
+btn_mute = Button(cnv,text="Mute OFF",command = mute)
 btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
 
 cnv2.bind("<Button-1>",clic)
