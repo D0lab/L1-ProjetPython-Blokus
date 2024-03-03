@@ -7,12 +7,12 @@ Au vu de notre avancé durant la période des vacances d'hiver nous avons réuss
 Il s'agit seulement d'une première version, des changements graphiques et fonctionnels seront fait dans d'autres versions futures.    
 
 Si vous avez des problèmes avec les sons :  
-    - plateau.py : initialiser la variable mute_son *(ligne 13)* à 1  
-    - menu.py : initialiser la variable mute_son *(ligne 11)* à 1  
-Si vous avez des problèmes avec les images :  
-    - plateau.py : initialiser la variable dev_mode *(ligne 12)* à 1  
-    - menu.py : initialiser la variable dev_mode *(ligne 10)* à 1  
-    - *(Lorsque le dev_mode est initialisé à 1 les sons sont aussi coupés)*  
+- plateau.py : initialiser la variable mute_son *(ligne 13)* à 1  
+- menu.py : initialiser la variable mute_son *(ligne 11)* à 1  
+Si vous avez des problèmes avec les images :   
+- plateau.py : initialiser la variable dev_mode *(ligne 12)* à 1   
+- menu.py : initialiser la variable dev_mode *(ligne 10)* à 1  
+- *(Lorsque le dev_mode est initialisé à 1 les sons sont aussi coupés)*  
 
 
 Les images utilisées dans le projet se trouvent à l'emplacement suivant : ./images/  
