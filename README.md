@@ -16,7 +16,7 @@ Si vous avez des problèmes avec les sons :
 Si vous avez des problèmes avec les images :   
 - plateau.py : initialiser la variable dev_mode à 1 *(ligne 12)*  
 - menu.py : initialiser la variable dev_mode à 1 *(ligne 16)*  
-  *(Lorsque le dev_mode est initialisé à 1 les sons sont aussi coupés)*  
+  *(Lorsque la variable "dev_mode" est initialisée à 1 les sons sont aussi coupés)*  
 
 
 Les images utilisées dans le projet se trouvent à l'emplacement suivant : "./images/"  
