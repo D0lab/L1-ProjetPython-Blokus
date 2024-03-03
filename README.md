@@ -1,7 +1,10 @@
 **RENDU 1 : Lundi 4 mars 2024**  
 **LABASTE Dorian & LAURENT Matys**    
 
-Au vu de notre avancé durant la période des vacances d'hiver nous avons réussi à terminer notre rendu 1 du projet. Nous avons donc décidé de continuer.     
+Au vu de notre avancé durant la période des vacances d'hiver nous avons réussi à terminer notre rendu 1 du projet. Nous avons donc décidé de continuer.    
+
+Pour suivre notre avancée ou voir d'anciennes version voici le lien de notre GitHub :  
+**https://github.com/D0lab/L1-ProjetPython-Blokus**    
 
 **ATTENTION :**  
 Il s'agit seulement d'une première version, des changements graphiques et fonctionnels seront fait dans d'autres versions futures.    
