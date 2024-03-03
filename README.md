@@ -14,8 +14,8 @@ Si vous avez des problèmes avec les sons :
 - menu.py : initialiser la variable mute_son à 1 *(ligne 17)*  
   
 Si vous avez des problèmes avec les images :   
-- plateau.py : initialiser la variable dev_mode *(ligne 12)* à 1   
-- menu.py : initialiser la variable dev_mode *(ligne 16)* à 1  
+- plateau.py : initialiser la variable dev_mode à 1 *(ligne 12)*  
+- menu.py : initialiser la variable dev_mode à 1 *(ligne 16)*  
   *(Lorsque le dev_mode est initialisé à 1 les sons sont aussi coupés)*  
 
 
