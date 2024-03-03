@@ -1,9 +1,9 @@
 **RENDU 1 : Lundi 4 mars 2024**  
 **LABASTE Dorian & LAURENT Matys**    
 
-Au vu de notre avancée durant la période des vacances d'hiver nous avons réussi à terminer notre rendu 1 du projet. Nous avons donc décidé de poursuivre.    
+Au vu de notre avancée durant la période des vacances d'hiver, nous avons réussi à terminer notre rendu 1 du projet. Nous avons donc décidé de poursuivre.    
 
-Pour suivre notre avancée ou voir d'anciennes versions voici le lien de notre GitHub :  
+Pour suivre notre avancée ou voir d'anciennes versions, voici le lien de notre GitHub :  
 **https://github.com/D0lab/L1-ProjetPython-Blokus**    
 
 **ATTENTION :**  
@@ -46,9 +46,9 @@ Voici la liste détaillée de ce que nous avons fait :
     - Son de démarrage *(provisoire)*  
     - Logo *(provisoire)*  
     - Nom du jeu *(provisoire)*  
-    - Bouton Jouer  
-    - Bouton Paramètres  
-    - Bouton Crédits  
+    - Bouton "Jouer"  
+    - Bouton "Paramètres"  
+    - Bouton "Crédits"  
 - Plateau  
-    - Sons : pièces posées + recommencer  
-    - Bouton rendre muet  
+    - Sons : pièces posées et recommencer  
+    - Bouton "Rendre Muet"  
