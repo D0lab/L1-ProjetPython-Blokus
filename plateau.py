@@ -9,14 +9,16 @@ import pyglet
 import pyglet.media as media
 import time
 
-dev_mode = 0
-mute_son = 0
+from ihm import *
+
+
 
 def clic(event):
 	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee
 
-	joueur = nb_tours%nb_joueurs+1
-	#joueur = 1
+	print("TA MERE")
+	#joueur = nb_tours%nb_joueurs+1
+	joueur = 1
 
 	if joueur == 1 :
 	
@@ -89,10 +91,7 @@ def verif_alentours(x,y):
 
 	
 
-	try:
-
-		
-		
+	try:		
 	
 	
 		#COIN SUPERIEUR GAUCHE
@@ -267,242 +266,27 @@ def score():
 
 
 
-# pgm principal
 
-old=[None, None]
-
-global c
-c = 0
-
-rect = None
-num_rect = -1
-coords_rect = None
-flag_pose = 0
-
-unity = 50
-taille_plateau = 12
-
-width_cnv=1280
-height_cnv=960
-#width_cnv2 = taille_plateau*unity+taille_plateau/2+unity*6
-width_cnv2 = width_cnv
-height_cnv2 = taille_plateau*unity+taille_plateau/2+100
-
-
-decalage_x = width_cnv2/2-(taille_plateau*unity)/2
-decalage_y = 0
-
-nb_joueurs = 2
-nb_tours = 0
-if dev_mode == 0:
-	mute_son = 0
-else:
-	mute_son = 1
-
-
-
-
-			
-
-#SONS :
-son_placement_piece = "sons/lego_build.wav"
-son_reset = "sons/lego_reset.wav"
-
-
-
-
-
-def build_pieces_rouge():
-	global pieces_rouge_loader, nb_pieces_rouge, pieces_rouge_coords_base,decalage_x,pieces_rouge_noms
-	
-	pieces_rouge_loader = {
-		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-		"0-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill='red', outline='', tags="rect0-R")),
-		
-		"1-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-			"1-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-		
-		"2-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-			"2-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-			"2-2-0-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-		
-		"3-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3-R")),
-			"3-0-1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(4*unity)+unity, fill='red', outline='', tags="rect3-R")),
-			"3-1-1-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (4*30)+(4*unity)+unity, fill='red', outline='', tags="rect3-R")),
-		
-		"4-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-			"4-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-   			"4-2-0-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-			"4-3-0-3-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (7*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R")),
-		
-		"5-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (8*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (8*30)+(5*unity)+unity, fill='red', outline='', tags="rect5-R")),
-			"5-0-1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (8*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (8*30)+(6*unity)+unity, fill='red', outline='', tags="rect5-R")),
-   			"5-1-1-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (8*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (8*30)+(6*unity)+unity, fill='red', outline='', tags="rect5-R")),
-			"5-2-1-3-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (8*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (8*30)+(6*unity)+unity, fill='red', outline='', tags="rect5-R"))
-		
-		# "6-0-0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (9*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(6*unity)+unity, fill='red', outline='', tags="rect6-R")),
-		# 	"6-1-0-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(6*unity)+unity, fill='red', outline='', tags="rect6-R")),
-   		# 	"6-2-0-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (9*30)+(6*unity)+unity, fill='red', outline='', tags="rect6-R")),
-		# 	"6-1-1-3-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(7*unity)+unity, fill='red', outline='', tags="rect6-R"))
-
-		}
-	
-	# pieces_rouge_loader = {
-	# 	#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-	# 	"0-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill='red', outline='', tags="rect0-R")),
-	# 	"1-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-	# 		"1-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (2*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (2*30)+(1*unity)+unity, fill='red', outline='', tags="rect1-R")),
-	# 	"2-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-	# 		"2-1-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-	# 		"2-2-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity, fill='red', outline='', tags="rect2-R")),
-	# 	"3-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (4*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (4*30)+(3*unity)+unity, fill='red', outline='', tags="rect3-R")),
-	# 	"4-0-R": (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity)+unity, fill='red', outline='', tags="rect4-R"))
-	# 	}
-	nb_pieces_rouge = len(pieces_rouge_loader)
-
-	pieces_rouge_coords_base = []
-	pieces_rouge_noms = []
-	for rect_name, rect in pieces_rouge_loader.items():
-		nom_rectangle_split = rect_name.split("-")
-		if nom_rectangle_split[1] == "0":
-			pieces_rouge_coords_base.append(cnv2.coords(rect))
-			pieces_rouge_noms.append(rect_name)
-	
-def build_pieces_bleu():
-	global pieces_bleu_loader, nb_pieces_bleu, pieces_bleu_coords_base,decalage_x,pieces_bleu_noms
-	
-	pieces_bleu_loader = {
-		#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags="rectNUM_RECT"))
-		"0-0-0-0-B": (cnv2.create_rectangle(10, 30, 10+unity, 30+unity, fill='blue', outline='', tags="rect0-B")),
-		
-		"1-0-0-0-B": (cnv2.create_rectangle(10, (2*30)+(1*unity), 10+unity, (2*30)+(1*unity)+unity, fill='blue', outline='', tags="rect1-B")),
-			"1-1-0-1-B": (cnv2.create_rectangle(10+unity, (2*30)+(1*unity), 10+unity*2, (2*30)+(1*unity)+unity, fill='blue', outline='', tags="rect1-B")),
-		
-		"2-0-0-0-B": (cnv2.create_rectangle(10, (3*30)+(2*unity), 10+unity, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
-			"2-1-0-1-B": (cnv2.create_rectangle(10+unity, (3*30)+(2*unity), 10+unity*2, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
-			"2-2-0-2-B": (cnv2.create_rectangle(10+unity*2, (3*30)+(2*unity), 10+unity*3, (3*30)+(2*unity)+unity, fill='blue', outline='', tags="rect2-B")),
-		
-		"3-0-0-0-B": (cnv2.create_rectangle(10, (4*30)+(3*unity), 10+unity, (4*30)+(3*unity)+unity, fill='blue', outline='', tags="rect3-B")),
-			"3-0-1-1-B": (cnv2.create_rectangle(10, (4*30)+(4*unity), 10+unity, (4*30)+(4*unity)+unity, fill='blue', outline='', tags="rect3-B")),
-			"3-1-1-2-B": (cnv2.create_rectangle(10+unity, (4*30)+(4*unity), 10+unity*2, (4*30)+(4*unity)+unity, fill='blue', outline='', tags="rect3-B")),
-		
-		"4-0-0-0-B": (cnv2.create_rectangle(10, (7*30)+(4*unity), 10+unity, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-			"4-1-0-1-B": (cnv2.create_rectangle(10+unity, (7*30)+(4*unity), 10+unity*2, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-   			"4-2-0-2-B": (cnv2.create_rectangle(10+unity*2, (7*30)+(4*unity), 10+unity*3, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-			"4-3-0-3-B": (cnv2.create_rectangle(10+unity*3, (7*30)+(4*unity), 10+unity*4, (7*30)+(4*unity)+unity, fill='blue', outline='', tags="rect4-B")),
-		
-		"5-0-0-0-B": (cnv2.create_rectangle(10, (8*30)+(5*unity), 10+unity, (8*30)+(5*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-			"5-0-1-1-B": (cnv2.create_rectangle(10, (8*30)+(6*unity), 10+unity, (8*30)+(6*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-   			"5-1-1-2-B": (cnv2.create_rectangle(10+unity, (8*30)+(6*unity), 10+unity*2, (8*30)+(6*unity)+unity, fill='blue', outline='', tags="rect5-B")),
-			"5-2-1-3-B": (cnv2.create_rectangle(10+unity*2, (8*30)+(6*unity), 10+unity*3, (8*30)+(6*unity)+unity, fill='blue', outline='', tags="rect5-B"))
-		
-		# "6-0-0-0-B": (cnv2.create_rectangle(10, (9*30)+(6*unity), 10+unity, (9*30)+(6*unity)+unity, fill='blue', outline='', tags="rect6-B")),
-		# 	"6-1-0-1-B": (cnv2.create_rectangle(10+unity, (9*30)+(6*unity), 10+unity*2, (9*30)+(6*unity)+unity, fill='blue', outline='', tags="rect6-B")),
-   		# 	"6-2-0-2-B": (cnv2.create_rectangle(10+unity*2, (9*30)+(6*unity), 10+unity*3, (9*30)+(6*unity)+unity, fill='blue', outline='', tags="rect6-B")),
-		# 	"6-1-1-3-B": (cnv2.create_rectangle(10+unity, (9*30)+(7*unity), 10+unity*2, (9*30)+(7*unity)+unity, fill='blue', outline='', tags="rect6-B"))
-		}
-	nb_pieces_bleu = len(pieces_bleu_loader)
-
-	pieces_bleu_coords_base = []
-	pieces_bleu_noms = []
-	for rect_name, rect in pieces_bleu_loader.items():
-		nom_rectangle_split = rect_name.split("-")
-		if nom_rectangle_split[1] == "0":
-			pieces_bleu_coords_base.append(cnv2.coords(rect))
-			pieces_bleu_noms.append(rect_name)
-	
-
-def build_plateau():
-	global plateau
-	
-	plateau = []
-	for i in range(taille_plateau):
-		plateau_temp = []
-		for j in range(taille_plateau):
-			plateau_temp.append(0)
-	
-		plateau.append(plateau_temp)
-		
-	#cnv2.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')
-
-	
-	for i in range(taille_plateau+1):
-		cnv2.create_line(5+decalage_x,5+unity*i,(taille_plateau+0.1)*unity+decalage_x,5+unity*i)
-		cnv2.create_line(5+unity*i+decalage_x,5,5+unity*i+decalage_x,(taille_plateau+0.1)*unity)
-
-
-
-def waithere():
-    var = IntVar()
-    root.after(25, var.set, 1)
-    root.wait_variable(var)
-
-
-def game_reload():
-	global nb_tours
-
-	btn_reload.place_forget()
-	btn_mute.place_forget()
-	cnv2.unbind("<Button-1>")
-
-	for j in range(taille_plateau):
-		for i in range(taille_plateau):
-			if j%2 == 0:
-				(cnv2.create_rectangle(i*unity+decalage_x+5,j*unity+decalage_y+5,i*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
-			else:
-				(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage_x+5,j*unity+decalage_y+5,(taille_plateau-1-i)*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
-			
-			
-			if mute_son == 0 and (i+j)%(taille_plateau) == 0 and dev_mode == 0 :
-				joueur = pyglet.media.load(son_reset)
-				joueur.play()
-			waithere()
-
-	cnv2.delete('all')
-	build_pieces_rouge()
-	build_pieces_bleu()
-	build_plateau()
-
-	nb_tours = 0
-
-	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
-	btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
-	cnv2.bind("<Button-1>",clic)
-	
-def mute():
-	global mute_son
-
-	mute_son = (mute_son+1)%2
-	if mute_son == 1:
-		btn_mute["text"] = "Mute ON"
-	else:
-		btn_mute["text"] = "Mute OFF"
-	
-	
-root = Tk()
-
-
-root.title("BLO BLO BLO BLOKUS")
-if dev_mode == 0:
-	root.iconbitmap("./images/logo.ico")
-
-cnv=Canvas(root,width=width_cnv, height=height_cnv,bg='brown')
-cnv2 = Canvas(cnv, width=width_cnv2, height=height_cnv2,bg='gray')
-
-cnv.pack()
-cnv2.place(x=(width_cnv/2)-width_cnv2/2, y=(height_cnv/2)-height_cnv2/2)
-root.lift(cnv2)
-
-build_pieces_rouge()
-build_pieces_bleu()
-build_plateau() 
-
-btn_reload = Button(cnv,text="Restart",command = game_reload)
-btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
-
-btn_mute = Button(cnv,text="Mute OFF",command = mute)
-btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
 
 cnv2.bind("<Button-1>",clic)
 
-root.mainloop()
+
+
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
