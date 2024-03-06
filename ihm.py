@@ -171,7 +171,7 @@ def mute():
 		
 		
 def clic(event):
-	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee
+	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur
 
 	print("TA MERE")
 	#joueur = nb_tours%nb_joueurs+1
@@ -269,7 +269,6 @@ def deposer(x,y):
 
 				total_code = 0
 				for tag in tagged_rectangles:
-					print(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity))
 					total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity))
 					
 				if total_code <= 0:

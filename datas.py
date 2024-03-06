@@ -13,7 +13,7 @@ old=[None, None]
 
 
 
-global c
+global c, joueur, plateau, rect, num_rect, coords_rect, flag_pose
 c = 0
 
 rect = None
@@ -39,7 +39,7 @@ nb_tours = 0
 joueur = nb_tours%nb_joueurs
 
 
-global plateau
+
 
 plateau = []
 for i in range(taille_plateau):
@@ -63,17 +63,16 @@ def verif_alentours(x,y):
 
     liste_indicatif.append(joueur)
     print("---",x,y)
-    print(x == 0 and y == 0) 
-    print(plateau[y][x] == 0)
-    print(plateau[y-1][x] != joueur) 
-    print(plateau[y][x+1] != joueur)
+
+
+    print(joueur)
     
 
     try:		
     
     
         #COIN SUPERIEUR GAUCHE
-        if (x == 0 and y == 0) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x+1] != joueur):
+        if (x == 0 and y == 0) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x-1] != joueur):
             print("Salut, je v")
             return 1
         
