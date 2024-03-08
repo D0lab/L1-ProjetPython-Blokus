@@ -6,6 +6,7 @@ Plateau de jeu Blokus
 
 from datas import *
 
+
 #-----------------------MENU
 def charger_menu():
 	width_menu = 1280
@@ -36,7 +37,7 @@ def charger_menu():
 	label_menu = Label(menu, text='BLO BLO BLO BLOKUS', font=('Arial 50'))
 	label_menu.place(x=(20*width_menu/100),y=10)
 
-	if dev_mode == 0 or mute_son == 0:
+	if dev_mode == 0 and mute_son == 0:
 		player = pyglet.media.load("sons/blokus.wav")
 		player.play()
 
@@ -55,6 +56,15 @@ def charger_menu():
 		image_label =Label(menu, image=image_menu)
 		image_label.place(x=(width_menu/2-200),y=(height_menu/2-200))
 
+		
+		# font = Font(file="./fonts/OMORI_GAME.ttf", family="OMORI_GAME")
+		# pyglet.font.add_file('./fonts/OMORI-GAME.ttf')
+
+		# Label(menu, text="OMORI tu connais non", font=('OMORI_GAME',25)).pack()
+	# else:
+	# 	font
+
+
 
 	button1_menu = Button ( menu, text = "Play",font=("Comic Sans MS",30), command=bouton_jouer)
 	button1_menu.place(x=10+(25*width_menu/100),y=10+(80*height_menu/100))
@@ -65,8 +75,6 @@ def charger_menu():
 	button3_menu = Button ( menu, text = "Credits",font=("Comic Sans MS",30))
 	button3_menu.place(x=10+(60*width_menu/100),y=10+(80*height_menu/100))
 
-	#font = Font(file="./fonts/OMORI_GAME.ttf", family="OMORI_GAME")
-	#label_menu(menu, text="Hello", font=font).pack()
 
 	menu.mainloop()
 #-----------------------
