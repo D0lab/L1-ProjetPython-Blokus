@@ -4,11 +4,6 @@
 Plateau de jeu Blokus
 """
 
-from tkinter import *
-import pyglet
-import pyglet.media as media
-import time
-
 from ihm import *
 
 

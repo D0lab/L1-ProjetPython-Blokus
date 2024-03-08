@@ -1,3 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+@author: mlaurent,dlabaste
+Plateau de jeu Blokus
+"""
+
+from tkinter import *
+import pyglet
+import pyglet.media as media
+import time
+
 
 dev_mode = 0
 mute_son = 0
@@ -13,7 +24,7 @@ old=[None, None]
 
 
 
-global c, joueur, plateau, rect, num_rect, coords_rect, flag_pose
+global c, plateau, rect, num_rect, coords_rect, flag_pose
 c = 0
 
 rect = None
@@ -36,7 +47,10 @@ decalage_y = 0
 
 nb_joueurs = 2
 nb_tours = 0
-joueur = nb_tours%nb_joueurs
+
+global joueur
+joueur = 0
+
 
 
 
@@ -57,16 +71,17 @@ else:
     mute_son = 1
 
 
-def verif_alentours(x,y):
-    global joueur, plateau
+def verif_alentours(x,y,joueur):
+    global plateau
     liste_indicatif = [0]
+
 
     liste_indicatif.append(joueur)
     print("---",x,y)
 
 
-    print(joueur)
     
+
 
     try:		
     

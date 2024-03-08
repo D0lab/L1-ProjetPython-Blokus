@@ -4,14 +4,7 @@
 Plateau de jeu Blokus
 """
 
-from tkinter import *
-import pyglet
-import pyglet.media as media
-import time
-
 from datas import *
-
-
 
 
 
@@ -132,6 +125,9 @@ def waithere():
     root.wait_variable(var)
 
 
+
+
+
 def game_reload():
 	global nb_tours
 
@@ -159,6 +155,12 @@ def game_reload():
 	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
 	btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
 	cnv2.bind("<Button-1>",clic)
+
+
+
+	build_pieces_rouge()
+	build_pieces_bleu()
+	build_plateau()
 	
 def mute():
 	global mute_son
@@ -171,11 +173,12 @@ def mute():
 		
 		
 def clic(event):
-	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,joueur,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur
+	global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur
+	
 
-	print("TA MERE")
-	#joueur = nb_tours%nb_joueurs+1
-	joueur = 1
+	joueur = nb_tours%nb_joueurs+1
+	
+	#joueur = 1
 
 	if joueur == 1 :
 	
@@ -246,7 +249,7 @@ def afficher_plateau_console():
 
 		
 def deposer(x,y):
-	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur,nom_rectangle_complet
+	global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur,nom_rectangle_complet,coord_base
 		
 	x1, y1, x2, y2 = cnv2.coords(rectangle)
 	
@@ -269,7 +272,7 @@ def deposer(x,y):
 
 				total_code = 0
 				for tag in tagged_rectangles:
-					total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity))
+					total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity),joueur)
 					
 				if total_code <= 0:
 					flag_verif_boucle = False
@@ -314,8 +317,10 @@ def deposer(x,y):
 					flag_pose = 1
 
 	
-	afficher_plateau_console()		
+	# afficher_plateau_console()		
 	if (move == False):
+
+		print(joueur)
 
 		if joueur == 1:
 			index_rect = pieces_bleu_noms.index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
@@ -386,7 +391,6 @@ btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
 
 btn_mute = Button(cnv,text="Mute OFF",command = mute)
 btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
-
 
 
 cnv2.bind("<Button-1>",clic)
