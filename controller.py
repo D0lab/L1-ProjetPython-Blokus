@@ -6,14 +6,12 @@ Plateau de jeu Blokus
 
 from ihm import *
 
+charger_menu()
 
 
-build_pieces_rouge()
-build_pieces_bleu()
-build_plateau()
 
 
-root.mainloop()
+
 
 
 

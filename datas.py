@@ -8,8 +8,11 @@ from tkinter import *
 import pyglet
 import pyglet.media as media
 import time
+from PIL import Image, ImageTk
+from tkinter.font import Font
 
 
+global dev_mode,mute_son
 dev_mode = 0
 mute_son = 0
 
