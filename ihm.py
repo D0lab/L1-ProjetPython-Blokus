@@ -271,7 +271,7 @@ def charger_root():
 			
 			
 	def clic(event):
-		global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur
+		global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur,nb_joueurs_out
 		
 
 		joueur = nb_tours%nb_joueurs+1
@@ -280,7 +280,6 @@ def charger_root():
 
 		if joueur == 1 :
 			
-		
 			for rect_name, rect in pieces_bleu_loader.items():
 				coords = cnv2.coords(rect)
 				if event.x >= coords[0] and event.x <= coords[2] and event.y >= coords[1] and event.y <= coords[3]:
@@ -309,6 +308,7 @@ def charger_root():
 		
 		
 		elif joueur == 2:
+
 		
 			for rect_name, rect in pieces_rouge_loader.items():
 				coords = cnv2.coords(rect)
@@ -337,7 +337,7 @@ def charger_root():
 						deposer(event.x,event.y)
 						if flag_pose == 1:
 							break
-						
+			
 		
 	def glisser(event):
 		global rectangle
@@ -392,6 +392,7 @@ def charger_root():
 							plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
 						nb_tours += 1
 						move = True
+						
 
 						flag_estSuppr = False
 						compteur_estSuppr = 0
@@ -423,6 +424,8 @@ def charger_root():
 								
 						flag_pose = 1
 
+						verif_fin(plateau)
+
 		
 		afficher_plateau_console()		
 		if (move == False):
@@ -439,34 +442,20 @@ def charger_root():
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
 	def score():
-		score_rouge = 0
-		score_bleu = 0
-		# score_vert = 0
-		# score_jaune = 0
-
-		loader = [pieces_rouge_loader,pieces_bleu_loader]
-		derniere_piece = [derniere_piece_rouge_jouee,derniere_piece_bleu_jouee]
+		score = [0,0]
+		loader = [pieces_bleu_loader,pieces_rouge_loader]
+		derniere_piece = [derniere_piece_bleu_jouee,derniere_piece_rouge_jouee]
 
 		for i in range(len(loader)):
 			if len(loader[i]) == 0:
 				if derniere_piece[i] == "0":
-					score_rouge += 20
+					score[i] += 20
 				else:
-					score_rouge += 15
+					score[i] += 15
 			else:
-										
-				for rect_name, rect in loader[i].items():
-					score -= 1
-											
-				for rect_name, rect in loader[i].items():
-					score -= 1
+				score[i] -= len(loader[i])
 
-		return score_rouge,score_bleu
-
-
-
-
-
+		return score
 
 
 

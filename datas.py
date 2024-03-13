@@ -36,7 +36,7 @@ coords_rect = None
 flag_pose = 0
 
 unity = 40
-taille_plateau = 20
+taille_plateau = 6
 
 width_cnv=1280
 height_cnv=960
@@ -51,8 +51,9 @@ decalage_y = 0
 nb_joueurs = 2
 nb_tours = 0
 
-global joueur
+global joueur, nb_joueurs_out
 joueur = 0
+nb_joueurs_out = 0
 
 plateau = []
 
@@ -76,7 +77,7 @@ def verif_alentours(x,y,joueur,plateau):
 
 
     liste_indicatif.append(joueur)
-    print("---",x,y)
+    # print("---",x,y)
 
 
     
@@ -88,7 +89,6 @@ def verif_alentours(x,y,joueur,plateau):
         
             #COIN SUPERIEUR GAUCHE
             if (x == 0 and y == 0) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x-1] != joueur):
-                print("bah non")
                 return 1            
             
             #COIN INFERIEUR GAUCHE
@@ -148,6 +148,32 @@ def verif_alentours(x,y,joueur,plateau):
         
     except:
         return -1
+    
+
+def verif_possibilites(joueur,plateau):
+    compteur_possibilites = 0
+    for i in range(len(plateau)):
+        for j in range(len(plateau[0])):
+            if plateau[i][j] == 0:
+                if verif_alentours(j,i,joueur,plateau) == 1:
+                    compteur_possibilites += 1
+                
+    return compteur_possibilites != 0
+
+#VERIFIER QUEL JOUEUR EST OUT
+def verif_fin(plateau):
+    global nb_joueurs_out,nb_tours
+
+    for i in range(1,nb_joueurs+1):
+        if verif_possibilites(i,plateau) == False:
+            nb_joueurs_out += 1
+            nb_tours += 1
+            print(nb_tours)
+            print(joueur)
+            print("joueur",i,"est out")
+
+
+
 
 
 
