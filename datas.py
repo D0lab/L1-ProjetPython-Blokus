@@ -51,9 +51,11 @@ decalage_y = 0
 nb_joueurs = 2
 nb_tours = 0
 
-global joueur, nb_joueurs_out
+global joueur, nb_joueurs_out, liste_joueurs_out
 joueur = 0
 nb_joueurs_out = 0
+liste_joueurs_out = []
+
 
 plateau = []
 
@@ -150,27 +152,7 @@ def verif_alentours(x,y,joueur,plateau):
         return -1
     
 
-def verif_possibilites(joueur,plateau):
-    compteur_possibilites = 0
-    for i in range(len(plateau)):
-        for j in range(len(plateau[0])):
-            if plateau[i][j] == 0:
-                if verif_alentours(j,i,joueur,plateau) == 1:
-                    compteur_possibilites += 1
-                
-    return compteur_possibilites != 0
 
-#VERIFIER QUEL JOUEUR EST OUT
-def verif_fin(plateau):
-    global nb_joueurs_out,nb_tours
-
-    for i in range(1,nb_joueurs+1):
-        if verif_possibilites(i,plateau) == False:
-            nb_joueurs_out += 1
-            nb_tours += 1
-            print(nb_tours)
-            print(joueur)
-            print("joueur",i,"est out")
 
 
 
