@@ -273,12 +273,11 @@ def charger_root():
 			
 			
 	def clic(event):
-		global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur,nb_joueurs_out
+		global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur,nb_joueurs_out,bot
 		
 
-		joueur = nb_tours%nb_joueurs+1
-		
-		#joueur = 1
+		# joueur = 1
+		print(bot)
 
 		if joueur == 1 :
 			
@@ -309,7 +308,7 @@ def charger_root():
 							break
 		
 		
-		elif joueur == 2:
+		elif joueur == 2 and bot == 0:
 
 		
 			for rect_name, rect in pieces_rouge_loader.items():
@@ -339,6 +338,8 @@ def charger_root():
 						deposer(event.x,event.y)
 						if flag_pose == 1:
 							break
+		
+		
 			
 		
 	def glisser(event):
@@ -361,6 +362,7 @@ def charger_root():
 		global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur,nom_rectangle_complet,coord_base,plateau
 			
 		x1, y1, x2, y2 = cnv2.coords(rectangle)
+		print(x1,y1)
 		
 		move = False
 		for i in range(taille_plateau):
@@ -378,21 +380,22 @@ def charger_root():
 					i=(tagged_rectangles[int(nom_rectangle_split[3])][0])//unity-decalage_x//unity
 					j=tagged_rectangles[int(nom_rectangle_split[3])][1]//unity
 
+					print("salut",i,j)
+
 
 					total_code = 0
 					for tag in tagged_rectangles:
-						total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity),joueur,plateau)
+						total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity),joueur,plateau,nb_tours)
 						
 					if total_code <= 0:
 						flag_verif_boucle = False
 							
 
 					if flag_verif_boucle:
-						
+						print(tag_rectangle,(5+i*unity-x1+decalage_x)//unity,(5+j*unity-y1)//unity)
 						cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1)
 						for tag in tagged_rectangles:
 							plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
-						nb_tours += 1
 						move = True
 						
 
@@ -425,13 +428,29 @@ def charger_root():
 								pass
 								
 						flag_pose = 1
+						
 
-
-						# while verif_possibilites(nb_tours%nb_joueurs+1,plateau) == False:
-						# 	nb_tours += 1
 						
 						# verif_fin(plateau)
-						verif_possibilites(1,plateau)
+						nb_tours += 1
+
+						# print(verif_carres_possibilites(1,plateau))
+						# joueur = 1
+						
+						verif_fin(plateau)
+
+						
+						
+						# print(liste_joueurs_out,nb_tours%nb_joueurs+1)
+
+						while nb_tours%nb_joueurs+1 in liste_joueurs_out:
+							nb_tours += 1
+						
+						joueur = nb_tours%nb_joueurs+1
+
+						if joueur == 2 and bot == 1:
+							bot_coup(joueur,plateau)
+						
 
 
 
@@ -439,7 +458,6 @@ def charger_root():
 		afficher_plateau_console()		
 		if (move == False):
 
-			print(joueur)
 
 			if joueur == 1:
 				index_rect = pieces_bleu_noms.index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
@@ -468,82 +486,53 @@ def charger_root():
 
 
 
-	def verif_possibilites(joueur,plateau):
+	def verif_carres_possibilites(joueur,plateau):
 		compteur_possibilites = 0
 		liste_possibilites = []
-		loader = [pieces_bleu_loader,pieces_rouge_loader]
 
-		for rect_name, rect in loader[joueur-1].items():
-			verif_nom_rectangle_split = rect_name.split("-")
-			verif_x,verif_y = int(verif_nom_rectangle_split[1]),int(verif_nom_rectangle_split[2])
-			verif_num_rect = verif_nom_rectangle_split[0]			
-			verif_nbr_pieces = 0
-			verif_nbr_pieces_ok = 0
-
-
-			for rect_name_bis, rect_bis in loader[joueur-1].items():
-				verif_nom_rectangle_split_bis = rect_name_bis.split("-")
-				verif_x_bis,verif_y_bis = int(verif_nom_rectangle_split_bis[1]),int(verif_nom_rectangle_split_bis[2])
-				verif_num_rect_bis = verif_nom_rectangle_split_bis[0]
-
-				if verif_num_rect == verif_nom_rectangle_split_bis[0]:
-					print("--------")
-					print(verif_num_rect)
-					print(verif_x,verif_y)
-					print(verif_x_bis,verif_y_bis)
-					print("***")
-
-					verif_nbr_pieces += 1
-					
-
-
-					for i in range(len(plateau)):
-
-						for j in range(len(plateau[0])):
-							verif_resultat = 0
-
-							
-							verif_x_fin,verif_y_fin = j,i
-
-
-							
-							if verif_x_bis < verif_x :
-								verif_x_fin = (j - verif_x)
-							elif verif_x_bis > verif_x:
-								verif_x_fin = (j + verif_x_bis)
-
-							if verif_y_bis < verif_y :
-								verif_y_fin = (i - verif_y) 
-							elif verif_y_bis > verif_y:
-								verif_y_fin = (i + verif_y_bis)
-
-							print(verif_x_fin,verif_y_fin)
-
-							try:
-
-								if plateau[verif_y_fin][verif_x_fin] == 0:
-
-									verif_resultat += verif_alentours(verif_y_bis,verif_x_bis,joueur,plateau)
-
-									# if verif_alentours(verif_y_bis,verif_x_bis,joueur,plateau) == 1 or verif_alentours(verif_y_bis,verif_x_bis,joueur,plateau) == 0:
-									# 	# compteur_possibilites += 1			
-									# 	verif_nbr_pieces_ok += 1
-									# 	liste_possibilites.append([verif_num_rect,j,i])
-									
-								if verif_resultat>=0:
-									verif_nbr_pieces_ok += 1
-
-								if verif_nbr_pieces == verif_nbr_pieces_ok:
-									print("okk")
-							except:
-								pass
-
-
-
-			
-		print("-----------")
+		for i in range(len(plateau)):
+			for j in range(len(plateau[0])):
+				if plateau[i][j] == 0:
+					if verif_alentours(j,i,joueur,plateau,nb_tours) == 1:
+						compteur_possibilites += 1
+						liste_possibilites.append([j,i])
+		# print("-----------")
 		# print(joueur,liste_possibilites,compteur_possibilites)
-		return compteur_possibilites != 0
+		return liste_possibilites
+	
+
+	def verif_pieces_possibilites(joueur,plateau):
+		loader = [pieces_bleu_loader,pieces_rouge_loader]
+		liste_poss = verif_carres_possibilites(joueur,plateau)
+
+		liste_coups_possibles = []
+
+		for poss in liste_poss:
+
+			for rect_name, rect in loader[joueur-1].items():
+						# print(rect_name)
+						verif_rect_name_split = rect_name.split("-")
+						tag_rectangle = "rect"+verif_rect_name_split[0]+"-"+verif_rect_name_split[4]
+						verif_x1,verif_y1,verif_x2,verif_y2 = cnv2.coords(rect)
+
+						
+						tagged_rectangles = []
+						for item in cnv2.find_withtag(tag_rectangle):
+							coordinates = cnv2.coords(item)
+							# print((verif_x1-coordinates[0])//unity)
+							tagged_rectangles.append([(verif_x1-coordinates[0])//unity,(verif_y1-coordinates[1])//unity])
+
+						total_code = 0
+						for tag in tagged_rectangles:
+							total_code += verif_alentours(int(poss[0]-tag[0]),int(poss[1]-tag[1]),joueur,plateau,nb_tours)
+						
+						
+
+						if total_code > 0:
+							# liste_coups_possibles.append([poss,rect])
+							liste_coups_possibles.append([poss,rect_name,rect])
+
+		return liste_coups_possibles
 
 
 	def verif_fin(plateau):
@@ -553,7 +542,7 @@ def charger_root():
 
 
 		for i in range(1,nb_joueurs+1):
-			if verif_possibilites(i,plateau) == False or len(loader[i-1]) == 0:		
+			if len(verif_pieces_possibilites(i,plateau)) == 0 or len(loader[i-1]) == 0:		
 				if i not in liste_joueurs_out :
 					liste_joueurs_out.append(i)
 					nb_joueurs_out += 1
@@ -564,6 +553,24 @@ def charger_root():
 				print("FIN DU JEU")
 				print(score())
 				game_reload()
+
+	def bot_coup(joueur,plateau):
+		global rectangle,nom_rectangle_split,nom_rectangle_complet,nom_rectangle,tag_rectangle,derniere_piece_rouge_jouee
+
+		coups_poss = verif_pieces_possibilites(joueur,plateau)
+		coup_aleatoire = coups_poss[randint(0,len(coups_poss)-1)]
+
+		print("oooooo",coup_aleatoire)
+
+		rectangle = coup_aleatoire[2]
+		nom_rectangle_split = coup_aleatoire[1].split("-")
+		nom_rectangle = nom_rectangle_split[0]
+		nom_rectangle_complet = coup_aleatoire[1]
+		tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
+
+		derniere_piece_rouge_jouee = nom_rectangle
+
+		deposer(coup_aleatoire[0][0]*unity+decalage_x,coup_aleatoire[0][1]*unity)
 
 
 

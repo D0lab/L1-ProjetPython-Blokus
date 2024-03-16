@@ -10,6 +10,7 @@ import pyglet.media as media
 import time
 from PIL import Image, ImageTk
 from tkextrafont import Font
+from random import *
 
 
 global dev_mode,mute_son
@@ -27,7 +28,7 @@ old=[None, None]
 
 
 
-global c, plateau, rect, num_rect, coords_rect, flag_pose
+global c, plateau, rect, num_rect, coords_rect, flag_pose, bot
 c = 0
 
 rect = None
@@ -51,8 +52,10 @@ decalage_y = 0
 nb_joueurs = 2
 nb_tours = 0
 
+bot = 1
+
 global joueur, nb_joueurs_out, liste_joueurs_out
-joueur = 0
+joueur = 1
 nb_joueurs_out = 0
 liste_joueurs_out = []
 
@@ -74,7 +77,7 @@ for i in range(taille_plateau):
 
 
 
-def verif_alentours(x,y,joueur,plateau):
+def verif_alentours(x,y,joueur,plateau,nb_tours):
     liste_indicatif = [0]
 
 
@@ -82,28 +85,36 @@ def verif_alentours(x,y,joueur,plateau):
     # print("---",x,y)
 
 
-    
-
-
     try:		
     
         if (x>=0 and x<=taille_plateau) and (y>=0 and y<=taille_plateau):
-        
             #COIN SUPERIEUR GAUCHE
             if (x == 0 and y == 0) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x-1] != joueur):
-                return 1            
+                if (plateau[y+1][x+1] == joueur) or (nb_tours+1==joueur):
+                    return 1
+                else:
+                    return 0            
             
             #COIN INFERIEUR GAUCHE
-            elif (x == 0 and y == len(plateau)-1) and (plateau[y][x] == 0) and (plateau[y+1][x] != joueur and plateau[y][x+1] != joueur):
-                return 1
+            elif (x == 0 and y == len(plateau)-1) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x+1] != joueur):
+                if (plateau[y-1][x+1] == joueur) or (nb_tours+1==joueur):
+                    return 1
+                else:
+                    return 0            
             
             #COIN SUPERIEUR DROIT
             elif (x == len(plateau)-1 and y == 0) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x-1] != joueur):
-                return 1
+                if (plateau[y+1][x-1] == joueur) or (nb_tours+1==joueur):
+                    return 1
+                else:
+                    return 0            
             
             #COIN INFERIEUR DROIT
-            elif (x == len(plateau)-1 and y == len(plateau)-1) and (plateau[y][x] == 0) and (plateau[y+1][x] != joueur and plateau[y][x-1] != joueur):
-                return 1
+            elif (x == len(plateau)-1 and y == len(plateau)-1) and (plateau[y][x] == 0) and (plateau[y-1][x] != joueur and plateau[y][x-1] != joueur):
+                if (plateau[y-1][x-1] == joueur) or (nb_tours+1==joueur):
+                    return 1
+                else:
+                    return 0            
             
             
             #COLONNE GAUCHE
@@ -121,7 +132,7 @@ def verif_alentours(x,y,joueur,plateau):
                     return 0
             
             #LIGNE HAUT 
-            elif (x != 0 and x != len(plateau)-1) and (y == 0) and (plateau[y][x+1] != joueur) and (plateau[y+1][x] != joueur) and (plateau[y][x] == 0):	
+            elif (x != 0 and x != len(plateau)-1) and (y == 0) and ((plateau[y+1][x] != joueur) and (plateau[y][x+1] != joueur) and (plateau[y][x-1] != joueur)) and (plateau[y][x] == 0):	
                 if (plateau[y+1][x+1] == joueur or plateau[y+1][x-1] == joueur):
                     return 1
                 else:
