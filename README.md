@@ -17,7 +17,7 @@ Si vous avez des problèmes avec les images :
 
 Les images utilisées dans le projet se trouvent à l'emplacement suivant : "./images/"  
 Les sons utilisés dans le projet se trouvent à l'emplacement suivant : "./sons/"  
-Les polices de caractères utilisées dans le projet se trouvent à l'emplacement suivant : "./fonts/" *(à venir)*    
+Les polices de caractères utilisées dans le projet se trouvent à l'emplacement suivant : "./fonts/"   
 
 
 Voici la liste détaillée de ce que nous avons fait entre le rendu 2 et le rendu 3 :  
