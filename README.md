@@ -20,12 +20,15 @@ Les sons utilisés dans le projet se trouvent à l'emplacement suivant : "./sons
 Les polices de caractères utilisées dans le projet se trouvent à l'emplacement suivant : "./fonts/" *(à venir)*    
 
 
-Voici la liste détaillée de ce que nous avons fait entre le rendu 1 et le rendu 2 :  
+Voici la liste détaillée de ce que nous avons fait entre le rendu 2 et le rendu 3 :  
+
+**Rendu 4 :** *(3/4)*  
+- On gère la fin du jeu  
+- On peut jouer contre la machine  
 
 **BONUS :**  
-- Conversion du fichier plateau.py en modèle MVC :
-    - controller.py
-    - ihm.py
-    - datas.py
-- Première version du menu d'accueil  
-    - Bouton "Jouer" fonctionnel 
+- Menu d'accueil  
+    - Police d'écriture provenant du jeu "Omori"  
+    - Bouton "Paramètres" fonctionnel  
+- Paramètres  
+    - Slider volume son 
