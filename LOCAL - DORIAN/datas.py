@@ -52,7 +52,7 @@ decalage_y = 0
 nb_joueurs = 2
 nb_tours = 0
 
-bot = [2]
+bot = []
 
 global joueur, nb_joueurs_out, liste_joueurs_out
 joueur = 1

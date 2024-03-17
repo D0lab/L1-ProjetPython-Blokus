@@ -278,7 +278,7 @@ def charger_root():
 
 		# joueur = 1
 
-		if joueur == 1 :
+		if joueur == 1 and joueur not in bot:
 			
 			for rect_name, rect in pieces_bleu_loader.items():
 				coords = cnv2.coords(rect)
@@ -438,8 +438,15 @@ def charger_root():
 
 						while nb_tours%nb_joueurs+1 in liste_joueurs_out:
 							nb_tours += 1
+
+						loader_liste = [pieces_bleu_loader,pieces_rouge_loader]
+						for pieces_nom,pieces_num in loader_liste[joueur-1].items():
+							cnv2.itemconfigure(pieces_num,state="hidden")
 						
 						joueur = nb_tours%nb_joueurs+1
+
+						for pieces_nom,pieces_num in loader_liste[joueur-1].items():
+							cnv2.itemconfigure(pieces_num,state="normal")
 
 						if joueur in bot:
 							bot_coup()
@@ -543,7 +550,7 @@ def charger_root():
 				game_reload()
 
 	def bot_coup():
-		global rectangle,nom_rectangle_split,nom_rectangle_complet,nom_rectangle,tag_rectangle,derniere_piece_rouge_jouee,nb_tours,joueur,plateau
+		global rectangle,nom_rectangle_split,nom_rectangle_complet,nom_rectangle,tag_rectangle,derniere_piece_rouge_jouee,derniere_piece_bleu_jouee,nb_tours,joueur,plateau
 
 		coups_poss = verif_pieces_possibilites(joueur,plateau)
 		coup_aleatoire = coups_poss[randint(0,len(coups_poss)-1)]
@@ -555,7 +562,11 @@ def charger_root():
 		nom_rectangle_complet = coup_aleatoire[1]
 		tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
 
-		derniere_piece_rouge_jouee = nom_rectangle
+		if joueur == 1:
+			derniere_piece_bleu_jouee = nom_rectangle
+
+		elif joueur == 2:
+			derniere_piece_rouge_jouee = nom_rectangle
 
 
 		i = coup_aleatoire[0][0]
@@ -624,11 +635,20 @@ def charger_root():
 
 		while nb_tours%nb_joueurs+1 in liste_joueurs_out:
 			nb_tours += 1
+
+		loader_liste = [pieces_bleu_loader,pieces_rouge_loader]
+		for pieces_nom,pieces_num in loader_liste[joueur-1].items():
+			cnv2.itemconfigure(pieces_num,state="hidden")
 		
 		joueur = nb_tours%nb_joueurs+1
 
+		for pieces_nom,pieces_num in loader_liste[joueur-1].items():
+			cnv2.itemconfigure(pieces_num,state="normal")
+
+
 		if joueur in bot:
-			bot()
+			bot_coup()
+		
 
 
 
@@ -660,6 +680,12 @@ def charger_root():
 	build_pieces_rouge()
 	build_pieces_bleu()
 	build_plateau()
+
+	for pieces_nom,pieces_num in pieces_rouge_loader.items():
+		cnv2.itemconfigure(pieces_num,state="hidden")
+
+	if 1 in bot:
+		bot_coup()
 
 
 	root.mainloop()
