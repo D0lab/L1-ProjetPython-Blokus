@@ -60,8 +60,8 @@ def charger_menu():
 	label_menu.place(x=(20*width_menu/100),y=10)
 	
 	if dev_mode == 0 and mute_son == 0:
-		player = pyglet.media.load("sons/blokus.wav")
-		player.play()
+		player = pygame.mixer.music.load("sons/blokus.wav")
+		pygame.mixer.music.play()
 
 
 	if dev_mode == 0:
@@ -103,30 +103,42 @@ def charger_settings():
 	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
 
  
-	def volume(value):
-		pyglet.media.Player.volume(volume_slider.get())
+	def volume(x):
+		pygame.mixer.music.set_volume(volume_slider.get()/100)
+		print(volume_slider.get()/100)
 	
  
-	def sliding (value):
-		my_label.configure(text=int(value))
-	
+	# def sliding (value):
+	#  	my_label.configure(text=int(value))
 	
  
-	volume_slider=customtkinter.CTkSlider(settings,
-                                   from_=0,
-                                   to=100,
-                                   command=sliding,
-                                   number_of_steps=10,
-                                   button_hover_color="brown",
-                                #    command=volume,
-                                   )
-	volume_slider.pack(pady=40)
+	master_frame=Frame(settings)
+	master_frame.pack(pady=20)
+ 
+	controls_frame = Frame(master_frame)
+	controls_frame.pack(pady=20)
+ 
+	volume_frame = LabelFrame(master_frame, text="Volume")
+	volume_frame.pack(pady=20)
 
-#Starting point
-	volume_slider.set(0)
+	caca=DoubleVar()
+	caca.set(0.5)
+ 
+	volume_slider= Scale(volume_frame, 
+                      	from_=0,
+                        to=100,
+                        orient=HORIZONTAL,
+                        command=volume,
+                        length=500,
+                        variable=caca
+                        )
+	volume_slider.pack()
+
+	volume_slider.set(0.5)
 	
-	my_label = customtkinter.CTkLabel(settings,text=volume_slider.get(),font=('OMORI_GAME', 18))
-	my_label.pack(pady=20)
+	
+	# my_label = Label(settings,text=volume_slider.get(),font=('OMORI_GAME', 18))
+	# my_label.pack(pady=20)
  
 
 		
@@ -276,8 +288,8 @@ def charger_root():
 
 
 			if mute_son == 0 and (i)%(taille_plateau//3) == 0 and dev_mode == 0 :
-				joueur = pyglet.media.load(son_reset)
-				joueur.play()
+				joueur = pygame.mixer.music.load(son_reset)
+				pygame.mixer.music.play()
 			waithere()
 
 		cnv2.delete('all')
@@ -447,8 +459,8 @@ def charger_root():
 						compteur_estSuppr = 0
 
 						if mute_son == 0 :
-							joueur = pyglet.media.load(son_placement_piece)
-							joueur.play()
+							joueur = pygame.mixer.music.load(son_placement_piece)
+							pygame.mixer.music.play()
 						
 						
 						for i in range(5):
