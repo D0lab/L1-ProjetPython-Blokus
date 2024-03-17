@@ -40,10 +40,7 @@ Voici la liste détaillée de ce que nous avons fait :
 - On vérifie que les pièces sont correctement positionnées par rapport aux règles de placement    
 
 **Rendu 4 :** *(1/4)*  
-- ~~On gère la fin du jeu~~  
-- ~~Affichage du gagnant et des nombres de points~~  
-- On peut recommencer  
-- ~~On peut jouer contre la machine~~    
+- On peut recommencer    
 
 **BONUS :**  
 - Première version du menu d'accueil  
