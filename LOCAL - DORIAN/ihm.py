@@ -275,8 +275,8 @@ def charger_root():
 
 				f"8-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (12*30)+(9*unity), 10+unity, (12*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
 					f"8-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(9*unity), 10+unity*2, (12*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
-					f"8-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(10*unity), 10+unity, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
-					f"8-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(10*unity), 10+unity*3, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(10*unity), 10+unity*2, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (12*30)+(10*unity), 10+unity*3, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
      
 				f"9-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
 				 	f"9-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
@@ -342,8 +342,8 @@ def charger_root():
 				
 
 					
-			print(globals()[f"pieces_{coul_fr}_noms"])
-			print(globals()[f"pieces_{coul_fr}_utiles"])
+			# print(globals()[f"pieces_{coul_fr}_noms"])
+			# print(globals()[f"pieces_{coul_fr}_utiles"])
 			
 			loader.append(globals()[f"pieces_{coul_fr}_loader"])
 
@@ -585,7 +585,8 @@ def charger_root():
 							cnv2.itemconfigure(pieces_num,state="hidden")
 						
 						joueur = nb_tours%nb_joueurs+1
-						tour_joueur()
+						if nb_joueurs-len(bot) > 1:
+							tour_joueur()
 
 						for pieces_nom,pieces_num in loader[joueur-1].items():
 							cnv2.itemconfigure(pieces_num,state="normal")
@@ -606,9 +607,11 @@ def charger_root():
 					num_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][3])
 					y_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][1]) 
 
+
 			index_rect = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_noms"].index(nom_rectangle_split[0]+"-"+y_index_rect+"-"+nom_rectangle_split[2]+"-"+num_index_rect+"-"+nom_rectangle_split[4])
 			coord_base = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_coords_base"][index_rect]
 
+			print(coord_base)
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
 	def score():
@@ -808,8 +811,11 @@ def charger_root():
 	cnv2.place(x=(width_cnv/2)-width_cnv2/2, y=(height_cnv/2)-height_cnv2/2)
 	root.lift(cnv2)
 
-	tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
-	tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
+
+	if nb_joueurs-len(bot) > 1:
+
+		tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
+		tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
 
 	btn_reload = Button(cnv,text="Restart",command = game_reload)
 	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)

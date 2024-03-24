@@ -6,8 +6,8 @@ Plateau de jeu Blokus
 
 from ihm import *
 
-charger_menu()
-# charger_root()
+# charger_menu()
+charger_root()
 #charger_final()
 
 

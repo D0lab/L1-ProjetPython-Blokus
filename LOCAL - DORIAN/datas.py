@@ -32,7 +32,7 @@ global bot
 
 nb_joueurs = 4
 flag_bot = False
-bot = []
+bot = [2,3,4]
 if flag_bot:
     for i in range(nb_joueurs,5):
         bot.append(i)
