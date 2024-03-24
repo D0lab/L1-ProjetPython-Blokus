@@ -6,7 +6,7 @@ Plateau de jeu Blokus
 
 from datas import *
 
-
+global bot
 
 #-----------------------MENU
 def charger_menu():	
@@ -92,13 +92,58 @@ def charger_menu():
  
 #-----------------------
 def charger_play():
-	play=Tk()
-	play.title('SETTINGS BLOKUS')
-	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
+	global nb_joueurs,bot,nb_joueurs_reels
 
-	def player(x):
+	bot = []
+	nb_joueurs_reels = 1
+
+	
+	play=Tk()
+	play.title('SELECTION MODE BLOKUS')
+	
+	if dev_mode == 0:
+		play.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
+
+	def sl_player(x):
+		global nb_joueurs_reels
 		
 		bot_slider["to"] = 4-int(x)
+
+		nb_joueurs_reels = int(x)
+
+	def sl_bot(x):
+		global bot,nb_joueurs,nb_joueurs_reels
+
+		bot = []
+		for i in range(nb_joueurs_reels+1,int(x)+nb_joueurs_reels+1):
+			# changer_bots(i)
+			bot.append(i)
+
+		nb_joueurs = nb_joueurs_reels + int(x)
+
+
+
+
+	
+	def bouton_jouer():
+		
+		play.destroy()
+		charger_root()
+	
+	def bouton_retour():
+		
+		play.destroy()
+		charger_menu()
+
+		
 
 	
  
@@ -108,26 +153,27 @@ def charger_play():
 	controls_frame = Frame(master_frame)
 	controls_frame.pack(pady=20)
  
-	player_frame = LabelFrame(master_frame, text="Nombre de joueurs")
+	player_frame = LabelFrame(master_frame, text="Nombre de joueurs",font=font_bouton)
 	player_frame.pack(pady=20)
 
 	player_var=DoubleVar()
 	player_var.set(1)
  
 	player_slider= Scale(player_frame, 
-                      	from_=0,
+                      	from_=1,
                         to=4,
                         orient=HORIZONTAL,
                         length=500,
+						font=font_bouton,
                         variable=player_var,
-						command=player
+						command=sl_player
                         )
 	player_slider.pack()
 
 	player_slider.set(1)
 
  
-	bot_frame = LabelFrame(master_frame, text="Nombre de robots")
+	bot_frame = LabelFrame(master_frame, text="Nombre de robots",font=font_bouton)
 	bot_frame.pack(pady=20)
 
 	bot_var=DoubleVar()
@@ -138,7 +184,9 @@ def charger_play():
 						to=3,
 						orient=HORIZONTAL,
 						length=500,
-						variable=bot_var
+						font=font_bouton,
+						variable=bot_var,
+						command=sl_bot
 						)
 	
 
@@ -146,6 +194,17 @@ def charger_play():
 	bot_slider.pack()
 
 
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)
+	button_back.pack()
+
+	button_play = Button (master_frame, text = "Play",font=font_bouton, command=bouton_jouer)
+	button_play.pack()
+
+
+
+	
+	sl_player(1)
+	sl_bot(3)
 
 
 
@@ -158,12 +217,26 @@ def charger_settings():
     
 	settings=Tk()
 	settings.title('SETTINGS BLOKUS')
-	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
+	if dev_mode == 0:
+		settings.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
 
  
 	def volume(x):
 		pygame.mixer.music.set_volume(volume_slider.get()/100)
 		# print(volume_slider.get()/100)
+	
+	def bouton_retour():
+		
+		settings.destroy()
+		charger_menu()
 	
  
 	# def sliding (value):
@@ -192,7 +265,11 @@ def charger_settings():
                         )
 	volume_slider.pack()
 
-	volume_slider.set(0.5)
+	volume_slider.set(0.5)	
+
+
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)
+	button_back.pack()
 	
 	
 	# my_label = Label(settings,text=volume_slider.get(),font=('OMORI_GAME', 18))
@@ -223,6 +300,7 @@ def charger_final(score):
 #-----------------------
 
 def charger_root():
+	print(nb_joueurs,bot)
 	
 	
 		
@@ -585,14 +663,16 @@ def charger_root():
 							cnv2.itemconfigure(pieces_num,state="hidden")
 						
 						joueur = nb_tours%nb_joueurs+1
-						if nb_joueurs-len(bot) > 1:
-							tour_joueur()
 
 						for pieces_nom,pieces_num in loader[joueur-1].items():
 							cnv2.itemconfigure(pieces_num,state="normal")
 
 						if joueur in bot:
 							bot_coup()
+
+						
+						if nb_joueurs-len(bot) > 1:
+							tour_joueur()
 						
 
 
@@ -792,6 +872,7 @@ def charger_root():
 			bot_coup()
 		
 	def tour_joueur():
+		print("joueur",joueur)
 		tour_de["text"]= f"Au tour du joueur {liste_couleurs_fr[joueur-1]}"
 		tour_de["bg"]=liste_couleurs_en[joueur-1]
 
