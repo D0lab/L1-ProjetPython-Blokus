@@ -17,7 +17,7 @@ from random import *
 
 
 global dev_mode,mute_son
-dev_mode = 1
+dev_mode = 0
 mute_son = 1
 
 
@@ -27,15 +27,12 @@ son_reset = "sons/lego_reset.wav"
 
 
 #MENU MODE LANCEMENT :
-global bot
+global nb_joueurs
+
+nb_joueurs = 1
 
 
-nb_joueurs = 4
-flag_bot = False
-bot = []
-if flag_bot:
-    for i in range(nb_joueurs,5):
-        bot.append(i)
+
 
 # pgm principal
 

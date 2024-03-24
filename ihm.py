@@ -6,7 +6,7 @@ Plateau de jeu Blokus
 
 from datas import *
 
-
+global bot
 
 #-----------------------MENU
 def charger_menu():	
@@ -18,7 +18,7 @@ def charger_menu():
 	def bouton_jouer():
 		
 		menu.destroy()
-		charger_root()
+		charger_play()
 
 	def bouton_settings():
      
@@ -91,17 +91,152 @@ def charger_menu():
 	menu.mainloop()
  
 #-----------------------
+def charger_play():
+	global nb_joueurs,bot,nb_joueurs_reels
 
+	bot = []
+	nb_joueurs_reels = 1
+
+	
+	play=Tk()
+	play.title('SELECTION MODE BLOKUS')
+	
+	if dev_mode == 0:
+		play.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
+
+	def sl_player(x):
+		global nb_joueurs_reels
+		
+		bot_slider["to"] = 4-int(x)
+
+		nb_joueurs_reels = int(x)
+
+	def sl_bot(x):
+		global bot,nb_joueurs,nb_joueurs_reels
+
+		bot = []
+		for i in range(nb_joueurs_reels+1,int(x)+nb_joueurs_reels+1):
+			# changer_bots(i)
+			bot.append(i)
+
+		nb_joueurs = nb_joueurs_reels + int(x)
+
+
+
+
+	
+	def bouton_jouer():
+		
+		play.destroy()
+		charger_root()
+	
+	def bouton_retour():
+		
+		play.destroy()
+		charger_menu()
+
+		
+
+	
+ 
+	master_frame=Frame(play)
+	master_frame.pack(pady=20)
+ 
+	controls_frame = Frame(master_frame)
+	controls_frame.pack(pady=20)
+ 
+	player_frame = LabelFrame(master_frame, text="Nombre de joueurs",font=font_bouton)
+	player_frame.pack(pady=20)
+
+	player_var=DoubleVar()
+	player_var.set(1)
+ 
+	player_slider= Scale(player_frame, 
+                      	from_=1,
+                        to=4,
+                        orient=HORIZONTAL,
+                        length=500,
+						font=font_bouton,
+                        variable=player_var,
+						command=sl_player
+                        )
+	player_slider.pack()
+
+	player_slider.set(1)
+
+ 
+	bot_frame = LabelFrame(master_frame, text="Nombre de robots",font=font_bouton)
+	bot_frame.pack(pady=20)
+
+	bot_var=DoubleVar()
+	bot_var.set(3)
+
+	bot_slider= Scale(bot_frame, 
+						from_=0,
+						to=3,
+						orient=HORIZONTAL,
+						length=500,
+						font=font_bouton,
+						variable=bot_var,
+						command=sl_bot
+						)
+	
+
+	bot_slider.set(3)
+	bot_slider.pack()
+
+
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)
+	button_back.pack()
+
+	button_play = Button (master_frame, text = "Play",font=font_bouton, command=bouton_jouer)
+	button_play.pack()
+
+
+
+	
+	sl_player(1)
+	sl_bot(3)
+
+
+
+
+	play.mainloop()
+
+
+	
 def charger_settings():
     
 	settings=Tk()
 	settings.title('SETTINGS BLOKUS')
-	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
+	if dev_mode == 0:
+		settings.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
 
  
 	def volume(x):
 		pygame.mixer.music.set_volume(volume_slider.get()/100)
 		# print(volume_slider.get()/100)
+	
+	def bouton_retour():
+		
+		settings.destroy()
+		charger_menu()
 	
  
 	# def sliding (value):
@@ -117,8 +252,8 @@ def charger_settings():
 	volume_frame = LabelFrame(master_frame, text="Volume")
 	volume_frame.pack(pady=20)
 
-	caca=DoubleVar()
-	caca.set(0.5)
+	son_var=DoubleVar()
+	son_var.set(0.5)
  
 	volume_slider= Scale(volume_frame, 
                       	from_=0,
@@ -126,11 +261,15 @@ def charger_settings():
                         orient=HORIZONTAL,
                         command=volume,
                         length=500,
-                        variable=caca
+                        variable=son_var
                         )
 	volume_slider.pack()
 
-	volume_slider.set(0.5)
+	volume_slider.set(0.5)	
+
+
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)
+	button_back.pack()
 	
 	
 	# my_label = Label(settings,text=volume_slider.get(),font=('OMORI_GAME', 18))
@@ -161,6 +300,7 @@ def charger_final(score):
 #-----------------------
 
 def charger_root():
+	print(nb_joueurs,bot)
 	
 	
 		
@@ -191,21 +331,56 @@ def charger_root():
 					f"3-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (4*30)+(4*unity), 10+unity, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
 					f"3-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (4*30)+(4*unity), 10+unity*2, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
 				
-				f"4-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (7*30)+(4*unity), 10+unity, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
-					f"4-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (7*30)+(4*unity), 10+unity*2, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
-					f"4-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (7*30)+(4*unity), 10+unity*3, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
-					f"4-3-0-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*3, (7*30)+(4*unity), 10+unity*4, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+				f"4-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (6*30)+(4*unity), 10+unity, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+					f"4-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (6*30)+(4*unity), 10+unity*2, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+				 	f"4-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (6*30)+(4*unity), 10+unity*3, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+				 	f"4-3-0-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*3, (6*30)+(4*unity), 10+unity*4, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
 				
-				f"5-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (8*30)+(5*unity), 10+unity, (8*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-					f"5-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (8*30)+(6*unity), 10+unity, (8*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-					f"5-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (8*30)+(6*unity), 10+unity*2, (8*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-					f"5-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (8*30)+(6*unity), 10+unity*3, (8*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+				 f"5-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (7*30)+(5*unity), 10+unity, (7*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+				 	f"5-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (7*30)+(6*unity), 10+unity, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+					f"5-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (7*30)+(6*unity), 10+unity*2, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+					f"5-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (7*30)+(6*unity), 10+unity*3, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
 				
 				f"6-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (9*30)+(6*unity), 10+unity, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
-					f"6-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (9*30)+(6*unity), 10+unity*2, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
-					f"6-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (9*30)+(6*unity), 10+unity*3, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
-					f"6-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (9*30)+(7*unity), 10+unity*2, (9*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}"))
+				 	f"6-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (9*30)+(6*unity), 10+unity*2, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+				 	f"6-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (9*30)+(6*unity), 10+unity*3, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+				 	f"6-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (9*30)+(7*unity), 10+unity*2, (9*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+      
+				f"7-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (10*30)+(8*unity), 10+unity, (10*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+					f"7-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (10*30)+(8*unity), 10+unity*2, (10*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+					f"7-0-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (10*30)+(9*unity), 10+unity, (10*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+					f"7-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (10*30)+(9*unity), 10+unity*2, (10*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+
+				f"8-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (12*30)+(9*unity), 10+unity, (12*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(9*unity), 10+unity*2, (12*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(10*unity), 10+unity*2, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (12*30)+(10*unity), 10+unity*3, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+     
+				f"9-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+				 	f"9-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+				 	f"9-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+					f"9-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+				 	f"9-3-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+
+				f"10-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+				 	f"10-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+				 	f"10-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+				 	f"10-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+				 	f"10-3-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+
+				# f"11-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+				#  	f"11-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, 30+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+				#  	f"11-0-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(2*unity), fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+				#   f"11-1-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(2*unity), fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+				#  	f"11-2-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(2*unity), fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+
+				# f"12-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				# 	f"12-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				# 	f"12-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				# 	f"12-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				# 	f"12-2-0-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(0*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(0*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
 				}
+			
 			nb_pieces_bleu = len(globals()[f"pieces_{coul_fr}_loader"])
 
 			globals()[f"pieces_{coul_fr}_coords_base"] = []
@@ -228,10 +403,15 @@ def charger_root():
 
 
 				if (nom_rectangle_split[1] == "0" or nom_rectangle_split[1] == "1" or nom_rectangle_split[1] == "2") and flag_y == False:
-					test_coords = cnv2.coords(rect)
-					test_coords[0] = 10
-					test_coords[2] = 50
-					globals()[f"pieces_{coul_fr}_coords_base"].append(test_coords)
+					coords_charge = cnv2.coords(rect)
+					if int(nom_rectangle_split[0]) <= 8: 					
+						coords_charge[0] = 10
+						coords_charge[2] = 10+unity
+					else:				
+						coords_charge[0] = (width_cnv2/2)+(taille_plateau*unity/2)+unity
+						coords_charge[2] = (width_cnv2/2)+(taille_plateau*unity/2)+unity*2
+
+					globals()[f"pieces_{coul_fr}_coords_base"].append(coords_charge)
 					globals()[f"pieces_{coul_fr}_noms"].append(rect_name)
 					globals()[f"pieces_{coul_fr}_utiles"].append([nom_rectangle_split[0],nom_rectangle_split[1],nom_rectangle_split[2],nom_rectangle_split[3]])
 					flag_y_nom = nom_rectangle_split[2]
@@ -240,8 +420,8 @@ def charger_root():
 				
 
 					
-			print(globals()[f"pieces_{coul_fr}_noms"])
-			print(globals()[f"pieces_{coul_fr}_utiles"])
+			# print(globals()[f"pieces_{coul_fr}_noms"])
+			# print(globals()[f"pieces_{coul_fr}_utiles"])
 			
 			loader.append(globals()[f"pieces_{coul_fr}_loader"])
 
@@ -483,13 +663,16 @@ def charger_root():
 							cnv2.itemconfigure(pieces_num,state="hidden")
 						
 						joueur = nb_tours%nb_joueurs+1
-						tour_joueur()
 
 						for pieces_nom,pieces_num in loader[joueur-1].items():
 							cnv2.itemconfigure(pieces_num,state="normal")
 
 						if joueur in bot:
 							bot_coup()
+
+						
+						if nb_joueurs-len(bot) > 1:
+							tour_joueur()
 						
 
 
@@ -504,9 +687,11 @@ def charger_root():
 					num_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][3])
 					y_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][1]) 
 
+
 			index_rect = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_noms"].index(nom_rectangle_split[0]+"-"+y_index_rect+"-"+nom_rectangle_split[2]+"-"+num_index_rect+"-"+nom_rectangle_split[4])
 			coord_base = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_coords_base"][index_rect]
 
+			print(coord_base)
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
 	def score():
@@ -687,6 +872,7 @@ def charger_root():
 			bot_coup()
 		
 	def tour_joueur():
+		print("joueur",joueur)
 		tour_de["text"]= f"Au tour du joueur {liste_couleurs_fr[joueur-1]}"
 		tour_de["bg"]=liste_couleurs_en[joueur-1]
 
@@ -706,8 +892,11 @@ def charger_root():
 	cnv2.place(x=(width_cnv/2)-width_cnv2/2, y=(height_cnv/2)-height_cnv2/2)
 	root.lift(cnv2)
 
-	tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
-	tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
+
+	if nb_joueurs-len(bot) > 1:
+
+		tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
+		tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
 
 	btn_reload = Button(cnv,text="Restart",command = game_reload)
 	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
