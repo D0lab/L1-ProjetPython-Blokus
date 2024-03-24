@@ -18,7 +18,7 @@ def charger_menu():
 	def bouton_jouer():
 		
 		menu.destroy()
-		charger_root()
+		charger_play()
 
 	def bouton_settings():
      
@@ -91,7 +91,69 @@ def charger_menu():
 	menu.mainloop()
  
 #-----------------------
+def charger_play():
+	play=Tk()
+	play.title('SETTINGS BLOKUS')
+	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
 
+	def player(x):
+		
+		bot_slider["to"] = 4-int(x)
+
+	
+ 
+	master_frame=Frame(play)
+	master_frame.pack(pady=20)
+ 
+	controls_frame = Frame(master_frame)
+	controls_frame.pack(pady=20)
+ 
+	player_frame = LabelFrame(master_frame, text="Nombre de joueurs")
+	player_frame.pack(pady=20)
+
+	player_var=DoubleVar()
+	player_var.set(1)
+ 
+	player_slider= Scale(player_frame, 
+                      	from_=0,
+                        to=4,
+                        orient=HORIZONTAL,
+                        length=500,
+                        variable=player_var,
+						command=player
+                        )
+	player_slider.pack()
+
+	player_slider.set(1)
+
+ 
+	bot_frame = LabelFrame(master_frame, text="Nombre de robots")
+	bot_frame.pack(pady=20)
+
+	bot_var=DoubleVar()
+	bot_var.set(3)
+
+	bot_slider= Scale(bot_frame, 
+						from_=0,
+						to=3,
+						orient=HORIZONTAL,
+						length=500,
+						variable=bot_var
+						)
+	
+
+	bot_slider.set(3)
+	bot_slider.pack()
+
+
+
+
+
+
+	play.mainloop()
+
+
+	
 def charger_settings():
     
 	settings=Tk()
@@ -117,8 +179,8 @@ def charger_settings():
 	volume_frame = LabelFrame(master_frame, text="Volume")
 	volume_frame.pack(pady=20)
 
-	caca=DoubleVar()
-	caca.set(0.5)
+	son_var=DoubleVar()
+	son_var.set(0.5)
  
 	volume_slider= Scale(volume_frame, 
                       	from_=0,
@@ -126,7 +188,7 @@ def charger_settings():
                         orient=HORIZONTAL,
                         command=volume,
                         length=500,
-                        variable=caca
+                        variable=son_var
                         )
 	volume_slider.pack()
 
@@ -240,20 +302,51 @@ def charger_root():
 				# 	f"12-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
 				# 	f"12-2-0-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(0*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(0*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
 				}
-   
+			
 			nb_pieces_bleu = len(globals()[f"pieces_{coul_fr}_loader"])
 
 			globals()[f"pieces_{coul_fr}_coords_base"] = []
 			globals()[f"pieces_{coul_fr}_noms"] = []
+			globals()[f"pieces_{coul_fr}_utiles"] = []
+			
+			flag_y = False
+			flag_y_nom = None
+			flag_num_rect = None
 			
 			for rect_name, rect in globals()[f"pieces_{coul_fr}_loader"].items():
 				nom_rectangle_split = rect_name.split("-")
-				if nom_rectangle_split[1] == "0":
-					globals()[f"pieces_{coul_fr}_coords_base"].append(cnv2.coords(rect))
-					globals()[f"pieces_{coul_fr}_noms"].append(rect_name)
+				
+				if flag_y_nom != nom_rectangle_split[2] :					
+					flag_y = False
 
+				if flag_num_rect != nom_rectangle_split[0]:
+					flag_y = False
+					flag_y_nom = None
+
+
+				if (nom_rectangle_split[1] == "0" or nom_rectangle_split[1] == "1" or nom_rectangle_split[1] == "2") and flag_y == False:
+					coords_charge = cnv2.coords(rect)
+					if int(nom_rectangle_split[0]) <= 8: 					
+						coords_charge[0] = 10
+						coords_charge[2] = 10+unity
+					else:				
+						coords_charge[0] = (width_cnv2/2)+(taille_plateau*unity/2)+unity
+						coords_charge[2] = (width_cnv2/2)+(taille_plateau*unity/2)+unity*2
+
+					globals()[f"pieces_{coul_fr}_coords_base"].append(coords_charge)
+					globals()[f"pieces_{coul_fr}_noms"].append(rect_name)
+					globals()[f"pieces_{coul_fr}_utiles"].append([nom_rectangle_split[0],nom_rectangle_split[1],nom_rectangle_split[2],nom_rectangle_split[3]])
+					flag_y_nom = nom_rectangle_split[2]
+					flag_y = True
+					flag_num_rect = nom_rectangle_split[0]
+				
+
+					
+			print(globals()[f"pieces_{coul_fr}_noms"])
+			print(globals()[f"pieces_{coul_fr}_utiles"])
 			
 			loader.append(globals()[f"pieces_{coul_fr}_loader"])
+
 			
 		
 
@@ -505,10 +598,15 @@ def charger_root():
 
 		
 		# afficher_plateau_console()		
-		if (move == False):
+		if (move == False):			
+			
+			for i in range(len(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"])):
+				
+				if nom_rectangle_split[0] == globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][0] and nom_rectangle_split[2] == globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][2]:
+					num_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][3])
+					y_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][1]) 
 
-
-			index_rect = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_noms"].index(nom_rectangle_split[0]+"-0-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[2]+"-"+nom_rectangle_split[4])
+			index_rect = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_noms"].index(nom_rectangle_split[0]+"-"+y_index_rect+"-"+nom_rectangle_split[2]+"-"+num_index_rect+"-"+nom_rectangle_split[4])
 			coord_base = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_coords_base"][index_rect]
 
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)

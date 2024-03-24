@@ -25,13 +25,25 @@ mute_son = 1
 son_placement_piece = "sons/lego_build.wav"
 son_reset = "sons/lego_reset.wav"
 
+
+#MENU MODE LANCEMENT :
+global bot
+
+
+nb_joueurs = 4
+flag_bot = False
+bot = []
+if flag_bot:
+    for i in range(nb_joueurs,5):
+        bot.append(i)
+
 # pgm principal
 
 old=[None, None]
 
 
 
-global c, plateau, rect, num_rect, coords_rect, flag_pose, bot
+global c, plateau, rect, num_rect, coords_rect, flag_pose
 c = 0
 
 rect = None
@@ -52,10 +64,8 @@ height_cnv2 = taille_plateau*unity+taille_plateau/2+100
 decalage_x = width_cnv2/2-(taille_plateau*unity)/2
 decalage_y = 0
 
-nb_joueurs = 4
 nb_tours = 0
 
-bot = [2,3,4]
 
 global joueur, nb_joueurs_out, liste_joueurs_out
 joueur = 1
@@ -67,6 +77,8 @@ liste_couleurs_fr = ["bleu","rouge","vert","jaune"]
 
 
 plateau = []
+
+
 
 
 
