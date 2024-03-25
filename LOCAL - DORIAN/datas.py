@@ -5,6 +5,7 @@ Plateau de jeu Blokus
 """
 
 from tkinter import *
+from tkinter import ttk
 import customtkinter
 import pyglet
 import pyglet.media as media
@@ -51,11 +52,17 @@ flag_pose = 0
 unity = 40
 taille_plateau = 20
 
+
+width_menu = 1280
+height_menu = 960
+
 width_cnv=1280
 height_cnv=960
+
 #width_cnv2 = taille_plateau*unity+taille_plateau/2+unity*6
 width_cnv2 = width_cnv
 height_cnv2 = taille_plateau*unity+taille_plateau/2+100
+print(height_cnv2)
 
 
 decalage_x = width_cnv2/2-(taille_plateau*unity)/2
