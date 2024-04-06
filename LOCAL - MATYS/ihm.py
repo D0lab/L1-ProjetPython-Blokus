@@ -6,13 +6,13 @@ Plateau de jeu Blokus
 
 from datas import *
 
-
+global bot
 
 #-----------------------MENU
 def charger_menu():	
+	global width_menu,height_menu
 
-	width_menu = 1280
-	height_menu = 720
+
 
 
 	def bouton_jouer():
@@ -21,10 +21,10 @@ def charger_menu():
 		charger_play()
 
 	def bouton_settings():
-     
+	
 		menu.destroy()
-		charger_settings()
- 	
+		charger_settings("menu")
+	
 	def gcd1(x, y):
 		if y == 0:
 			return x
@@ -32,13 +32,15 @@ def charger_menu():
 			return gcd1(y, x % y)
 		
 	pgcd = gcd1(width_menu,height_menu)
+	print("taille menu",width_menu,height_menu)
 	aspect_ratio_width_menu = width_menu/pgcd
 	aspect_ratio_height_menu = height_menu/pgcd
 
 
 	
- 
+
 	menu = Tk()
+	menu.resizable(width=False, height=False)
 	menu.title('MENU BLOKUS')
 	if dev_mode == 0:
 		menu.iconbitmap("./images/logo.ico")
@@ -70,13 +72,13 @@ def charger_menu():
 
 		image_menu = Image.open('./images/logo.png')
 
-		image_menu = image_menu.resize((400,400))
+		image_menu = image_menu.resize((10*unity,10*unity))
 
 		image_menu = ImageTk.PhotoImage(image_menu)
 
 	# Create a label to display the image
 		image_label =Label(menu, image=image_menu)
-		image_label.place(x=(width_menu/2-200),y=(height_menu/2-200))
+		image_label.place(x=(width_menu/2-(10*unity)/2),y=(height_menu/2-(10*unity)/2))
 
 	button1_menu = Button ( menu, text = "Play",font=font_bouton, command=bouton_jouer)
 	button1_menu.place(x=10+(25*width_menu/100),y=10+(80*height_menu/100))
@@ -89,45 +91,92 @@ def charger_menu():
 
 
 	menu.mainloop()
- 
+
 #-----------------------
 def charger_play():
-	play=Tk()
-	play.title('SETTINGS BLOKUS')
-	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
+	global nb_joueurs,bot,nb_joueurs_reels
 
-	def player(x):
+	bot = []
+	nb_joueurs_reels = 1
+
+	
+	play=Tk()
+	play.resizable(width=False, height=False)
+	play.title('SELECTION MODE BLOKUS')
+	
+	if dev_mode == 0:
+		play.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
+
+	def sl_player(x):
+		global nb_joueurs_reels
 		
 		bot_slider["to"] = 4-int(x)
 
+		nb_joueurs_reels = int(x)
+
+	def sl_bot(x):
+		global bot,nb_joueurs,nb_joueurs_reels
+
+		bot = []
+		for i in range(nb_joueurs_reels+1,int(x)+nb_joueurs_reels+1):
+			# changer_bots(i)
+			bot.append(i)
+
+		nb_joueurs = nb_joueurs_reels + int(x)
+
+
+
+
 	
- 
+	def bouton_jouer():
+		
+		play.destroy()
+		charger_root()
+	
+	def bouton_retour():
+		
+		play.destroy()
+		charger_menu()
+
+		
+
+	
+
 	master_frame=Frame(play)
 	master_frame.pack(pady=20)
- 
+
 	controls_frame = Frame(master_frame)
 	controls_frame.pack(pady=20)
- 
-	player_frame = LabelFrame(master_frame, text="Nombre de joueurs")
+
+	player_frame = LabelFrame(master_frame, text="Nombre de joueurs",font=font_bouton)
 	player_frame.pack(pady=20)
 
 	player_var=DoubleVar()
 	player_var.set(1)
- 
+
 	player_slider= Scale(player_frame, 
-                      	from_=0,
-                        to=4,
-                        orient=HORIZONTAL,
-                        length=500,
-                        variable=player_var,
-						command=player
-                        )
+						from_=1,
+						to=4,
+						orient=HORIZONTAL,
+						length=500,
+						font=font_bouton,
+						variable=player_var,
+						command=sl_player
+						)
 	player_slider.pack()
 
 	player_slider.set(1)
 
- 
-	bot_frame = LabelFrame(master_frame, text="Nombre de robots")
+
+	bot_frame = LabelFrame(master_frame, text="Nombre de robots",font=font_bouton)
 	bot_frame.pack(pady=20)
 
 	bot_var=DoubleVar()
@@ -138,7 +187,9 @@ def charger_play():
 						to=3,
 						orient=HORIZONTAL,
 						length=500,
-						variable=bot_var
+						font=font_bouton,
+						variable=bot_var,
+						command=sl_bot
 						)
 	
 
@@ -146,6 +197,17 @@ def charger_play():
 	bot_slider.pack()
 
 
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)
+	button_back.pack()
+
+	button_play = Button (master_frame, text = "Play",font=font_bouton, command=bouton_jouer)
+	button_play.pack()
+
+
+
+	
+	sl_player(1)
+	sl_bot(3)
 
 
 
@@ -154,77 +216,274 @@ def charger_play():
 
 
 	
-def charger_settings():
-    
+def charger_settings(x):
+	global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity
+	
 	settings=Tk()
+	settings.resizable(width=False, height=False)
 	settings.title('SETTINGS BLOKUS')
-	Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
+	if dev_mode == 0:
+		settings.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
 
- 
+
 	def volume(x):
 		pygame.mixer.music.set_volume(volume_slider.get()/100)
 		# print(volume_slider.get()/100)
+
+	def resolution(x):
+		global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity
+
+		res = listeCombo.get().split("x")
+		width_menu = int(res[0])
+		height_menu = int(res[1])
+
+		width_cnv = int(res[0])
+		height_cnv = int(res[1])
+
+		width_cnv2 = width_cnv
+		# height_cnv2 = height_cnv
+
+		if listeCombo.get() == "1280x960":
+			unity = 40
+			height_cnv2 = taille_plateau*unity+taille_plateau/2+100
+			
+		elif listeCombo.get() == "1024x768":
+			unity = 20
+			height_cnv2 = taille_plateau*unity+taille_plateau/2+100
+
 	
- 
+	def bouton_retour():
+		settings.destroy()
+		if x == "menu":
+			charger_menu()
+		elif x == "plateau":
+			charger_root()
+	
+
 	# def sliding (value):
 	#  	my_label.configure(text=int(value))
 	
- 
+
 	master_frame=Frame(settings)
 	master_frame.pack(pady=20)
- 
+
 	controls_frame = Frame(master_frame)
 	controls_frame.pack(pady=20)
- 
-	volume_frame = LabelFrame(master_frame, text="Volume")
+
+	volume_frame = LabelFrame(master_frame, text="Volume",font=font_bouton)
 	volume_frame.pack(pady=20)
 
 	son_var=DoubleVar()
 	son_var.set(0.5)
- 
+
 	volume_slider= Scale(volume_frame, 
-                      	from_=0,
-                        to=100,
-                        orient=HORIZONTAL,
-                        command=volume,
-                        length=500,
-                        variable=son_var
-                        )
+						from_=0,
+						to=100,
+						orient=HORIZONTAL,
+						command=volume,
+						length=500,
+						font=font_bouton,
+						variable=son_var
+						)
 	volume_slider.pack()
 
-	volume_slider.set(0.5)
+	volume_slider.set(0.5)	
+	
+	
+	
+	labelChoix = Label(master_frame, text = "Resolution :",font=font_bouton)
+	labelChoix.pack()
+
+	#"854x480","1280x720"
+	# listeResol=["854x480","1280x720"]
+	listeResol=["1024x768","1280x960"]
+
+	listeCombo = ttk.Combobox(master_frame, state="readonly", values=listeResol,font=font_bouton)
+	
+	listeCombo.current(0)
+	listeCombo.pack()
+
+	listeCombo.bind("<<ComboboxSelected>>", resolution)
+	
+
+
+
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)
+	
+	button_back.pack(pady = 10)
+	
 	
 	
 	# my_label = Label(settings,text=volume_slider.get(),font=('OMORI_GAME', 18))
 	# my_label.pack(pady=20)
- 
+
 
 		
-    
-    
+	
+	
 	settings.mainloop()
 
 
 def charger_final(score):
 
-		final=Tk()
-		final.title('FINAL BLOKUS')
-		# Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
+	def classement():
+		global podium
+
+		score_temp = score.copy()
+		score_temp.remove(max(score_temp))
+
+		podium = [prem_place,deux_place,trois_place,quatr_place]
+		prem_place = [max(score)]
+		deux_place = []
+		trois_place = []
+		quatr_place = []
+
+		while len(score_temp) > 0:
+			if max(score_temp) == prem_place[0]:
+				prem_place.append(max(score_temp))
+				score_temp.remove(max(score_temp))
+
+			elif len(deux_place) == 0:
+				deux_place.append(max(score_temp))
+				score_temp.remove(max(score_temp))
+			elif len(deux_place) != 0:
+				if max(score_temp) == deux_place[0]:
+					deux_place.append(max(score_temp))
+					score_temp.remove(max(score_temp))
+				
+			elif len(trois_place) == 0:
+				trois_place.append(max(score_temp))
+				score_temp.remove(max(score_temp))
+			elif len(trois_place) != 0:
+				if max(score_temp) == trois_place[0]:
+					trois_place.append(max(score_temp))
+					score_temp.remove(max(score_temp))
+				
+			elif len(quatr_place) == 0:
+				quatr_place.append(max(score_temp))
+				score_temp.remove(max(score_temp))
+			elif len(quatr_place) != 0:
+				if max(score_temp) == quatr_place[0]:
+					quatr_place.append(max(score_temp))
+					score_temp.remove(max(score_temp))
+
+		print(prem_place,deux_place,trois_place,quatr_place)
 
 
-		resultat=Label(final, text="Scores Finaux", font=("Arial",34))
-		resultat.pack()
+	def placement():
+		coords_1 = [(275,180),(85,240),(460,280),(350,400)]		
+		coords_2 = [[(220,180),(300,180),(230,100),(310,100)],[(20,240),(100,240),(60,160)],[(420,280),(500,280)]]
 
-		score=Label(final,text=score, font=("Arial",34))
-		score.pack()
+	final=Tk()
+	final.resizable(width=False, height=False)
+	final.title('FINAL BLOKUS')
+	
+	cnv = Canvas(final, width=width_menu, height=height_menu, bg='white')
+	cnv.pack()
+	if dev_mode == 0:
+		final.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
+
+	final.geometry(str(width_menu)+"x"+str(height_menu))
+	# Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
 
 
-		final.mainloop()
+	# resultat=Label(final, text="Scores Finaux", font=("Arial",34))
+	# resultat.pack()
+
+	# score=Label(final,text=score, font=("Arial",34))
+	# score.pack()
+
+
+	if dev_mode == 0:
+		# Load and display an image_menu 
+		#(replace 'your_logo.png' with the path to your image_menu file)
+
+		image_menu = Image.open('./images/podium.png')
+		image_menu = image_menu.resize((width_menu//2,height_menu//2))
+
+		j_bleu = Image.open('./images/bleu.png')
+		j_bleu = j_bleu.resize((150//2,150//2))
+
+		j_rouge = Image.open('./images/rouge.png')
+		j_rouge = j_rouge.resize((150//2,150//2))
+
+		j_vert = Image.open('./images/vert.png')
+		j_vert = j_vert.resize((150//2,150//2))
+
+		j_jaune = Image.open('./images/jaune.png')
+		j_jaune = j_jaune.resize((150//2,150//2))
+
+
+
+
+		# image_menu.paste(j_bleu, coords_q)
+		# image_menu.paste(j_jaune, (60,160))
+		# image_menu.paste(j_rouge, coords_t_2[1])
+		# image_menu.paste(j_vert, coords_t_2[0])
+
+		# image_menu.paste(j_jaune, (275,100))
+
+
+		
+		image_menu = ImageTk.PhotoImage(image_menu)
+		j_bleu = ImageTk.PhotoImage(j_bleu)
+		j_rouge = ImageTk.PhotoImage(j_rouge)
+		j_vert = ImageTk.PhotoImage(j_vert)
+		j_jaune = ImageTk.PhotoImage(j_jaune)
+
+	# Create a label to display the image
+		image_label =Label(cnv, image=image_menu)
+		image_label.place(x=width_menu//4,y=height_menu//4)
+
+		
+
+	
+	
+
+
+	final.mainloop()
 #-----------------------
 
 def charger_root():
+	print(width_cnv2,height_cnv2)
 	
-	
+	def rotate_pieces_by_tag(event):
+		tag = tag_rectangle
+		angle = 90
+		print("ouiiiiiiii")
+		# Recherche toutes les pièces avec le même tag
+		pieces_to_rotate = cnv2.find_withtag(tag)
+		for piece_id in pieces_to_rotate:
+			rotate_piece(piece_id, angle)
+
+	def rotate_piece(piece_id, angle):
+		cnv2.delete(f"rotated_{piece_id}")  # Supprime les pièces déjà tournées
+		x0, y0, x1, y1 = cnv2.coords(piece_id)
+		cx, cy = (x0 + x1) / 2, (y0 + y1) / 2  # Centre de la pièce
+		# Calcule les coordonnées de la pièce tournée autour de son centre
+		x0r = cx + (x0 - cx) * math.cos(math.radians(angle)) - (y0 - cy) * math.sin(math.radians(angle))
+		y0r = cy + (x0 - cx) * math.sin(math.radians(angle)) + (y0 - cy) * math.cos(math.radians(angle))
+		x1r = cx + (x1 - cx) * math.cos(math.radians(angle)) - (y1 - cy) * math.sin(math.radians(angle))
+		y1r = cy + (x1 - cx) * math.sin(math.radians(angle)) + (y1 - cy) * math.cos(math.radians(angle))
+		# Crée la pièce tournée sur le canvas
+		rotated_piece_id = cnv2.create_rectangle(x0r, y0r, x1r, y1r, fill=liste_couleurs_en[joueur-1], outline='', tags=f"rotated_{piece_id}")
+		return rotated_piece_id
 		
 	def build_pieces():
 		global loader
@@ -354,8 +613,6 @@ def charger_root():
      
 				}
 			
-#ATTENTION REFAIRE LES NUM DES 4 DERNIERES PIECES !!!!!!!!!!!
-			
 			nb_pieces_bleu = len(globals()[f"pieces_{coul_fr}_loader"])
 
 			globals()[f"pieces_{coul_fr}_coords_base"] = []
@@ -395,8 +652,8 @@ def charger_root():
 				
 
 					
-			print(globals()[f"pieces_{coul_fr}_noms"])
-			print(globals()[f"pieces_{coul_fr}_utiles"])
+			# print(globals()[f"pieces_{coul_fr}_noms"])
+			# print(globals()[f"pieces_{coul_fr}_utiles"])
 			
 			loader.append(globals()[f"pieces_{coul_fr}_loader"])
 
@@ -409,8 +666,8 @@ def charger_root():
 
 		
 		for i in range(taille_plateau+1):
-			cnv2.create_line(5+decalage_x,5+unity*i,(taille_plateau+0.1)*unity+decalage_x,5+unity*i)
-			cnv2.create_line(5+unity*i+decalage_x,5,5+unity*i+decalage_x,(taille_plateau+0.1)*unity)
+			cnv2.create_line(5+decalage_x,5+unity*i+decalage_y,(taille_plateau+0.1)*unity+decalage_x,5+unity*i+decalage_y)
+			cnv2.create_line(5+unity*i+decalage_x,5+decalage_y,5+unity*i+decalage_x,(taille_plateau+0.1)*unity+decalage_y)
 
 
 	def waithere():
@@ -422,79 +679,7 @@ def charger_root():
 
 
 
-	def game_reload():
-		global nb_tours,plateau,nb_joueurs_out,liste_joueurs_out,loader
 
-		btn_reload.place_forget()
-		btn_mute.place_forget()
-		cnv2.unbind("<Button-1>")
-
-		# for j in range(taille_plateau):
-		# 	for i in range(taille_plateau):
-		# 		if j%2 == 0:
-		# 			(cnv2.create_rectangle(i*unity+decalage_x+5,j*unity+decalage_y+5,i*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
-		# 		else:
-		# 			(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage_x+5,j*unity+decalage_y+5,(taille_plateau-1-i)*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
-				
-		for i in range(taille_plateau):
-			(cnv2.create_rectangle(0*unity+decalage_x+5,i*unity+decalage_y+5,(taille_plateau-1)*unity+unity+decalage_x+5,i*unity+unity+decalage_y+5, fill='white', outline='black'))
-				
-
-
-			if mute_son == 0 and (i)%(taille_plateau//3) == 0 and dev_mode == 0 :
-				joueur = pygame.mixer.music.load(son_placement_piece)
-				pygame.mixer.music.play()
-			waithere()
-
-		cnv2.delete('all')
-
-		nb_tours = 0
-		nb_joueurs_out = 0
-
-		
-
-		plateau = []
-		liste_joueurs_out = []
-
-
-
-		for i in range(taille_plateau):
-			plateau_temp = []
-			for j in range(taille_plateau):
-				plateau_temp.append(0)
-
-			plateau.append(plateau_temp)
-
-		btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
-		btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
-		cnv2.bind("<Button-1>",clic)
-
-		
-			
-
-
-
-		build_pieces()
-		build_plateau()
-		for couleurs in range(1,nb_joueurs):
-			for pieces_nom,pieces_num in globals()[f"pieces_{liste_couleurs_fr[couleurs]}_loader"].items():
-				cnv2.itemconfigure(pieces_num,state="hidden")
-		
-		loader = []
-		for i in range(nb_joueurs):
-			loader.append(globals()[f"pieces_{liste_couleurs_fr[i]}_loader"])
-		
-
-		
-		
-	def mute():
-		global mute_son
-
-		mute_son = (mute_son+1)%2
-		if mute_son == 1:
-			btn_mute["text"] = "Mute ON"
-		else:
-			btn_mute["text"] = "Mute OFF"
 			
 			
 	def clic(event):
@@ -548,7 +733,10 @@ def charger_root():
 			
 
 
-	
+	def afficher_plateau_console():
+		for k in plateau:
+			print(k)	
+
 			
 	def deposer(x,y):
 		global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur,nom_rectangle_complet,coord_base,plateau
@@ -558,7 +746,7 @@ def charger_root():
 		move = False
 		for i in range(taille_plateau):
 			for j in range(taille_plateau):
-				if (5+i*unity+decalage_x <= x<= 5+(i+1)*unity+decalage_x and 5+j*unity <= y <= 5+(j+1)*unity):
+				if (5+i*unity+decalage_x <= x<= 5+(i+1)*unity+decalage_x and 5+j*unity+decalage_y <= y <= 5+(j+1)*unity+decalage_y):
 					# print("----EMPLACEMENT CASE----",i,j)
 
 
@@ -569,22 +757,22 @@ def charger_root():
 						tagged_rectangles.append(coordinates)
 					
 					i=(tagged_rectangles[int(nom_rectangle_split[3])][0])//unity-decalage_x//unity
-					j=tagged_rectangles[int(nom_rectangle_split[3])][1]//unity
+					j=(tagged_rectangles[int(nom_rectangle_split[3])][1])//unity-decalage_y//unity
 
 
 
 					total_code = 0
 					for tag in tagged_rectangles:
-						total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int(tag[1]//unity),joueur,plateau,nb_tours)
+						total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int((tag[1]//unity)-decalage_y//unity),joueur,plateau,nb_tours)
 						
 					if total_code <= 0:
 						flag_verif_boucle = False
 							
 
 					if flag_verif_boucle:
-						cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1)
+						cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1+decalage_y)
 						for tag in tagged_rectangles:
-							plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
+							plateau[int((tag[1]//unity)-decalage_y//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
 						move = True
 						
 
@@ -635,20 +823,22 @@ def charger_root():
 							cnv2.itemconfigure(pieces_num,state="hidden")
 						
 						joueur = nb_tours%nb_joueurs+1
-						tour_joueur()
-
-						for pieces_nom,pieces_num in loader[joueur-1].items():
-							cnv2.itemconfigure(pieces_num,state="normal")
+						if joueur not in liste_joueurs_out:
+							for pieces_nom,pieces_num in loader[joueur-1].items():
+								cnv2.itemconfigure(pieces_num,state="normal")
 
 						if joueur in bot:
 							bot_coup()
+
+						
+						if nb_joueurs-len(bot) > 1:
+							tour_joueur()
 						
 
 
 
-		print("---------------------------")
-		afficher_plateau_console()
-  		
+		
+		# afficher_plateau_console()		
 		if (move == False):			
 			
 			for i in range(len(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"])):
@@ -657,9 +847,11 @@ def charger_root():
 					num_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][3])
 					y_index_rect = str(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"][i][1]) 
 
+
 			index_rect = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_noms"].index(nom_rectangle_split[0]+"-"+y_index_rect+"-"+nom_rectangle_split[2]+"-"+num_index_rect+"-"+nom_rectangle_split[4])
 			coord_base = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_coords_base"][index_rect]
 
+			print(coord_base)
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
 	def score():
@@ -755,7 +947,7 @@ def charger_root():
 		coup_aleatoire = coups_poss[randint(0,len(coups_poss)-1)]
 
 
-		rectangle = coup_aleatoire[2]
+		rectangle = coup_aleatoire[2]	
 		nom_rectangle_split = coup_aleatoire[1].split("-")
 		nom_rectangle = nom_rectangle_split[0]
 		nom_rectangle_complet = coup_aleatoire[1]
@@ -777,7 +969,7 @@ def charger_root():
 		x1,y1,x2,y2 = cnv2.coords(rectangle)
 
 		
-		cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1)
+		cnv2.move(tag_rectangle,5+i*unity-x1+decalage_x,5+j*unity-y1+decalage_y)
 				
 		tagged_rectangles = []
 		for item in cnv2.find_withtag(tag_rectangle):
@@ -785,7 +977,7 @@ def charger_root():
 			tagged_rectangles.append(coordinates)
 
 		for tag in tagged_rectangles:
-			plateau[int(tag[1]//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
+			plateau[int((tag[1]//unity)-decalage_y//unity)][int((tag[0]//unity)-decalage_x//unity)] = joueur
 			
 
 		flag_estSuppr = False
@@ -840,20 +1032,90 @@ def charger_root():
 			bot_coup()
 		
 	def tour_joueur():
+		print("joueur",joueur)
 		tour_de["text"]= f"Au tour du joueur {liste_couleurs_fr[joueur-1]}"
 		tour_de["bg"]=liste_couleurs_en[joueur-1]
 
-	def afficher_plateau_console():
-		for k in plateau:
-			print(k)	
 
+	def game_reload():
+		global nb_tours,plateau,nb_joueurs_out,liste_joueurs_out,loader
+
+		btn_reload.place_forget()
+		cnv2.unbind("<Button-1>")
+
+		# for j in range(taille_plateau):
+		# 	for i in range(taille_plateau):
+		# 		if j%2 == 0:
+		# 			(cnv2.create_rectangle(i*unity+decalage_x+5,j*unity+decalage_y+5,i*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
+		# 		else:
+		# 			(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage_x+5,j*unity+decalage_y+5,(taille_plateau-1-i)*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
+				
+		for i in range(taille_plateau):
+			(cnv2.create_rectangle(0*unity+decalage_x+5,i*unity+decalage_y+5,(taille_plateau-1)*unity+unity+decalage_x+5,i*unity+unity+decalage_y+5, fill='white', outline='black'))
+				
+
+
+			if mute_son == 0 and (i)%(taille_plateau//3) == 0 and dev_mode == 0 :
+				joueur = pygame.mixer.music.load(son_placement_piece)
+				pygame.mixer.music.play()
+			waithere()
+
+		cnv2.delete('all')
+
+		nb_tours = 0
+		nb_joueurs_out = 0
+
+		
+
+		plateau = []
+		liste_joueurs_out = []
+
+
+
+		for i in range(taille_plateau):
+			plateau_temp = []
+			for j in range(taille_plateau):
+				plateau_temp.append(0)
+
+			plateau.append(plateau_temp)
+
+		btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
+		cnv2.bind("<Button-1>",clic)
+
+		
+			
+
+
+
+		build_pieces()
+		build_plateau()
+		for couleurs in range(1,nb_joueurs):
+			for pieces_nom,pieces_num in globals()[f"pieces_{liste_couleurs_fr[couleurs]}_loader"].items():
+				cnv2.itemconfigure(pieces_num,state="hidden")
+		
+		loader = []
+		for i in range(nb_joueurs):
+			loader.append(globals()[f"pieces_{liste_couleurs_fr[i]}_loader"])
+		
+
+		
+		
+	
+
+	def settings():
+		root.destroy()
+		charger_settings("plateau")
 
 	root = Tk()
+	
+	root.resizable(width=False, height=False)
 
 
 	root.title("BLO BLO BLO BLOKUS")
 	if dev_mode == 0:
 		root.iconbitmap("./images/logo.ico")
+
+	print(width_cnv2,height_cnv2)
 
 	cnv=Canvas(root,width=width_cnv, height=height_cnv,bg='brown')
 	cnv2 = Canvas(cnv, width=width_cnv2, height=height_cnv2,bg='gray')
@@ -862,17 +1124,21 @@ def charger_root():
 	cnv2.place(x=(width_cnv/2)-width_cnv2/2, y=(height_cnv/2)-height_cnv2/2)
 	root.lift(cnv2)
 
-	tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
-	tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
+
+	if nb_joueurs-len(bot) > 1:
+
+		tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
+		tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
 
 	btn_reload = Button(cnv,text="Restart",command = game_reload)
 	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
 
-	btn_mute = Button(cnv,text="Mute OFF",command = mute)
-	btn_mute.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
+	btn_settings = Button(cnv,text="Settings",command = settings)
+	btn_settings.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
 
 
 	cnv2.bind("<Button-1>",clic)
+	cnv2.bind("<Button-3>",rotate_pieces_by_tag)
 
 	# build_pieces_rouge()
 	build_pieces()
