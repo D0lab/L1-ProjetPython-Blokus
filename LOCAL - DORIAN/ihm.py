@@ -338,42 +338,47 @@ def charger_final(score):
 		global podium
 
 		score_temp = score.copy()
-		score_temp.remove(max(score_temp))
+		index_score = score.index(max(score_temp))
+		score_temp[index_score] = -9999
+		print(score_temp)
 
-		podium = [prem_place,deux_place,trois_place,quatr_place]
-		prem_place = [max(score)]
+		prem_place = [[max(score_temp),score.index(max(score_temp))]]
 		deux_place = []
 		trois_place = []
 		quatr_place = []
 
-		while len(score_temp) > 0:
-			if max(score_temp) == prem_place[0]:
-				prem_place.append(max(score_temp))
-				score_temp.remove(max(score_temp))
+		podium = [prem_place,deux_place,trois_place,quatr_place]
+
+		for i in range(3):
+			index_score = score.index(max(score_temp))
+			print(index_score)
+			if max(score_temp) == prem_place[0][0]:
+				prem_place.append([max(score_temp),index_score])
+				score_temp[index_score] = -9999
 
 			elif len(deux_place) == 0:
-				deux_place.append(max(score_temp))
-				score_temp.remove(max(score_temp))
+				deux_place.append([max(score_temp),index_score])
+				score_temp[index_score] = -9999
 			elif len(deux_place) != 0:
-				if max(score_temp) == deux_place[0]:
-					deux_place.append(max(score_temp))
-					score_temp.remove(max(score_temp))
+				if max(score_temp) == deux_place[0][0]:
+					deux_place.append([max(score_temp),index_score])
+					score_temp[index_score] = -9999
 				
 			elif len(trois_place) == 0:
-				trois_place.append(max(score_temp))
-				score_temp.remove(max(score_temp))
+				trois_place.append([max(score_temp),index_score])
+				score_temp[index_score] = -9999
 			elif len(trois_place) != 0:
-				if max(score_temp) == trois_place[0]:
-					trois_place.append(max(score_temp))
-					score_temp.remove(max(score_temp))
+				if max(score_temp) == trois_place[0][0]:
+					trois_place.append([max(score_temp),index_score])
+					score_temp[index_score] = -9999
 				
 			elif len(quatr_place) == 0:
-				quatr_place.append(max(score_temp))
-				score_temp.remove(max(score_temp))
+				quatr_place.append([max(score_temp),index_score])
+				score_temp[index_score] = -9999
 			elif len(quatr_place) != 0:
-				if max(score_temp) == quatr_place[0]:
-					quatr_place.append(max(score_temp))
-					score_temp.remove(max(score_temp))
+				if max(score_temp) == quatr_place[0][0]:
+					quatr_place.append([max(score_temp),index_score])
+					score_temp[index_score] = -9999
 
 		print(prem_place,deux_place,trois_place,quatr_place)
 
@@ -383,8 +388,11 @@ def charger_final(score):
 		coords_2 = [[(220,180),(300,180),(230,100),(310,100)],[(20,240),(100,240),(60,160)],[(420,280),(500,280)]]
 
 
-		for i in range(len(podium)):
-			if len(podium[i]) == 1 :
+		# for i in range(len(podium)):
+		# 	if len(podium[i]) == 1 :
+
+
+
 
 				
 
@@ -404,6 +412,9 @@ def charger_final(score):
 	
 	cnv = Canvas(final, width=width_menu, height=height_menu, bg='white')
 	cnv.pack()
+
+	classement()
+
 	if dev_mode == 0:
 		final.iconbitmap("./images/logo.ico")
 		
@@ -517,111 +528,116 @@ def charger_root():
 				#"NUMERO-X-Y :" (cnv2.create_rectangle((x1, y1, x2, y2, fill='couleur', outline='', tags=f"rectNUM_RECT"))
 				f"0-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, 30, 10+unity, 30+unity, fill=coul_en, outline='', tags=f"rect0-{coul_fr[0:1]}")),
 				
-				f"1-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (2*30)+(1*unity), 10+unity, (2*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect1-{coul_fr[0:1]}")),
-					f"1-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (2*30)+(1*unity), 10+unity*2, (2*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect1-{coul_fr[0:1]}")),
+				f"1-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(30+unity, 30, 30+unity*2, 30+(1*unity), fill=coul_en, outline='', tags=f"rect1-{coul_fr[0:1]}")),
+					f"1-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(30+unity*2, 30, 30+unity*3, 30+(1*unity), fill=coul_en, outline='', tags=f"rect1-{coul_fr[0:1]}")),
 				
-				f"2-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (3*30)+(2*unity), 10+unity, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect2-{coul_fr[0:1]}")),
-					f"2-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (3*30)+(2*unity), 10+unity*2, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect2-{coul_fr[0:1]}")),
-					f"2-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (3*30)+(2*unity), 10+unity*3, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect2-{coul_fr[0:1]}")),
+				f"2-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (2*30)+(1*unity), 10+unity, (2*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect2-{coul_fr[0:1]}")),
+					f"2-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (2*30)+(1*unity), 10+unity*2, (2*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect2-{coul_fr[0:1]}")),
+					f"2-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (2*30)+(1*unity), 10+unity*3, (2*30)+(1*unity)+unity, fill=coul_en, outline='', tags=f"rect2-{coul_fr[0:1]}")),
 				
-				f"3-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (4*30)+(3*unity), 10+unity, (4*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
-					f"3-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (4*30)+(4*unity), 10+unity, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
-					f"3-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (4*30)+(4*unity), 10+unity*2, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
+				f"3-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (3*30)+(2*unity), 10+unity, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
+					f"3-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (3*30)+(2*unity), 10+unity*2, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
+				 	f"3-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (3*30)+(2*unity), 10+unity*3, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
+				 	f"3-3-0-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*3, (3*30)+(2*unity), 10+unity*4, (3*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect3-{coul_fr[0:1]}")),
+    
+				f"4-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (4*30)+(3*unity), 10+unity, (4*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+					f"4-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (4*30)+(4*unity), 10+unity, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+					f"4-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (4*30)+(4*unity), 10+unity*2, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
 				
-				f"4-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (6*30)+(4*unity), 10+unity, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
-					f"4-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (6*30)+(4*unity), 10+unity*2, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
-					f"4-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (6*30)+(4*unity), 10+unity*3, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
-					f"4-3-0-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*3, (6*30)+(4*unity), 10+unity*4, (6*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect4-{coul_fr[0:1]}")),
+				 f"5-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(110, (4*30)+(3*unity), 110+unity, (4*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+				 	f"5-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(110, (4*30)+(4*unity), 110+unity, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+					f"5-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(110+unity, (4*30)+(4*unity), 110+unity*2, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
+					f"5-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(110+unity*2, (4*30)+(4*unity), 110+unity*3, (4*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
 				
-				f"5-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (7*30)+(5*unity), 10+unity, (7*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-					f"5-0-1-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (7*30)+(6*unity), 10+unity, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-					f"5-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (7*30)+(6*unity), 10+unity*2, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-					f"5-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (7*30)+(6*unity), 10+unity*3, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect5-{coul_fr[0:1]}")),
-				
-				f"6-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (9*30)+(6*unity), 10+unity, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
-					f"6-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (9*30)+(6*unity), 10+unity*2, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
-					f"6-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (9*30)+(6*unity), 10+unity*3, (9*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
-					f"6-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (9*30)+(7*unity), 10+unity*2, (9*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+				f"6-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (5*30)+(5*unity), 10+unity, (5*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+				 	f"6-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (5*30)+(5*unity), 10+unity*2, (5*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+				 	f"6-2-0-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (5*30)+(5*unity), 10+unity*3, (5*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+				 	f"6-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (5*30)+(6*unity), 10+unity*2, (5*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect6-{coul_fr[0:1]}")),
+      
+				f"7-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(150, (5*30)+(5*unity), 150+unity, (5*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+					f"7-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(150+unity, (5*30)+(5*unity), 150+unity*2, (5*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+					f"7-0-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(150, (5*30)+(6*unity), 150+unity, (5*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+					f"7-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(150+unity, (5*30)+(6*unity), 150+unity*2, (5*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+
+				f"8-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (7*30)+(6*unity), 10+unity, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (7*30)+(6*unity), 10+unity*2, (7*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (7*30)+(7*unity), 10+unity*2, (7*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+					f"8-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (7*30)+(7*unity), 10+unity*3, (7*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
+
+				f"9-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle(70+unity, (4*30)+(8*unity), 70+unity*2, (4*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+					f"9-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle(70+unity*2, (4*30)+(8*unity), 70+unity*3, (4*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+					f"9-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle(70+unity*2, (4*30)+(9*unity), 70+unity*3, (4*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+					f"9-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle(70+unity*3, (4*30)+(9*unity), 70+unity*4, (4*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+					f"9-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle(70+unity*3, (4*30)+(10*unity), 70+unity*4, (4*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
+
+    			f"10-1-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity, (8*30)+(8*unity), 10+unity*2, (8*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+					f"10-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle(10, (8*30)+(9*unity), 10+unity, (8*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+					f"10-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity, (8*30)+(9*unity), 10+unity*2, (8*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+					f"10-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity*2, (8*30)+(9*unity), 10+unity*3, (8*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
+					f"10-1-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity, (8*30)+(10*unity), 10+unity*2, (8*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),	
+    
+				f"11-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle(10, (10*30)+(10*unity), 10+unity, (10*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+					f"11-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle(10, (10*30)+(11*unity), 10+unity, (10*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+					f"11-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity, (10*30)+(11*unity), 10+unity*2, (10*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+					f"11-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity*2, (10*30)+(11*unity), 10+unity*3, (10*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+					f"11-1-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle(10+unity, (10*30)+(12*unity), 10+unity*2, (10*30)+(12*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+    
+				f"12-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity,  fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				 	f"12-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				 	f"12-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+					f"12-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+				 	f"12-3-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
+
+				f"13-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
+				 	f"13-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
+				 	f"13-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
+				 	f"13-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
+				 	f"13-3-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
+
+				f"14-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
+				 	f"14-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
+				 	f"14-0-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(3*unity), fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
+				  	f"14-1-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(3*unity), fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
+				 	f"14-2-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (5*30)+(3*unity), fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
+
+				f"15-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (7*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
+					f"15-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
+					f"15-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
+					f"15-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
+					f"15-2-0-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
+
+				f"16-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
+					f"16-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
+					f"16-2-0-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
+					f"16-3-0-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
+					f"16-4-0-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*6, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
+
+				f"17-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (10*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
+					f"17-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (10*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
+					f"17-0-2-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (10*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
+					f"17-1-2-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (10*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
+					f"17-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (10*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (10*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
 	
-				f"7-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (10*30)+(8*unity), 10+unity, (10*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
-					f"7-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (10*30)+(8*unity), 10+unity*2, (10*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
-					f"7-0-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (10*30)+(9*unity), 10+unity, (10*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
-					f"7-1-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (10*30)+(9*unity), 10+unity*2, (10*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect7-{coul_fr[0:1]}")),
+				f"18-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+60+unity, (11*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+60+unity*2, (11*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
+					f"18-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+60+unity, (11*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+60+unity*2, (11*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
+					f"18-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+60+unity*2, (11*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+60+unity*3, (11*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
+					f"18-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+60+unity*3, (11*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+60+unity*4, (11*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
+					f"18-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+60+unity*3, (11*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+60+unity*4, (11*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
+ 
+				f"19-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
+					f"19-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
+					f"19-2-0-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
+					f"19-3-0-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
+					f"19-2-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (12*30)+(8*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (12*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
 
-				f"8-0-0-0-{coul_fr[0:1]}": (cnv2.create_rectangle(10, (12*30)+(9*unity), 10+unity, (12*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
-					f"8-1-0-1-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(9*unity), 10+unity*2, (12*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
-					f"8-1-1-2-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity, (12*30)+(10*unity), 10+unity*2, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
-					f"8-2-1-3-{coul_fr[0:1]}": (cnv2.create_rectangle(10+unity*2, (12*30)+(10*unity), 10+unity*3, (12*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect8-{coul_fr[0:1]}")),
-	
-				f"9-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, 30, (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, 30+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
-					f"9-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
-					f"9-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
-					f"9-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
-					f"9-3-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (1*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (1*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect9-{coul_fr[0:1]}")),
-				#RUPTURE
-				f"10-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (3*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
-					f"10-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(1*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(1*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
-					f"10-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
-					f"10-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),
-					f"10-3-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (3*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (3*30)+(2*unity)+unity,  fill=coul_en, outline='', tags=f"rect10-{coul_fr[0:1]}")),f"11-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
-					f"11-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(2*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(2*unity)+unity, fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
-					f"11-0-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(3*unity), fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
-					f"11-1-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(3*unity), fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
-					f"11-2-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (5*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (5*30)+(3*unity), fill=coul_en, outline='', tags=f"rect11-{coul_fr[0:1]}")),
+				f"20-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (13*30)+(8*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (13*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
+					f"20-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (13*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (13*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
+					f"20-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (13*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (13*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
+					f"20-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (13*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (13*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
+					f"20-0-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (13*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (13*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
 
-				f"12-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (7*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
-					f"12-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
-					f"12-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
-					f"12-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
-					f"12-2-0-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (7*30)+(3*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (7*30)+(3*unity)+unity, fill=coul_en, outline='', tags=f"rect12-{coul_fr[0:1]}")),
-
-				f"13-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
-					f"13-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
-					f"13-2-0-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
-					f"13-3-0-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
-					f"13-4-0-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (9*30)+(4*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*6, (9*30)+(4*unity)+unity, fill=coul_en, outline='', tags=f"rect13-{coul_fr[0:1]}")),
-
-				f"14-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (10*30)+(5*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(5*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
-					f"14-0-1-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (10*30)+(6*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(6*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
-					f"14-0-2-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (10*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
-					f"14-1-2-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (10*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (10*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
-					f"14-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (10*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (10*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect14-{coul_fr[0:1]}")),
-	
-				f"15-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
-					f"15-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
-					f"15-2-0-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
-					f"15-3-0-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (12*30)+(7*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*5, (12*30)+(7*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
-					f"15-2-1-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (12*30)+(8*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (12*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect15-{coul_fr[0:1]}")),
-
-				f"16-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (14*30)+(8*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (14*30)+(8*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
-					f"16-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (14*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (14*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
-					f"16-2-0-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (14*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (14*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
-					f"16-1-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (14*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (14*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
-					f"16-1-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (14*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (14*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect16-{coul_fr[0:1]}")),
-
-				f"17-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (16*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
-					f"17-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
-					f"17-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
-					f"17-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
-					f"17-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(11*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (16*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect17-{coul_fr[0:1]}")),
-
-				f"18-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (16*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
-					f"18-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
-					f"18-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
-					f"18-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
-					f"18-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(11*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (16*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect18-{coul_fr[0:1]}")),
-
-				f"19-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (16*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
-					f"19-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
-					f"19-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
-					f"19-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
-					f"19-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(11*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect19-{coul_fr[0:1]}")),
-
-				f"20-0-0-0-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(9*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(9*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
-					f"20-1-0-1-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
-					f"20-1-1-2-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
-					f"20-2-1-3-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(10*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*4, (16*30)+(10*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}")),
-					f"20-2-2-4-{coul_fr[0:1]}" : (cnv2.create_rectangle((width_cnv2/2)+(taille_plateau*unity/2)+unity*2, (16*30)+(11*unity), (width_cnv2/2)+(taille_plateau*unity/2)+unity*3, (16*30)+(11*unity)+unity, fill=coul_en, outline='', tags=f"rect20-{coul_fr[0:1]}"))
+				
+     
 				}
 			
 			nb_pieces_bleu = len(globals()[f"pieces_{coul_fr}_loader"])
