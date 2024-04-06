@@ -378,13 +378,14 @@ def charger_final(score):
 		print(prem_place,deux_place,trois_place,quatr_place)
 
 
-	# def placement():
-	# 	coords_1 = [(275,180),(85,240),(460,280),(350,400)]		
-	# 	coords_2 = [[(220,180),(300,180),(230,100),(310,100)],[(20,240),(100,240),(60,160)],[(420,280),(500,280)]]
+	def placement():
+		coords_1 = [(275,180),(85,240),(460,280),(350,400)]		
+		coords_2 = [[(220,180),(300,180),(230,100),(310,100)],[(20,240),(100,240),(60,160)],[(420,280),(500,280)]]
 
 
-	# 	for i in range(len(podium)):
-	# 		if len(i) == 1 :
+		for i in range(len(podium)):
+			if len(podium[i]) == 1 :
+
 				
 
 
