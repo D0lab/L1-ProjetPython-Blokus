@@ -11,7 +11,7 @@ Si vous avez des problèmes avec les sons :
 - datas.py : initialiser la variable mute_son à 1 *(ligne 23)*    
   
 Si vous avez des problèmes avec les images :   
-- datas.py : initialiser la variable mute_son à 1 *(ligne 22)*   
+- datas.py : initialiser la variable dev_mode à 1 *(ligne 22)*   
 
 
 Les images utilisées dans le projet se trouvent à l'emplacement suivant : "./images/"  
@@ -39,7 +39,7 @@ Voici la liste détaillée de ce que nous avons fait au fil des différents rend
 - On peut jouer contre la machine  
 
 **BONUS :**  
-- Première version du menu d'accueil  
+- Menu  
     - Son de démarrage  
     - Logo  
     - Nom du jeu  
@@ -53,7 +53,6 @@ Voici la liste détaillée de ce que nous avons fait au fil des différents rend
     - Sélection nombre de joueurs  
 - Plateau  
     - Sons : pièces posées et recommencer  
-    - Bouton "Rendre Muet"  
     - Pièces améliorées  
     - Nom du joueur en tête  
 - Paramètres  
