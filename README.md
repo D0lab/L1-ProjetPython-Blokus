@@ -8,11 +8,10 @@ Pour voir d'anciennes versions, voici le lien de notre GitHub :
 **ATTENTION :**    
 
 Si vous avez des problèmes avec les sons :  
-- datas.py : initialiser la variable mute_son à 1 *(ligne 25)*    
+- datas.py : initialiser la variable mute_son à 1 *(ligne 23)*    
   
 Si vous avez des problèmes avec les images :   
-- datas.py : initialiser la variable mute_son à 1 *(ligne 24)*   
-  *(Lorsque la variable "dev_mode" est initialisée à 1 les sons sont aussi coupés)*  
+- datas.py : initialiser la variable mute_son à 1 *(ligne 22)*   
 
 
 Les images utilisées dans le projet se trouvent à l'emplacement suivant : "./images/"  
@@ -49,14 +48,18 @@ Voici la liste détaillée de ce que nous avons fait au fil des différents rend
     - Bouton "Paramètres"  
     - Bouton "Paramètres" fonctionnel  
     - Bouton "Crédits"  
+    - Bouton "Crédits" fonctionnel  
     - Police d'écriture provenant du jeu "Omori"  
-    - Sélection modes de lancement du jeu  
+    - Sélection nombre de joueurs  
 - Plateau  
     - Sons : pièces posées et recommencer  
     - Bouton "Rendre Muet"  
     - Pièces améliorées  
+    - Nom du joueur en tête  
 - Paramètres  
     - Slider volume son 
+- Ecran de fin  
+    - Podium 
 - Conversion du fichier plateau.py en modèle MVC :
     - controller.py  
     - ihm.py  
