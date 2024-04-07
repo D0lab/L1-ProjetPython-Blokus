@@ -22,7 +22,7 @@ pygame.init()
 
 global dev_mode,mute_son
 dev_mode = 0
-mute_son = 1
+mute_son = 0
 
 
 #SONS :

@@ -794,9 +794,8 @@ def charger_root():
 						compteur_estSuppr = 0
 
 						if mute_son == 0 :
-							joueur = pygame.mixer.music.load(son_placement_piece)
+							joueur_piece_placement = pygame.mixer.music.load(son_placement_piece)
 							pygame.mixer.music.play()
-
 
 
 
@@ -1000,15 +999,7 @@ def charger_root():
 		flag_estSuppr = False
 		compteur_estSuppr = 0
 
-		if mute_son == 0 :
-			joueur = pygame.mixer.music.load(son_placement_piece)
-			pygame.mixer.music.play()
-
-
-
-
-
-		
+				
 		for i in range(5):
 			try:					
 					
