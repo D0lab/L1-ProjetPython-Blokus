@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: mlaurent,dlabaste
-Plateau de jeu Blokus
+ihm de jeu Blokus
 """
 
 from datas import *
@@ -24,23 +24,19 @@ def charger_menu():
 	
 		menu.destroy()
 		charger_settings("menu")
+
+	def bouton_credits():
 	
-	def gcd1(x, y):
-		if y == 0:
-			return x
-		else:
-			return gcd1(y, x % y)
+		menu.destroy()
+		charger_credits()
 		
-	pgcd = gcd1(width_menu,height_menu)
-	aspect_ratio_width_menu = width_menu/pgcd
-	aspect_ratio_height_menu = height_menu/pgcd
 
 
 	
 
 	menu = Tk()
 	menu.resizable(width=False, height=False)
-	menu.title('MENU BLOKUS')
+	menu.title('MENU - BLOKUS')
 	if dev_mode == 0:
 		menu.iconbitmap("./images/logo.ico")
 		
@@ -59,14 +55,12 @@ def charger_menu():
 	label_menu = Label(menu, text='BLO BLO BLO BLOKUS', font=font_label)
 	label_menu.place(x=(width_menu/2-label_menu.winfo_reqwidth()/2),y=(5*width_menu/100))
 	
-	if dev_mode == 0 and mute_son == 0:
-		player = pygame.mixer.music.load("sons/blokus.wav")
+	if mute_son == 0:
+		player_son = pygame.mixer.music.load("sons/blokus.wav")
 		pygame.mixer.music.play()
 
 
 	if dev_mode == 0:
-		# Load and display an image_menu 
-		#(replace 'your_logo.png' with the path to your image_menu file)
 
 		image_menu = Image.open('./images/logo.png')
 
@@ -76,7 +70,6 @@ def charger_menu():
 
 		image_menu = ImageTk.PhotoImage(image_menu)
 
-	# Create a label to display the image
 
 		image_label =Label(menu, image=image_menu)
 		image_label.place(x=(width_menu/2-largeur_image_menu/2),y=(height_menu/2-hauteur_image_menu/2))
@@ -87,13 +80,13 @@ def charger_menu():
 	button2_menu = Button ( menu, text = "Settings",font=font_bouton, command=bouton_settings)
 	button2_menu.place(x=(width_menu/2 - button2_menu.winfo_reqwidth()/2),y=10+(80*height_menu/100))
 
-	button3_menu = Button ( menu, text = "Credits",font=font_bouton)
+	button3_menu = Button ( menu, text = "Credits",font=font_bouton, command=bouton_credits)
 	button3_menu.place(x=(width_menu/2 - button3_menu.winfo_reqwidth()/2 + 25*width_menu/100) ,y=10+(80*height_menu/100))
 
 
 	menu.mainloop()
 
-#-----------------------
+#-----------------------JOUER
 def charger_play():
 	global nb_joueurs,bot,nb_joueurs_reels
 
@@ -103,7 +96,7 @@ def charger_play():
 	
 	play=Tk()
 	play.resizable(width=False, height=False)
-	play.title('SELECTION MODE BLOKUS')
+	play.title('NOMBRE DE JOUEUR - BLOKUS')
 	
 	if dev_mode == 0:
 		play.iconbitmap("./images/logo.ico")
@@ -128,7 +121,6 @@ def charger_play():
 
 		bot = []
 		for i in range(nb_joueurs_reels+1,int(x)+nb_joueurs_reels+1):
-			# changer_bots(i)
 			bot.append(i)
 
 		nb_joueurs = nb_joueurs_reels + int(x)
@@ -154,10 +146,13 @@ def charger_play():
 	master_frame=Frame(play)
 	master_frame.pack(pady=20)
 
+	label_titre = Label(master_frame, text='NOMBRE DE JOUEURS', font=font_label)
+	label_titre.pack(anchor="center")	
+
 	controls_frame = Frame(master_frame)
 	controls_frame.pack(pady=20)
 
-	player_frame = LabelFrame(master_frame, text="Nombre de joueurs",font=font_bouton)
+	player_frame = LabelFrame(master_frame, text="Nombre d'utilisateurs",font=font_bouton)
 	player_frame.pack(pady=20)
 
 	player_var=DoubleVar()
@@ -216,18 +211,19 @@ def charger_play():
 	play.mainloop()
 
 
-	
+#-----------------------PARAMETRES
 def charger_settings(x):
 	global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity
 	
 	settings=Tk()
 	settings.resizable(width=False, height=False)
-	settings.title('SETTINGS BLOKUS')
+	settings.title('SETTINGS - BLOKUS')
 	if dev_mode == 0:
 		settings.iconbitmap("./images/logo.ico")
-		
-	
-		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+			
+			
+		if x == "menu" : 
+			Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
 		font_label = ('OMORI_GAME',50,'bold')
 		font_bouton = ('OMORI_GAME',30)
 	else:
@@ -236,8 +232,10 @@ def charger_settings(x):
 
 
 	def volume(x):
+		global volume_sons
 		pygame.mixer.music.set_volume(volume_slider.get()/100)
-		# print(volume_slider.get()/100)
+		
+		volume_sons = son_var.get()
 
 	
 
@@ -246,38 +244,37 @@ def charger_settings(x):
 		settings.destroy()
 		if x == "menu":
 			charger_menu()
-		elif x == "plateau":
-			charger_root()
-	
-
-	# def sliding (value):
-	#  	my_label.configure(text=int(value))
 	
 
 	master_frame=Frame(settings)
 	master_frame.pack(pady=20)
 
-	controls_frame = Frame(master_frame)
-	controls_frame.pack(pady=20)
+	label_titre = Label(master_frame, text='SETTINGS', font=font_label)
+	label_titre.pack(anchor="center")	
 
-	volume_frame = LabelFrame(master_frame, text="Volume",font=font_bouton)
-	volume_frame.pack(pady=20)
+	if mute_son == 0 :
 
-	son_var=DoubleVar()
-	son_var.set(0.5)
+		controls_frame = Frame(master_frame)
+		controls_frame.pack(pady=20)
 
-	volume_slider= Scale(volume_frame, 
-						from_=0,
-						to=100,
-						orient=HORIZONTAL,
-						command=volume,
-						length=500,
-						font=font_bouton,
-						variable=son_var
-						)
-	volume_slider.pack()
+		volume_frame = LabelFrame(master_frame, text="Volume",font=font_bouton)
+		volume_frame.pack(pady=20)
 
-	volume_slider.set(0.5)	
+		son_var=DoubleVar()
+		son_var.set(volume_sons)
+
+		volume_slider= Scale(volume_frame, 
+							from_=0,
+							to=100,
+							orient=HORIZONTAL,
+							command=volume,
+							length=500,
+							font=font_bouton,
+							variable=son_var
+							)
+		volume_slider.pack()
+
+		volume_slider.set(volume_sons)	
 	
 	
 
@@ -287,18 +284,88 @@ def charger_settings(x):
 	
 	button_back.pack(pady = 10)
 	
+	settings.mainloop()
+
+
+#-----------------------CREDITS
+def charger_credits():
+	global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity
+	
+	credits=Tk()
+	credits.resizable(width=False, height=False)
+	credits.title('CREDITS - BLOKUS')
+	if dev_mode == 0:
+		credits.iconbitmap("./images/logo.ico")
+			
+			
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',50,'bold')
+		font_bouton = ('OMORI_GAME',30)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
+		
+
+	
+	def bouton_retour():
+		credits.destroy()
+		charger_menu()
+	
+
+
+	master_frame=Frame(credits)
+	master_frame.pack(pady=0)
+
+	label_titre = Label(master_frame, text='CREDITS', font=font_label)
+	label_titre.pack(anchor="center")	
+
+	controls_frame = Frame(master_frame)
+	controls_frame.pack(pady=10)
+
+	dev_frame = LabelFrame(master_frame, text="Developpeurs",font=font_bouton)
+	dev_frame.pack(pady=10)
+
+	label_dorian = Label(dev_frame, text='Dorian LABASTE', font=font_label)
+	label_dorian.pack(pady=2)
+
+	label_matys = Label(dev_frame, text='Matys LAURENT', font=font_label)
+	label_matys.pack(pady=2)
+
+	bibli_frame = LabelFrame(master_frame, text="Bibliotheques",font=font_bouton)
+	bibli_frame.pack(pady=10)
+
+	label_bibl1 = Label(bibli_frame, text='Random - Math - Tkinter', font=font_label)
+	label_bibl1.pack(pady=2)
+
+	label_bibl2 = Label(bibli_frame, text='Customtkinter - Tkextrafont - Time', font=font_label)
+	label_bibl2.pack(pady=2)
+
+	label_bibl3 = Label(bibli_frame, text='Pygame - Pillow - Webbrower', font=font_label)
+	label_bibl3.pack(pady=2)
+
+	def rickroll():
+		webbrowser.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+
+
+	cheat_frame = LabelFrame(master_frame, text="CHEAT",font=font_bouton)
+	cheat_frame.pack(pady=10)
+
+	button_rickroll = Button(cheat_frame, text="cheat", font=font_bouton, command=rickroll)
+	button_rickroll.pack(pady=5)
+
+	button_back = Button (master_frame, text = "Back",font=font_bouton, command=bouton_retour)	
+	button_back.pack(pady = 5)
 	
 	
-	# my_label = Label(settings,text=volume_slider.get(),font=('OMORI_GAME', 18))
-	# my_label.pack(pady=20)
 
 
 		
 	
 	
-	settings.mainloop()
+	credits.mainloop()
 
 
+#-----------------------ECRAN DE FIN
 def charger_final(score):
 
 	def classement():
@@ -347,25 +414,9 @@ def charger_final(score):
 				score_temp.pop(0)
 
 
-
-
-
-
-				
-
-
-					
-
-
-
-
-
-
-
-
 	final=Tk()
 	final.resizable(width=False, height=False)
-	final.title('FINAL BLOKUS')
+	final.title('FINAL - BLOKUS')
 	
 	cnv = Canvas(final, width=width_menu, height=height_menu, bg='white')
 	cnv.pack()
@@ -384,19 +435,9 @@ def charger_final(score):
 		font_bouton = ("Comic Sans MS",30)
 
 	final.geometry(str(width_menu)+"x"+str(height_menu))
-	# Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")
-
-
-	# resultat=Label(final, text="Scores Finaux", font=("Arial",34))
-	# resultat.pack()
-
-	# score=Label(final,text=score, font=("Arial",34))
-	# score.pack()
 
 
 	if dev_mode == 0:
-		# Load and display an image_menu 
-		#(replace 'your_logo.png' with the path to your image_menu file)
 
 		image_menu = Image.open('./images/podium.png')
 		image_menu = image_menu.resize((width_menu//2,height_menu//2))
@@ -464,7 +505,6 @@ def charger_final(score):
 				gagnant+=", "+liste_couleurs_fr[prem_place[i][1]]
 	
   
-	# Create a label to display the image
 	image_label =Label(cnv, image=image_menu)
 	image_label.place(x=width_menu//4,y=height_menu//4)
 
@@ -488,8 +528,9 @@ def charger_final(score):
 	button_exit.place(x=(width_menu/2 - button_exit.winfo_reqwidth()/2 + 10*width_menu/100),y=10+(80*height_menu/100))
 
 	final.mainloop()
-#-----------------------
+	
 
+#-----------------------PLATEAU
 def charger_root():
 	
 	
@@ -656,11 +697,6 @@ def charger_root():
 					flag_y_nom = nom_rectangle_split[2]
 					flag_y = True
 					flag_num_rect = nom_rectangle_split[0]
-				
-
-					
-			# print(globals()[f"pieces_{coul_fr}_noms"])
-			# print(globals()[f"pieces_{coul_fr}_utiles"])
 			
 			loader.append(globals()[f"pieces_{coul_fr}_loader"])
 
@@ -668,8 +704,6 @@ def charger_root():
 		
 
 	def build_plateau():
-			
-		#cnv2.create_rectangle((taille_plateau+1.05)*unity, 30, (taille_plateau+1.05)*unity+unity, 30+unity, fill='red', outline='')
 
 		
 		for i in range(taille_plateau+1):
@@ -691,9 +725,6 @@ def charger_root():
 			
 	def clic(event):
 		global c,rectangle,nom_rectangle,tag_rectangle,nom_rectangle_split,nom_rectangle_complet,derniere_piece_bleu_jouee,derniere_piece_rouge_jouee,joueur,nb_joueurs_out,bot
-		
-
-		# joueur = 1
 
 		if joueur not in bot:
 			coul=liste_couleurs_fr[joueur-1]
@@ -713,7 +744,7 @@ def charger_root():
 
 					globals()[f"derniere_piece_{coul}_jouee"] = nom_rectangle
 
-					c = (c+1)%2 #TEST SI CLIC OU DECLIC
+					c = (c+1)%2
 					if (c == 1):
 			
 						cnv2["cursor"] = "fleur"
@@ -759,7 +790,6 @@ def charger_root():
 		for i in range(taille_plateau):
 			for j in range(taille_plateau):
 				if (5+i*unity+decalage_x <= x<= 5+(i+1)*unity+decalage_x and 5+j*unity+decalage_y <= y <= 5+(j+1)*unity+decalage_y):
-					# print("----EMPLACEMENT CASE----",i,j)
 
 
 					flag_verif_boucle = True
@@ -792,7 +822,7 @@ def charger_root():
 						compteur_estSuppr = 0
 
 						if mute_son == 0 :
-							joueur_piece_placement = pygame.mixer.music.load(son_placement_piece)
+							player_son = pygame.mixer.music.load(son_placement_piece)
 							pygame.mixer.music.play()
 
 
@@ -846,8 +876,7 @@ def charger_root():
 							bot_coup()
 
 						
-						if nb_joueurs-len(bot) > 1:
-							tour_joueur()
+						joueur_en_tete()
 						
 
 
@@ -869,15 +898,19 @@ def charger_root():
 
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
-	def score():		
+	def score(x):		
 		score = []
 
-		
-		derniere_piece = []
-		for i in range(nb_joueurs):
-			#globals()[f"derniere_piece_{liste_couleurs_fr[i]}_jouee"] = None
-			score.append([0,i])
-			derniere_piece.append(globals()[f"derniere_piece_{liste_couleurs_fr[i]}_jouee"])
+		if x == 1:
+			derniere_piece = []
+			for i in range(nb_joueurs):
+				score.append([0,i])
+				derniere_piece.append(globals()[f"derniere_piece_{liste_couleurs_fr[i]}_jouee"])
+		else:
+			derniere_piece = []
+			for i in range(nb_joueurs):
+				score.append([0,i])
+				derniere_piece.append(None)
 
 		for i in range(len(loader)):
 			if len(loader[i]) == 0:
@@ -887,6 +920,7 @@ def charger_root():
 					score[i][0] += 15
 			else:
 				score[i][0] -= len(loader[i])
+
 
 
 		return score
@@ -952,7 +986,7 @@ def charger_root():
 			
 			if nb_joueurs_out == nb_joueurs:
 				root.destroy()
-				charger_final(score())
+				charger_final(score(1))
 
 	def bot_coup():
 		global rectangle,nom_rectangle_split,nom_rectangle_complet,nom_rectangle,tag_rectangle,derniere_piece_rouge_jouee,derniere_piece_bleu_jouee,nb_tours,joueur,plateau
@@ -975,10 +1009,6 @@ def charger_root():
 
 		i = coup_aleatoire[0][0]
 		j = coup_aleatoire[0][1]
-
-
-		# print("----EMPLACEMENT CASE BOT----",i,j)
-		# print(coup_aleatoire)
 
 		x1,y1,x2,y2 = cnv2.coords(rectangle)
 
@@ -1036,14 +1066,22 @@ def charger_root():
 
 		if joueur in bot:
 			bot_coup()
+		
+		
+						
+		joueur_en_tete()
 
 		
 		#-----------------BOT-------
 		# afficher_plateau_console()
 		
-	def tour_joueur():
-		tour_de["text"]= f"Au tour du joueur {liste_couleurs_fr[joueur-1]}"
-		tour_de["bg"]=liste_couleurs_en[joueur-1]
+	def joueur_en_tete():
+		score_en_tete = score(0)
+		score_en_tete.sort(reverse = True)
+		print(score_en_tete)
+
+		en_tete["text"]= f"Joueur {liste_couleurs_fr[score_en_tete[0][1]]} en tete !"
+		en_tete["bg"]=liste_couleurs_en[score_en_tete[0][1]]
 
 
 	def game_reload():
@@ -1051,21 +1089,14 @@ def charger_root():
 
 		btn_reload.place_forget()
 		cnv2.unbind("<Button-1>")
-
-		# for j in range(taille_plateau):
-		# 	for i in range(taille_plateau):
-		# 		if j%2 == 0:
-		# 			(cnv2.create_rectangle(i*unity+decalage_x+5,j*unity+decalage_y+5,i*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
-		# 		else:
-		# 			(cnv2.create_rectangle((taille_plateau-1-i)*unity+decalage_x+5,j*unity+decalage_y+5,(taille_plateau-1-i)*unity+unity+decalage_x+5,j*unity+unity+decalage_y+5, fill='white', outline='black'))
 				
 		for i in range(taille_plateau):
 			(cnv2.create_rectangle(0*unity+decalage_x+5,i*unity+decalage_y+5,(taille_plateau-1)*unity+unity+decalage_x+5,i*unity+unity+decalage_y+5, fill='white', outline='black'))
 				
 
 
-			if mute_son == 0 and (i)%(taille_plateau//3) == 0 and dev_mode == 0 :
-				joueur = pygame.mixer.music.load(son_placement_piece)
+			if mute_son == 0 and (i)%(taille_plateau//3) == 0:
+				player_son = pygame.mixer.music.load(son_placement_piece)
 				pygame.mixer.music.play()
 			waithere()
 
@@ -1112,14 +1143,18 @@ def charger_root():
 	
 
 	def settings():
-		root.destroy()
 		charger_settings("plateau")
+	
+	def back():
+		root.destroy()
+		charger_menu()
 
 	def voir_soluce(liste_coups_possibles):
 		
 		for i in liste_coups_possibles:
-			# print(i[0][0])
 			(cnv2.create_rectangle(i[0][0]*unity+decalage_x+5,i[0][1]*unity+decalage_y+5,i[0][0]*unity+unity+decalage_x+5,i[0][1]*unity+unity+decalage_y+5, fill='black', outline='orange',tag="soluce"))
+
+
 
 	root = Tk()
 	
@@ -1129,6 +1164,14 @@ def charger_root():
 	root.title("BLO BLO BLO BLOKUS")
 	if dev_mode == 0:
 		root.iconbitmap("./images/logo.ico")
+		
+	
+		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
+		font_label = ('OMORI_GAME',20,'bold')
+		font_bouton = ('OMORI_GAME',20)
+	else:
+		font_label= ('ARIAL',50)
+		font_bouton = ("Comic Sans MS",30)
 
 	cnv=Canvas(root,width=width_cnv, height=height_cnv,bg='brown')
 	cnv2 = Canvas(cnv, width=width_cnv2, height=height_cnv2,bg='gray')
@@ -1138,24 +1181,25 @@ def charger_root():
 	root.lift(cnv2)
 
 
-	if nb_joueurs-len(bot) > 1:
 
-		tour_de= Label(root, text="Au tour du joueur bleu", bg="blue")
-		tour_de.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*5)
+	en_tete= Label(root, text="Aucun joueur en tete", bg="white", fg="black", font=font_label, borderwidth=2, relief="solid")
+	en_tete.place(x=(width_cnv/2-en_tete.winfo_reqwidth()/2),y=(90*height_cnv/100))
 
-	btn_reload = Button(cnv,text="Restart",command = game_reload)
-	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
+	btn_settings = Button(cnv,text="Settings",command = settings, font=font_bouton)
+	btn_settings.place(x=(width_cnv/2-btn_settings.winfo_reqwidth()/2-25*width_cnv/100),y=(90*height_cnv/100))
 
-	# btn_settings = Button(cnv,text="Settings",command = settings)
-	# btn_settings.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
+	btn_retourmenu = Button(cnv,text="Menu",command = back, font=font_bouton)
+	btn_retourmenu.place(x=(width_cnv/2-btn_retourmenu.winfo_reqwidth()/2-15*width_cnv/100),y=(90*height_cnv/100))
 
-	btn_settings = Button(cnv,text="Soluce",command = lambda: voir_soluce(verif_pieces_possibilites(joueur,plateau)))
-	btn_settings.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
+	btn_reload = Button(cnv,text="Restart",command = game_reload, font=font_bouton)
+	btn_reload.place(x=(width_cnv/2-btn_reload.winfo_reqwidth()/2+15*width_cnv/100),y=(90*height_cnv/100))
+
+	btn_settings = Button(cnv,text="Soluce",command = lambda: voir_soluce(verif_pieces_possibilites(joueur,plateau)), font=font_bouton)
+	btn_settings.place(x=(width_cnv/2-btn_settings.winfo_reqwidth()/2+25*width_cnv/100),y=(90*height_cnv/100))
 
 
 	cnv2.bind("<Button-1>",clic)
 
-	# build_pieces_rouge()
 	build_pieces()
 	build_plateau()
 

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 @author: mlaurent,dlabaste
-Plateau de jeu Blokus
+datas de jeu Blokus
 """
 
 from tkinter import *
 from tkinter import ttk
 import customtkinter
-import time
-from PIL import Image, ImageTk, ImageDraw, ImageFont
 from tkextrafont import Font
+from PIL import Image, ImageTk, ImageDraw, ImageFont
 import pygame
+import webbrowser
 from random import *
-import math
+import time
 
 
 pygame.init()
@@ -60,7 +60,6 @@ height_menu = 960
 width_cnv=1280
 height_cnv=960
 
-#width_cnv2 = taille_plateau*unity+taille_plateau/2+unity*6
 width_cnv2 = width_cnv
 height_cnv2 = taille_plateau*unity+taille_plateau/2+100
 
@@ -69,6 +68,9 @@ decalage_x = width_cnv2/2-(taille_plateau*unity)/2
 decalage_y = 0
 
 nb_tours = 0
+
+global volumes_sons
+volume_sons = 0.5
 
 
 global joueur, nb_joueurs_out, liste_joueurs_out
@@ -105,7 +107,6 @@ def verif_alentours(x,y,joueur,plateau,nb_tours):
 
 
     liste_indicatif.append(joueur)
-    # print("---",x,y)
 
 
 
