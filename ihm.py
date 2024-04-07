@@ -213,7 +213,7 @@ def charger_play():
 
 #-----------------------PARAMETRES
 def charger_settings(x):
-	global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity
+	global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity,volume_sons
 	
 	settings=Tk()
 	settings.resizable(width=False, height=False)
@@ -235,7 +235,7 @@ def charger_settings(x):
 		global volume_sons
 		pygame.mixer.music.set_volume(volume_slider.get()/100)
 		
-		volume_sons = son_var.get()
+		volume_sons = volume_slider.get()/100
 
 	
 
@@ -274,7 +274,7 @@ def charger_settings(x):
 							)
 		volume_slider.pack()
 
-		volume_slider.set(volume_sons)	
+		volume_slider.set(volume_sons*100)	
 	
 	
 
@@ -877,6 +877,11 @@ def charger_root():
 
 						
 						joueur_en_tete()
+
+						
+					
+						for item in cnv2.find_withtag(tag_rectangle):
+							cnv2.tag_lower(item)
 						
 
 
@@ -1078,27 +1083,27 @@ def charger_root():
 	def joueur_en_tete():
 		score_en_tete = score(0)
 		score_en_tete.sort(reverse = True)
-		print(score_en_tete)
 
 		en_tete["text"]= f"Joueur {liste_couleurs_fr[score_en_tete[0][1]]} en tete !"
 		en_tete["bg"]=liste_couleurs_en[score_en_tete[0][1]]
 
 
-	def game_reload():
+	def game_reload(x):
 		global nb_tours,plateau,nb_joueurs_out,liste_joueurs_out,loader
 
-		btn_reload.place_forget()
-		cnv2.unbind("<Button-1>")
-				
-		for i in range(taille_plateau):
-			(cnv2.create_rectangle(0*unity+decalage_x+5,i*unity+decalage_y+5,(taille_plateau-1)*unity+unity+decalage_x+5,i*unity+unity+decalage_y+5, fill='white', outline='black'))
-				
+		if x == 1:
+			btn_reload.place_forget()
+			cnv2.unbind("<Button-1>")
+					
+			for i in range(taille_plateau):
+				(cnv2.create_rectangle(0*unity+decalage_x+5,i*unity+decalage_y+5,(taille_plateau-1)*unity+unity+decalage_x+5,i*unity+unity+decalage_y+5, fill='white', outline='black'))
+					
 
 
-			if mute_son == 0 and (i)%(taille_plateau//3) == 0:
-				player_son = pygame.mixer.music.load(son_placement_piece)
-				pygame.mixer.music.play()
-			waithere()
+				if mute_son == 0 and (i)%(taille_plateau//3) == 0:
+					player_son = pygame.mixer.music.load(son_placement_piece)
+					pygame.mixer.music.play()
+				waithere()
 
 		cnv2.delete('all')
 
@@ -1119,7 +1124,7 @@ def charger_root():
 
 			plateau.append(plateau_temp)
 
-		btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
+		btn_reload.place(x=(width_cnv/2-btn_reload.winfo_reqwidth()/2+15*width_cnv/100),y=(90*height_cnv/100))
 		cnv2.bind("<Button-1>",clic)
 
 		
@@ -1153,7 +1158,6 @@ def charger_root():
 		
 		for i in liste_coups_possibles:
 			(cnv2.create_rectangle(i[0][0]*unity+decalage_x+5,i[0][1]*unity+decalage_y+5,i[0][0]*unity+unity+decalage_x+5,i[0][1]*unity+unity+decalage_y+5, fill='black', outline='orange',tag="soluce"))
-
 
 
 	root = Tk()
@@ -1191,7 +1195,7 @@ def charger_root():
 	btn_retourmenu = Button(cnv,text="Menu",command = back, font=font_bouton)
 	btn_retourmenu.place(x=(width_cnv/2-btn_retourmenu.winfo_reqwidth()/2-15*width_cnv/100),y=(90*height_cnv/100))
 
-	btn_reload = Button(cnv,text="Restart",command = game_reload, font=font_bouton)
+	btn_reload = Button(cnv,text="Restart",command = lambda:game_reload(1), font=font_bouton)
 	btn_reload.place(x=(width_cnv/2-btn_reload.winfo_reqwidth()/2+15*width_cnv/100),y=(90*height_cnv/100))
 
 	btn_settings = Button(cnv,text="Soluce",command = lambda: voir_soluce(verif_pieces_possibilites(joueur,plateau)), font=font_bouton)
@@ -1212,6 +1216,9 @@ def charger_root():
 
 	if 1 in bot:
 		bot_coup()
+
+	
+	game_reload(0)
 
 
 	root.mainloop()
