@@ -378,7 +378,7 @@ def charger_final(score):
 	
 		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
 		font_label = ('OMORI_GAME',50,'bold')
-		font_bouton = ('OMORI_GAME',30)
+		font_bouton = ('OMORI_GAME',50)
 	else:
 		font_label= ('ARIAL',50)
 		font_bouton = ("Comic Sans MS",30)
