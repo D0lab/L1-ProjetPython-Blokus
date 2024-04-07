@@ -457,11 +457,22 @@ def charger_final(score):
 		for i in range(len(podium)):
 			if len(podium[i]) == 1 :
 				image_menu.paste(images_couleur[podium[i][0][1]], coords_1[i])
-				draw.text((coords_1[i][0]+15,coords_1[i][1]+15), str(podium[i][0][0]), font=font, fill="black")
+
+				text_width = draw.textlength(str(podium[i][0][0]), font)
+				image_width, image_height = j_bleu.size
+				x = (image_width - text_width) / 2
+
+
+				draw.text((coords_1[i][0]+x,coords_1[i][1]+14.5), str(podium[i][0][0]), font=font, fill="black")
 			else:		
 				for j in range(len(podium[i])):	
+
+					text_width = draw.textlength(str(podium[i][j][0]), font)
+					image_width, image_height = j_bleu.size
+					x = (image_width - text_width) / 2
+
 					image_menu.paste(images_couleur[podium[i][j][1]], coords_2[i][j])
-					draw.text((coords_2[i][j][0]+15,coords_2[i][j][1]+15), str(podium[i][0][0]), font=font, fill="black")
+					draw.text((coords_2[i][j][0]+x,coords_2[i][j][1]+14.5), str(podium[i][0][0]), font=font, fill="black")
 
 
 
