@@ -55,11 +55,9 @@ Voici la liste détaillée de ce que nous avons fait au fil des différents rend
     - Sons : pièces posées et recommencer  
     - Bouton "Rendre Muet"  
     - Pièces améliorées  
+- Paramètres  
+    - Slider volume son 
 - Conversion du fichier plateau.py en modèle MVC :
     - controller.py  
     - ihm.py  
     - datas.py    
-- Menu d'accueil  
-    - Bouton "Paramètres" fonctionnel  
-- Paramètres  
-    - Slider volume son 
