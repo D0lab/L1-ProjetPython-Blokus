@@ -533,10 +533,7 @@ def charger_final(score):
 	
 
 #-----------------------PLATEAU
-def charger_root():
-
-	print(nb_joueurs)
-	
+def charger_root():	
 	
 		
 	def build_pieces():
