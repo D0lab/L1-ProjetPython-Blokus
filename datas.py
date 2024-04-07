@@ -54,11 +54,11 @@ unity = 30
 taille_plateau = 20
 
 
-width_menu = 1024
-height_menu = 768
+width_menu = 1004
+height_menu = 700
 
-width_cnv=1024
-height_cnv=768
+width_cnv=1004
+height_cnv=700
 
 width_cnv2 = width_cnv
 height_cnv2 = taille_plateau*unity+taille_plateau/2+100

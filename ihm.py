@@ -252,11 +252,11 @@ def charger_settings(x):
 
 		width_cnv2 = width_cnv
 
-		if listeCombo.get() == "1280x960":
-			unity = 40
+		if listeCombo.get() == "1260x900":
+			unity = 35
 			height_cnv2 = taille_plateau*unity+taille_plateau/2+100
 			
-		elif listeCombo.get() == "1024x768":
+		elif listeCombo.get() == "1004x700" or listeCombo.get() == "1346x700":
 			unity = 30
 			height_cnv2 = taille_plateau*unity+taille_plateau/2+100
 
@@ -318,7 +318,7 @@ def charger_settings(x):
 		labelChoix.pack()
 		
 
-		listeResol=["1024x768","1280x960"]
+		listeResol=["1004x700","1346x700","1260x900"]
 
 		listeCombo = ttk.Combobox(master_frame, state="readonly", values=listeResol,font=font_bouton)
 		index_res = listeResol.index(str(width_menu)+"x"+str(height_menu))
