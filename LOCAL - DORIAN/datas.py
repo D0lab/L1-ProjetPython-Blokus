@@ -10,12 +10,14 @@ import customtkinter
 import pyglet
 import pyglet.media as media
 import time
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw, ImageFont
 from tkextrafont import Font
 import pygame
-pygame.init()
 from random import *
 import math
+
+
+pygame.init()
 
 
 global dev_mode,mute_son
