@@ -7,8 +7,6 @@ Plateau de jeu Blokus
 from tkinter import *
 from tkinter import ttk
 import customtkinter
-import pyglet
-import pyglet.media as media
 import time
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 from tkextrafont import Font
@@ -22,7 +20,7 @@ pygame.init()
 
 global dev_mode,mute_son
 dev_mode = 0
-mute_son = 0
+mute_son = 1
 
 
 #SONS :
@@ -65,7 +63,6 @@ height_cnv=960
 #width_cnv2 = taille_plateau*unity+taille_plateau/2+unity*6
 width_cnv2 = width_cnv
 height_cnv2 = taille_plateau*unity+taille_plateau/2+100
-print(height_cnv2)
 
 
 decalage_x = width_cnv2/2-(taille_plateau*unity)/2

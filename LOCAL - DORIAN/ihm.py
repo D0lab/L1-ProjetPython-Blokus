@@ -46,8 +46,8 @@ def charger_menu():
 		
 	
 		Font(file="./fonts/OMORI-GAME.ttf", family="OMORI_GAME")	
-		font_label = ('OMORI_GAME',50,'bold')
-		font_bouton = ('OMORI_GAME',30)
+		font_label = ('OMORI_GAME',70,'bold')
+		font_bouton = ('OMORI_GAME',50)
 	else:
 		font_label= ('ARIAL',50)
 		font_bouton = ("Comic Sans MS",30)
@@ -56,9 +56,8 @@ def charger_menu():
 
 
 
-
 	label_menu = Label(menu, text='BLO BLO BLO BLOKUS', font=font_label)
-	label_menu.place(x=(20*width_menu/100),y=10)
+	label_menu.place(x=(width_menu/2-label_menu.winfo_reqwidth()/2),y=(5*width_menu/100))
 	
 	if dev_mode == 0 and mute_son == 0:
 		player = pygame.mixer.music.load("sons/blokus.wav")
@@ -71,22 +70,25 @@ def charger_menu():
 
 		image_menu = Image.open('./images/logo.png')
 
-		image_menu = image_menu.resize((10*unity,10*unity))
+		image_menu = image_menu.resize((12*unity,12*unity))
+		
+		largeur_image_menu, hauteur_image_menu = image_menu.size
 
 		image_menu = ImageTk.PhotoImage(image_menu)
 
 	# Create a label to display the image
+
 		image_label =Label(menu, image=image_menu)
-		image_label.place(x=(width_menu/2-(10*unity)/2),y=(height_menu/2-(10*unity)/2))
+		image_label.place(x=(width_menu/2-largeur_image_menu/2),y=(height_menu/2-hauteur_image_menu/2))
 
 	button1_menu = Button ( menu, text = "Play",font=font_bouton, command=bouton_jouer)
-	button1_menu.place(x=10+(25*width_menu/100),y=10+(80*height_menu/100))
+	button1_menu.place(x=(width_menu/2 - button1_menu.winfo_reqwidth()/2 - 25*width_menu/100),y=10+(80*height_menu/100))
 
 	button2_menu = Button ( menu, text = "Settings",font=font_bouton, command=bouton_settings)
-	button2_menu.place(x=10+(40*width_menu/100),y=10+(80*height_menu/100))
+	button2_menu.place(x=(width_menu/2 - button2_menu.winfo_reqwidth()/2),y=10+(80*height_menu/100))
 
 	button3_menu = Button ( menu, text = "Credits",font=font_bouton)
-	button3_menu.place(x=10+(60*width_menu/100),y=10+(80*height_menu/100))
+	button3_menu.place(x=(width_menu/2 - button3_menu.winfo_reqwidth()/2 + 25*width_menu/100) ,y=10+(80*height_menu/100))
 
 
 	menu.mainloop()
@@ -237,26 +239,7 @@ def charger_settings(x):
 		pygame.mixer.music.set_volume(volume_slider.get()/100)
 		# print(volume_slider.get()/100)
 
-	def resolution(x):
-		global width_menu,height_menu,width_cnv,height_cnv,width_cnv2,height_cnv2,unity
-
-		res = listeCombo.get().split("x")
-		width_menu = int(res[0])
-		height_menu = int(res[1])
-
-		width_cnv = int(res[0])
-		height_cnv = int(res[1])
-
-		width_cnv2 = width_cnv
-		# height_cnv2 = height_cnv
-
-		if listeCombo.get() == "1280x960":
-			unity = 40
-			height_cnv2 = taille_plateau*unity+taille_plateau/2+100
-			
-		elif listeCombo.get() == "1024x768":
-			unity = 20
-			height_cnv2 = taille_plateau*unity+taille_plateau/2+100
+	
 
 	
 	def bouton_retour():
@@ -296,21 +279,6 @@ def charger_settings(x):
 
 	volume_slider.set(0.5)	
 	
-	
-	
-	labelChoix = Label(master_frame, text = "Resolution :",font=font_bouton)
-	labelChoix.pack()
-
-	#"854x480","1280x720"
-	# listeResol=["854x480","1280x720"]
-	listeResol=["1024x768","1280x960"]
-
-	listeCombo = ttk.Combobox(master_frame, state="readonly", values=listeResol,font=font_bouton)
-	
-	listeCombo.current(0)
-	listeCombo.pack()
-
-	listeCombo.bind("<<ComboboxSelected>>", resolution)
 	
 
 
