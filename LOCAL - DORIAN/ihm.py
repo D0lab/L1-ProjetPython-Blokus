@@ -672,12 +672,10 @@ def charger_root():
 
 				if (nom_rectangle_split[1] == "0" or nom_rectangle_split[1] == "1" or nom_rectangle_split[1] == "2") and flag_y == False:
 					coords_charge = cnv2.coords(rect)
-					if int(nom_rectangle_split[0]) <= 8: 					
-						coords_charge[0] = 10
-						coords_charge[2] = 10+unity
-					else:				
-						coords_charge[0] = (width_cnv2/2)+(taille_plateau*unity/2)+unity
-						coords_charge[2] = (width_cnv2/2)+(taille_plateau*unity/2)+unity*2
+					if nom_rectangle_split[1] == "0" :
+						coords_x_temp = coords_charge[0] 					
+					coords_charge[0] = coords_x_temp
+					coords_charge[2] = coords_x_temp+unity
 
 					globals()[f"pieces_{coul_fr}_coords_base"].append(coords_charge)
 					globals()[f"pieces_{coul_fr}_noms"].append(rect_name)
