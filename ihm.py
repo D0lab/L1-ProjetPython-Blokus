@@ -807,7 +807,10 @@ def charger_root():
 					total_code = 0
 					for tag in tagged_rectangles:
 						total_code += verif_alentours(int((tag[0]//unity)-decalage_x//unity),int((tag[1]//unity)-decalage_y//unity),joueur,plateau,nb_tours)
+						if verif_alentours(int((tag[0]//unity)-decalage_x//unity),int((tag[1]//unity)-decalage_y//unity),joueur,plateau,nb_tours) == -1:
+							total_code = -9999
 						
+
 					if total_code <= 0:
 						flag_verif_boucle = False
 							
@@ -888,7 +891,8 @@ def charger_root():
 
 
 		#-----------------JOUEUR-------
-		# afficher_plateau_console()		
+		print("JOUEUR")
+		afficher_plateau_console()		
 		if (move == False):			
 			
 			for i in range(len(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"])):
@@ -1079,7 +1083,8 @@ def charger_root():
 
 		
 		#-----------------BOT-------
-		# afficher_plateau_console()
+		print("BOT")
+		afficher_plateau_console()
 		
 	def joueur_en_tete():
 		score_en_tete = score(0)
