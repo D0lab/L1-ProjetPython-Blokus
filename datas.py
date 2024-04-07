@@ -20,7 +20,7 @@ pygame.init()
 
 global dev_mode,mute_son
 dev_mode = 0
-mute_son = 0
+mute_son = 1
 
 
 #SONS :
@@ -50,15 +50,15 @@ num_rect = -1
 coords_rect = None
 flag_pose = 0
 
-unity = 40
+unity = 30
 taille_plateau = 20
 
 
-width_menu = 1280
-height_menu = 960
+width_menu = 1024
+height_menu = 768
 
-width_cnv=1280
-height_cnv=960
+width_cnv=1024
+height_cnv=768
 
 width_cnv2 = width_cnv
 height_cnv2 = taille_plateau*unity+taille_plateau/2+100
