@@ -302,7 +302,8 @@ def charger_settings(x):
 def charger_final(score):
 
 	def classement():
-		global podium
+		global podium,prem_place
+
 
 		score_temp = score.copy()
 		score_temp.sort(reverse = True)
@@ -446,16 +447,45 @@ def charger_final(score):
 
 		
 		image_menu = ImageTk.PhotoImage(image_menu)
-		
+  
+  
+	if len(prem_place)==1:
+		gagnant="Bravo joueur "+liste_couleurs_fr[prem_place[0][1]]
+	else:
+		gagnant="Bravo joueurs"
+		for i in range(len(prem_place)):
+			if i == 0:
+				gagnant+=" "+liste_couleurs_fr[prem_place[i][1]]
+
+			elif i == len(prem_place)-1:
+				gagnant+=" et "+liste_couleurs_fr[prem_place[i][1]]
+			
+			else :
+				gagnant+=", "+liste_couleurs_fr[prem_place[i][1]]
+	
+  
 	# Create a label to display the image
-		image_label =Label(cnv, image=image_menu)
-		image_label.place(x=width_menu//4,y=height_menu//4)
+	image_label =Label(cnv, image=image_menu)
+	image_label.place(x=width_menu//4,y=height_menu//4)
 
+	label_final = Label(final, text=gagnant, font=font_label)
+	label_final.place(x=(width_menu/2-label_final.winfo_reqwidth()/2),y=(5*width_menu/100))
 		
+	def bouton_menu():
+		
+		final.destroy()
+		charger_menu()
+	
+	def bouton_exit():
+		final.destroy()
+
 
 	
-	
+	button_menu = Button (final, text = "Menu",font=font_bouton, command=bouton_menu)
+	button_menu.place(x=(width_menu/2 - button_menu.winfo_reqwidth()/2 - 10*width_menu/100),y=10+(80*height_menu/100))
 
+	button_exit = Button (final, text = "Exit",font=font_bouton, command=bouton_exit)
+	button_exit.place(x=(width_menu/2 - button_exit.winfo_reqwidth()/2 + 10*width_menu/100),y=10+(80*height_menu/100))
 
 	final.mainloop()
 #-----------------------
