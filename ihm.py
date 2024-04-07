@@ -56,7 +56,8 @@ def charger_menu():
 	label_menu.place(x=(width_menu/2-label_menu.winfo_reqwidth()/2),y=(5*width_menu/100))
 	
 	if mute_son == 0:
-		player_son = pygame.mixer.music.load("sons/blokus.wav")
+		player_son = pygame.mixer.music.load("sons/blokus.wav")		
+		pygame.mixer.music.set_volume(volume_sons)
 		pygame.mixer.music.play()
 
 
@@ -110,7 +111,7 @@ def charger_play():
 		font_bouton = ("Comic Sans MS",30)
 
 	def sl_player(x):
-		global nb_joueurs_reels
+		global nb_joueurs_reels,nb_joueurs
 		
 		bot_slider["to"] = 4-int(x)
 
@@ -123,13 +124,13 @@ def charger_play():
 		for i in range(nb_joueurs_reels+1,int(x)+nb_joueurs_reels+1):
 			bot.append(i)
 
-		nb_joueurs = nb_joueurs_reels + int(x)
 
 
 
 
 	
 	def bouton_jouer():
+		nb_joueurs = nb_joueurs_reels + len(bot)
 		
 		play.destroy()
 		charger_root()
