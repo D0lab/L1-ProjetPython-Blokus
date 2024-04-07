@@ -891,8 +891,8 @@ def charger_root():
 
 
 		#-----------------JOUEUR-------
-		print("JOUEUR")
-		afficher_plateau_console()		
+		# print("JOUEUR")
+		# afficher_plateau_console()		
 		if (move == False):			
 			
 			for i in range(len(globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_utiles"])):
@@ -1083,8 +1083,8 @@ def charger_root():
 
 		
 		#-----------------BOT-------
-		print("BOT")
-		afficher_plateau_console()
+		# print("BOT")
+		# afficher_plateau_console()
 		
 	def joueur_en_tete():
 		score_en_tete = score(0)
