@@ -32,7 +32,6 @@ def charger_menu():
 			return gcd1(y, x % y)
 		
 	pgcd = gcd1(width_menu,height_menu)
-	print("taille menu",width_menu,height_menu)
 	aspect_ratio_width_menu = width_menu/pgcd
 	aspect_ratio_height_menu = height_menu/pgcd
 
@@ -339,7 +338,6 @@ def charger_final(score):
 
 		score_temp = score.copy()
 		score_temp.sort(reverse = True)
-		print(score_temp)
 
 		
 		
@@ -379,21 +377,6 @@ def charger_final(score):
 				quatr_place.append(score_temp[0])
 				score_temp.pop(0)
 
-
-
-
-		
-		print(prem_place,deux_place,trois_place,quatr_place)
-
-
-
-
-		# image_menu.paste(j_bleu, coords_q)
-		# image_menu.paste(j_jaune, (60,160))
-		# image_menu.paste(j_rouge, coords_t_2[1])
-		# image_menu.paste(j_vert, coords_t_2[0])
-
-		# image_menu.paste(j_jaune, (275,100))
 
 
 
@@ -497,29 +480,8 @@ def charger_final(score):
 #-----------------------
 
 def charger_root():
-	print(width_cnv2,height_cnv2)
 	
-	def rotate_pieces_by_tag(event):
-		tag = tag_rectangle
-		angle = 90
-		print("ouiiiiiiii")
-		# Recherche toutes les pièces avec le même tag
-		pieces_to_rotate = cnv2.find_withtag(tag)
-		for piece_id in pieces_to_rotate:
-			rotate_piece(piece_id, angle)
-
-	def rotate_piece(piece_id, angle):
-		cnv2.delete(f"rotated_{piece_id}")  # Supprime les pièces déjà tournées
-		x0, y0, x1, y1 = cnv2.coords(piece_id)
-		cx, cy = (x0 + x1) / 2, (y0 + y1) / 2  # Centre de la pièce
-		# Calcule les coordonnées de la pièce tournée autour de son centre
-		x0r = cx + (x0 - cx) * math.cos(math.radians(angle)) - (y0 - cy) * math.sin(math.radians(angle))
-		y0r = cy + (x0 - cx) * math.sin(math.radians(angle)) + (y0 - cy) * math.cos(math.radians(angle))
-		x1r = cx + (x1 - cx) * math.cos(math.radians(angle)) - (y1 - cy) * math.sin(math.radians(angle))
-		y1r = cy + (x1 - cx) * math.sin(math.radians(angle)) + (y1 - cy) * math.cos(math.radians(angle))
-		# Crée la pièce tournée sur le canvas
-		rotated_piece_id = cnv2.create_rectangle(x0r, y0r, x1r, y1r, fill=liste_couleurs_en[joueur-1], outline='', tags=f"rotated_{piece_id}")
-		return rotated_piece_id
+	
 		
 	def build_pieces():
 		global loader
@@ -733,6 +695,10 @@ def charger_root():
 					nom_rectangle = nom_rectangle_split[0]
 					nom_rectangle_complet = rect_name
 					tag_rectangle = "rect"+nom_rectangle+"-"+nom_rectangle_split[4]
+					
+					for item in cnv2.find_withtag(tag_rectangle):
+						cnv2.tag_raise(item)
+
 
 					globals()[f"derniere_piece_{coul}_jouee"] = nom_rectangle
 
@@ -774,6 +740,7 @@ def charger_root():
 			
 	def deposer(x,y):
 		global taille_plateau,nb_tours,rectangle,nom_rectangle,flag_pose,nom_rectangle_split,mute_son,tag_rectangle,joueur,nom_rectangle_complet,coord_base,plateau
+
 			
 		x1, y1, x2, y2 = cnv2.coords(rectangle)
 		
@@ -836,6 +803,10 @@ def charger_root():
 								compteur_estSuppr+=1
 							except:
 								pass
+
+
+						
+						cnv2.delete("soluce")
 								
 						flag_pose = 1
 						
@@ -871,7 +842,7 @@ def charger_root():
 
 
 
-		
+		#-----------------JOUEUR-------
 		# afficher_plateau_console()		
 		if (move == False):			
 			
@@ -885,23 +856,21 @@ def charger_root():
 			index_rect = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_noms"].index(nom_rectangle_split[0]+"-"+y_index_rect+"-"+nom_rectangle_split[2]+"-"+num_index_rect+"-"+nom_rectangle_split[4])
 			coord_base = globals()[f"pieces_{liste_couleurs_fr[joueur-1]}_coords_base"][index_rect]
 
-			print(coord_base)
+
 			cnv2.move(tag_rectangle,coord_base[0]-x1+unity*int(nom_rectangle_split[1]),coord_base[1]-y1)
 
-	def score():
-		resu1=0
-		resu2=0
+	def score():		
 		score = []
 
 		
 		derniere_piece = []
 		for i in range(nb_joueurs):
 			#globals()[f"derniere_piece_{liste_couleurs_fr[i]}_jouee"] = None
-			score.append((0,i))
+			score.append([0,i])
 			derniere_piece.append(globals()[f"derniere_piece_{liste_couleurs_fr[i]}_jouee"])
 
 		for i in range(len(loader)):
-			if len(loader[i][0]) == 0:
+			if len(loader[i]) == 0:
 				if derniere_piece[i] == "0":
 					score[i][0] += 20
 				else:
@@ -951,8 +920,11 @@ def charger_root():
 						total_code = 0
 						for tag in tagged_rectangles:
 							total_code += verif_alentours(int(poss[0]-tag[0]),int(poss[1]-tag[1]),joueur,plateau,nb_tours)
+							if verif_alentours(int(poss[0]-tag[0]),int(poss[1]-tag[1]),joueur,plateau,nb_tours) == -1:
+								total_code = -9999
 						if total_code > 0:
 							liste_coups_possibles.append([poss,rect_name,rect])
+
 
 		return liste_coups_possibles
 
@@ -963,12 +935,10 @@ def charger_root():
 
 		for i in range(1,nb_joueurs+1):
 			if len(verif_pieces_possibilites(i,plateau)) == 0 or len(loader[i-1]) == 0:	
-				# print(len(verif_pieces_possibilites(i,plateau)))
 				if i not in liste_joueurs_out :
 					liste_joueurs_out.append(i)
 					nb_joueurs_out += 1
 
-					print("joueur",i,"est out")
 			
 			if nb_joueurs_out == nb_joueurs:
 				root.destroy()
@@ -1064,9 +1034,12 @@ def charger_root():
 
 		if joueur in bot:
 			bot_coup()
+
+		
+		#-----------------BOT-------
+		# afficher_plateau_console()
 		
 	def tour_joueur():
-		print("joueur",joueur)
 		tour_de["text"]= f"Au tour du joueur {liste_couleurs_fr[joueur-1]}"
 		tour_de["bg"]=liste_couleurs_en[joueur-1]
 
@@ -1140,6 +1113,12 @@ def charger_root():
 		root.destroy()
 		charger_settings("plateau")
 
+	def voir_soluce(liste_coups_possibles):
+		
+		for i in liste_coups_possibles:
+			# print(i[0][0])
+			(cnv2.create_rectangle(i[0][0]*unity+decalage_x+5,i[0][1]*unity+decalage_y+5,i[0][0]*unity+unity+decalage_x+5,i[0][1]*unity+unity+decalage_y+5, fill='black', outline='orange',tag="soluce"))
+
 	root = Tk()
 	
 	root.resizable(width=False, height=False)
@@ -1148,8 +1127,6 @@ def charger_root():
 	root.title("BLO BLO BLO BLOKUS")
 	if dev_mode == 0:
 		root.iconbitmap("./images/logo.ico")
-
-	print(width_cnv2,height_cnv2)
 
 	cnv=Canvas(root,width=width_cnv, height=height_cnv,bg='brown')
 	cnv2 = Canvas(cnv, width=width_cnv2, height=height_cnv2,bg='gray')
@@ -1167,12 +1144,14 @@ def charger_root():
 	btn_reload = Button(cnv,text="Restart",command = game_reload)
 	btn_reload.place(x=(width_cnv/100)*50-20,y=(height_cnv/100)*90)
 
-	btn_settings = Button(cnv,text="Settings",command = settings)
+	# btn_settings = Button(cnv,text="Settings",command = settings)
+	# btn_settings.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
+
+	btn_settings = Button(cnv,text="Soluce",command = lambda: voir_soluce(verif_pieces_possibilites(joueur,plateau)))
 	btn_settings.place(x=(width_cnv/100)*50-29,y=(height_cnv/100)*95)
 
 
 	cnv2.bind("<Button-1>",clic)
-	cnv2.bind("<Button-3>",rotate_pieces_by_tag)
 
 	# build_pieces_rouge()
 	build_pieces()
