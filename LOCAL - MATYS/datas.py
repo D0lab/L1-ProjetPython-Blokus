@@ -19,7 +19,7 @@ import math
 
 
 global dev_mode,mute_son
-dev_mode = 0
+dev_mode = 1
 mute_son = 1
 
 
