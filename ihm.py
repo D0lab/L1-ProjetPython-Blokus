@@ -130,6 +130,7 @@ def charger_play():
 
 	
 	def bouton_jouer():
+		global nb_joueurs
 		nb_joueurs = nb_joueurs_reels + len(bot)
 		
 		play.destroy()
@@ -533,6 +534,8 @@ def charger_final(score):
 
 #-----------------------PLATEAU
 def charger_root():
+
+	print(nb_joueurs)
 	
 	
 		
