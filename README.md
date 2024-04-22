@@ -57,7 +57,6 @@ Voici la liste détaillée de ce que nous avons fait au fil des différents rend
     - Nom du joueur en tête  
 - Paramètres  
     - Slider volume son 
-    - Sélection de résolution de fenêtre (1004x700,1346x700,1260x900)  
 - Ecran de fin  
     - Podium 
 - Conversion du fichier plateau.py en modèle MVC :
